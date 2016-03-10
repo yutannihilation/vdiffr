@@ -58,7 +58,7 @@ collect_cases <- function(package = ".") {
   reporter <- vdiffrReporter$new(package$path)
   devtools::test(package, reporter = reporter)
 
-  active_collecter$get_cases()
+  active_collecter()$get_cases()
 }
 
 #' @export

@@ -19,24 +19,26 @@ casesCollecter <-
     )
   )
 
-active_collecter <- NULL
+vdiffr_env <- new.env(parent = emptyenv())
 
 set_active_collecter <- function(collecter) {
-  active_collecter <<- collecter
+  vdiffr_env$active_collecter <- collecter
+}
+
+active_collecter <- function() {
+  vdiffr_env$active_collecter
 }
 
 maybe_collect_case <- function(type, ...) {
-  if (is.null(active_collecter)) {
-    return(NULL)
+  if (!is.null(active_collecter())) {
+    case <- switch(type,
+      new = case_new(...),
+      mismatch = case_mismatch(...),
+      stop("Unknown case type")
+    )
+
+    active_collecter()$add_case(case)
   }
-
-  case <- switch(type,
-    new = case_new(...),
-    mismatch = case_mismatch(...),
-    stop("Unknown case type")
-  )
-
-  active_collecter$add_case(case)
 }
 
 vdiffrReporter <-
