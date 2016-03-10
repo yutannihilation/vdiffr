@@ -28,8 +28,26 @@ c.cases <- function(..., recursive = FALSE) {
   cases(NextMethod(), attr(x, "path"))
 }
 
+#' @export
 print.cases <- function(x, ...) {
   cat(sprintf("<cases>: %s\n", length(x)))
+
+  mismatched <- unclass(filter_cases(x, "mismatched"))
+  if (length(mismatched) > 0) {
+    cat("\nMismatched:\n")
+    print_cases_names(mismatched)
+  }
+
+  new <- unclass(filter_cases(x, "new"))
+  if (length(new) > 0) {
+    cat("\nNew:\n")
+    print_cases_names(new)
+  }
+}
+
+print_cases_names <- function(cases) {
+  names <- map_chr(names(cases), function(name) paste0(" - ", name))
+  cat(paste(names, collapse = "\n"), "\n")
 }
 
 #' @export
