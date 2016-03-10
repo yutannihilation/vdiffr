@@ -36,7 +36,7 @@ diffPanel <- function() {
 
 include_script <- function(file) {
   script <- shiny::includeScript(
-    system.file("inst", "www", file, package = "vdiffr")
+    system.file("www", file, package = "vdiffr")
   )
   isolate_scope(script)
 }
