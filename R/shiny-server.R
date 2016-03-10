@@ -100,14 +100,16 @@ validateGroupCases <- function(input, reactive_cases) {
     if (input$group_validation_button > 0) {
       active_cases <- shiny::isolate(reactive_cases$active())
       cases <- shiny::isolate(reactive_cases$all)
-      type <- shiny::isolate(input$type)
 
-      validate_cases(active_cases)
+      if (length(cases) > 0) {
+        validate_cases(active_cases)
 
-      opposite_type <- ifelse(type == "new", "mismatched", "new")
-      cases <- filter_cases(cases, opposite_type)
+        type <- shiny::isolate(input$type)
+        opposite_type <- ifelse(type == "new", "mismatched", "new")
+        cases <- filter_cases(cases, opposite_type)
 
-      shiny::isolate(reactive_cases$all <- cases)
+        shiny::isolate(reactive_cases$all <- cases)
+      }
     }
   })
 }
