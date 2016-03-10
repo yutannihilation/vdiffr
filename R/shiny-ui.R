@@ -27,9 +27,9 @@ sidebarPanel <- function() {
 diffPanel <- function() {
   shiny::mainPanel(
     shiny::tabsetPanel(id = "active_tab",
-      shiny::tabPanel("Diff", diffOutput("diff"), value = "diff"),
       shiny::tabPanel("Toggle", toggleOutput("toggle"), value = "toggle"),
-      shiny::tabPanel("Slide", slideOutput("slide"), value = "slide")
+      shiny::tabPanel("Slide", slideOutput("slide"), value = "slide"),
+      shiny::tabPanel("Diff", diffOutput("diff"), value = "diff")
     )
   )
 }

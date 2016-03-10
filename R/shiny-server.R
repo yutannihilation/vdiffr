@@ -3,7 +3,7 @@ vdiffrServer <- function(cases) {
   shiny::shinyServer(function(input, output) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
-      type <- input$type %||% "all"
+      type <- input$type %||% "new"
       filter_cases(cases$all, type)
     })
 
@@ -30,9 +30,6 @@ renderTypeInput <- function(input, reactive_cases) {
 
     if (length(types) == 0) {
       return(NULL)
-    }
-    if (length(types) > 1) {
-      types <- c("all", types)
     }
     types <- set_names(types, capitalise(types))
 
@@ -107,12 +104,9 @@ validateGroupCases <- function(input, reactive_cases) {
 
       validate_cases(active_cases)
 
-      if (type == "all") {
-        cases <- list()
-      } else {
-        opposite_type <- ifelse(type == "new", "mismatched", "new")
-        cases <- filter_cases(cases, opposite_type)
-      }
+      opposite_type <- ifelse(type == "new", "mismatched", "new")
+      cases <- filter_cases(cases, opposite_type)
+
       shiny::isolate(reactive_cases$all <- cases)
     }
   })

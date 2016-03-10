@@ -28,7 +28,6 @@ c.cases <- function(..., recursive = FALSE) {
   cases(NextMethod(), attr(x, "path"))
 }
 
-## TODO -- #' @export
 print.cases <- function(x, ...) {
   cat(sprintf("<cases>: %s\n", length(x)))
 }
