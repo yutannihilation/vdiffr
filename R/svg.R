@@ -21,6 +21,10 @@ print_plot.ggplot <- function(p) {
   print(p)
 }
 
+print_plot.recordedplot <- function(p) {
+  grDevices::replayPlot(p)
+}
+
 print_plot.function <- function(p) {
   p()
 }
