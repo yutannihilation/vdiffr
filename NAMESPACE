@@ -2,6 +2,7 @@
 
 S3method(compare,svg)
 S3method(print,cases)
+export(add_dependency)
 export(collect_cases)
 export(collect_mismatched_cases)
 export(collect_new_cases)

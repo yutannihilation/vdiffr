@@ -11,38 +11,41 @@ manage_cases <- function(package = ".", figs_path = "tests/figs/") {
   ))
 }
 
-cases <- function(x, path) {
+cases <- function(x, path, deps = NULL) {
   structure(x,
     class = "cases",
-    path = path
+    path = path,
+    deps = deps
   )
 }
 
 is_cases <- function(case) inherits(case, "cases")
 
 c.cases <- function(..., recursive = FALSE) {
-  cases(NextMethod(), attr(..1, "path"))
+  cases(NextMethod(), attr(..1, "path"), attr(..1, "deps"))
 }
 
 `[.cases` <- function(x, i) {
-  cases(NextMethod(), attr(x, "path"))
+  cases(NextMethod(), attr(x, "path"), attr(x, "deps"))
 }
 
 #' @export
 print.cases <- function(x, ...) {
   cat(sprintf("<cases>: %s\n", length(x)))
 
-  mismatched <- unclass(filter_cases(x, "mismatched"))
+  mismatched <- filter_cases(x, "mismatched")
   if (length(mismatched) > 0) {
     cat("\nMismatched:\n")
     print_cases_names(mismatched)
   }
 
-  new <- unclass(filter_cases(x, "new"))
+  new <- filter_cases(x, "new")
   if (length(new) > 0) {
     cat("\nNew:\n")
     print_cases_names(new)
   }
+
+  invisible(cases)
 }
 
 print_cases_names <- function(cases) {
@@ -77,6 +80,11 @@ validate_cases <- function(cases = collect_new_cases(),
   stopifnot(is_cases(cases))
   figs_path <- maybe_concat_paths(attr(cases, "path"), figs_path)
 
+  if (length(cases)) {
+    walk(attr(cases, "deps"), update_dependency,
+      path = attr(cases, "path"))
+  }
+
   walk(cases, function(case) {
     svg <- case$testcase
 
@@ -95,7 +103,7 @@ filter_cases <- function(cases, type) {
   )
 
   # Restore attributes discarded by purrr::keep()
-  cases(filtered, attr(cases, "path"))
+  cases(filtered, attr(cases, "path"), attr(cases, "deps"))
 }
 
 case_mismatch <- function(testcase, expected, name = NULL) {

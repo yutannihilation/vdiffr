@@ -33,11 +33,17 @@ compare.svg <- function(x, y, fig_name, ...) {
     msg <- paste0("Figures don't match: ", fig_name, ".svg")
   }
 
-  structure(
-    list(
-      equal = equal,
-      message = msg
-    ),
-    class = "comparison"
+  comparison <- list(
+    equal = equal,
+    message = msg
   )
+  structure(comparison, class = "comparison")
+}
+
+#' @export
+add_dependency <- function(deps) {
+  collecter <- active_collecter()
+  if (!is.null(collecter)) {
+    walk(deps, collecter$add_dep)
+  }
 }

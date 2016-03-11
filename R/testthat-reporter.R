@@ -3,7 +3,7 @@ casesCollecter <-
   R6::R6Class("casesCollecter",
     public = list(
       initialize = function(package_path) {
-        private$.cases <- cases(list(), package_path)
+        private$.cases <- cases(list(), package_path, "svglite")
       },
 
       add_case = function(case) {
@@ -11,11 +11,18 @@ casesCollecter <-
         private$.cases = c(private$.cases, case)
       },
 
-      get_cases = function() private$.cases
+      add_dep = function(dep) {
+        deps <- attr(private$.cases, "deps")
+        attr(private$.cases, "deps") <- unique(c(deps, dep))
+      },
+
+      get_cases = function() {
+        private$.cases
+      }
     ),
 
     private = list(
-      .cases = list()
+      .cases = NULL
     )
   )
 
@@ -30,14 +37,16 @@ active_collecter <- function() {
 }
 
 maybe_collect_case <- function(type, ...) {
-  if (!is.null(active_collecter())) {
+  collecter <- active_collecter()
+
+  if (!is.null(collecter)) {
     case <- switch(type,
       new = case_new(...),
       mismatch = case_mismatch(...),
       stop("Unknown case type")
     )
 
-    active_collecter()$add_case(case)
+    collecter$add_case(case)
   }
 }
 
