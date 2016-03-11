@@ -17,6 +17,7 @@ print_plot <- function(p) {
 }
 
 print_plot.ggplot <- function(p) {
+  add_dependency("ggplot2")
   print(p)
 }
 
