@@ -79,6 +79,7 @@ validate_cases <- function(cases = collect_new_cases(),
                            figs_path = "tests/figs") {
   stopifnot(is_cases(cases))
   figs_path <- maybe_concat_paths(attr(cases, "path"), figs_path)
+  check_path(figs_path)
 
   if (length(cases)) {
     walk(attr(cases, "deps"), update_dependency,
@@ -93,6 +94,13 @@ validate_cases <- function(cases = collect_new_cases(),
 
     write_file(svg, fig_path)
   })
+}
+
+check_path <- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+  }
+  path
 }
 
 filter_cases <- function(cases, type) {
