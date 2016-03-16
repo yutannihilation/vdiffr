@@ -10,11 +10,23 @@ expect_lookalike <- function(fig, fig_name, path = "../figs", ...) {
       name = fig_name
     )
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
-    testthat::skip(msg)
+
+    expectation <- testthat::expectation("skip", msg)
+    signal_expectation(expectation)
+    return(invisible(expectation))
   }
 
   expected <- read_svg(expected_path)
   testthat::expect_equal(testcase, expected, fig_name = fig_name, ...)
+}
+
+signal_expectation <- function(exp) {
+  withRestarts(
+    signalCondition(exp),
+    continue_test = function(e) NULL
+  )
+
+  invisible(exp)
 }
 
 #' @importFrom testthat compare
