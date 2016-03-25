@@ -1,7 +1,7 @@
 
-context("Visual Expectations")
+context("New plots")
 
-test_that("New plots work", {
+test_that("New plots work are collected", {
   p1 <- function() plot(mtcars$disp)
   p2 <- function() plot(mtcars$drat)
 
