@@ -28,13 +28,15 @@ capitalise <- function(x) {
   })
 }
 
-# TODO: could devtools export *_dcf() functions or equivalent?
 update_dependency <- function(dep, path) {
   desc_path <- file.path(path, "DESCRIPTION")
-  desc <- devtools:::read_dcf(desc_path)
+  desc <- description::description$new(desc_path)
 
-  field <- paste0(dep, "Note")
-  desc[[field]] <- as.character(utils::packageVersion(dep))
+  note <- paste0(dep, "Note")
+  version <- as.character(utils::packageVersion(dep))
 
-  devtools:::write_dcf(desc_path, desc)
+  desc$set(note, version)
+  desc$write()
+
+  NULL
 }

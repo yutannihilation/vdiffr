@@ -81,10 +81,8 @@ validate_cases <- function(cases = collect_new_cases(),
   figs_path <- maybe_concat_paths(attr(cases, "path"), figs_path)
   check_path(figs_path)
 
-  if (length(cases)) {
-    walk(attr(cases, "deps"), update_dependency,
-      path = attr(cases, "path"))
-  }
+  walk(attr(cases, "deps"), update_dependency,
+    path = attr(cases, "path"))
 
   walk(cases, function(case) {
     svg <- case$testcase

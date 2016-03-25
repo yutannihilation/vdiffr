@@ -13,7 +13,8 @@ Imports:
     testthat (>= 0.11.0.9000),
     svglite (>= 1.1.0),
     xml2,
-    htmlwidgets (>= 0.6)
+    htmlwidgets (>= 0.6),
+    description
 License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1
