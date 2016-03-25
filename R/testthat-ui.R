@@ -1,6 +1,6 @@
 
 #' @export
-expect_doppleganger <- function(fig, fig_name, path = "../figs", ...) {
+expect_doppelganger <- function(fig, fig_name, path = "../figs", ...) {
   expected_path <- file.path(path, paste0(fig_name, ".svg"))
   testcase <- as_svg(fig)
 
