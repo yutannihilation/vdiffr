@@ -16,6 +16,10 @@ print_plot <- function(p) {
   UseMethod("print_plot")
 }
 
+print_plot.default <- function(p) {
+  print(p)
+}
+
 print_plot.ggplot <- function(p) {
   add_dependency("ggplot2")
   print(p)
