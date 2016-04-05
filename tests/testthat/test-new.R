@@ -13,3 +13,13 @@ test_that("new cases are skipped", {
   expected_classes <- rep("expectation_skip", 2)
   expect_equal(classes, expected_classes)
 })
+
+test_that("Figs are saved to alternative paths", {
+  path1 <- file.path(mock_pkg_dir, "tests", "path1")
+  path2 <- file.path(mock_pkg_dir, "tests", "path2")
+
+  expect_true(dir.exists(path1))
+  expect_true(dir.exists(path2))
+  expect_true(file.exists(file.path(path1, "alt1.svg")))
+  expect_true(file.exists(file.path(path2, "alt2.svg")))
+})

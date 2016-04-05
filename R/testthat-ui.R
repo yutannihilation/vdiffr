@@ -1,13 +1,17 @@
 
 #' @export
-expect_doppelganger <- function(fig, fig_name, path = "../figs", ...) {
-  expected_path <- file.path(path, paste0(fig_name, ".svg"))
+expect_doppelganger <- function(fig, fig_name, fig_path = "figs", ...) {
   testcase <- as_svg(fig)
+  fig_path <- file.path(fig_path, paste0(fig_name, ".svg"))
 
-  if (!file.exists(expected_path)) {
+  # Climb one level as we are in the testthat folder
+  test_path <- file.path("..", fig_path)
+
+  if (!file.exists(test_path)) {
     maybe_collect_case("new",
       testcase = testcase,
-      name = fig_name
+      name = fig_name,
+      path = fig_path
     )
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
 
@@ -16,8 +20,12 @@ expect_doppelganger <- function(fig, fig_name, path = "../figs", ...) {
     return(invisible(expectation))
   }
 
-  expected <- read_svg(expected_path)
-  testthat::expect_equal(testcase, expected, fig_name = fig_name, ...)
+  expected <- read_svg(test_path)
+  testthat::expect_equal(testcase, expected,
+    fig_name = fig_name,
+    path = test_path,
+    ...
+  )
 }
 
 signal_expectation <- function(exp) {
@@ -31,7 +39,7 @@ signal_expectation <- function(exp) {
 
 #' @importFrom testthat compare
 #' @export
-compare.svg <- function(x, y, fig_name, ...) {
+compare.svg <- function(x, y, fig_name, fig_path, ...) {
   equal <- identical(x, y)
   if (equal) {
     msg <- "TRUE"
@@ -39,7 +47,8 @@ compare.svg <- function(x, y, fig_name, ...) {
     maybe_collect_case("mismatch",
       testcase = x,
       expected = y,
-      name = fig_name
+      name = fig_name,
+      path = fig_path
     )
 
     msg <- paste0("Figures don't match: ", fig_name, ".svg")

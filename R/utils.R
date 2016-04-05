@@ -11,6 +11,13 @@ maybe_concat_paths <- function(base_path, path) {
   }
 }
 
+validate_path <- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+  }
+  path
+}
+
 read_file <- function(file) {
   readChar(file, file.info(file)$size)
 }
@@ -28,8 +35,8 @@ capitalise <- function(x) {
   })
 }
 
-update_dependency <- function(dep, path) {
-  desc_path <- file.path(path, "DESCRIPTION")
+update_dependency <- function(dep, pkg_path) {
+  desc_path <- file.path(pkg_path, "DESCRIPTION")
   desc <- description::description$new(desc_path)
 
   note <- paste0(dep, "Note")
