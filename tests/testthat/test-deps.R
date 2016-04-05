@@ -18,5 +18,5 @@ test_that("DESCRIPTION notes are updated manually", {
 
 test_that("DESCRIPTION notes are updated automatically", {
   check_depnote("svglite")
-  ## check_depnote("ggplot2")
+  check_depnote("ggplot2")
 })

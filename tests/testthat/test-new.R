@@ -1,7 +1,7 @@
 
 context("New cases")
 
-test_that("new cases are skipped", {
+test_that("New cases are skipped", {
   new_results <- subset_results(test_results, "test-new.R")
 
   msg <- map_chr(new_results, function(result) result$message)
