@@ -1,5 +1,5 @@
 Package: vdiffr
-Title: Visual regression testing and graphical differ using SVG
+Title: Visual regression testing and graphical diffing
 Version: 0.0.0.9000
 Authors@R: person("Lionel", "Henry", email = "lionel.hry@gmail.com", role = c("aut", "cre"))
 Description: vdiffr is an extension to testthat that makes it easy to
@@ -19,7 +19,8 @@ Imports:
     description
 Suggests:
     ggplot2,
-    roxygen2
+    roxygen2,
+    rstudioapi
 License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1

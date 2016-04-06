@@ -74,6 +74,14 @@ can also keep track of how your plots change as you tweak their layout
 by checking the history on Github.
 
 
+### RStudio integration
+
+An addin to launch `manage_cases()` is provided with vdiffr. Use the
+addin menu to launch the Shiny app in an RStudio dialog.
+
+![RStudio addin](https://raw.githubusercontent.com/lionel-/vdiffr/readme/rstudio-vdiffr.png)
+
+
 ## Dependency notes
 
 vdiffr currently uses svglite to save the plots in a text format that

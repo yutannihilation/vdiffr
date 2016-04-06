@@ -1,20 +1,3 @@
-#' Manage visual test cases with a Shiny app
-#'
-#' @param package Package description, can be path or package
-#'   name. See \code{\link[devtools]{as.package}} for more information.
-#' @seealso \code{\link{collect_cases}()} and
-#'   \code{\link{validate_cases}()}
-#' @export
-manage_cases <- function(package = ".") {
-  package <- devtools::as.package(package)
-  cases <- collect_cases(package)
-
-  shiny::runApp(list(
-    ui = vdiffrUi(cases),
-    server = vdiffrServer(cases)
-  ))
-}
-
 #' Collect and validate cases
 #'
 #' These functions are mainly intended for internal use by
