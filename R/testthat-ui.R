@@ -50,7 +50,7 @@ expect_doppelganger <- function(fig, fig_name, fig_path = "figs", ...) {
   expected <- read_svg(test_path)
   testthat::expect_equal(testcase, expected,
     fig_name = fig_name,
-    fig_path = test_path,
+    fig_path = fig_path,
     ...
   )
 }

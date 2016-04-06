@@ -58,6 +58,9 @@ collect_mismatched_cases <- function(package = ".") {
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))
   pkg_path <- attr(cases, "pkg_path")
+  if (is.null(pkg_path)) {
+    stop("Internal error: Package path is missing", call. = FALSE)
+  }
 
   walk(attr(cases, "deps"), update_dependency, pkg_path)
   walk(cases, update_case, pkg_path)
@@ -119,13 +122,13 @@ filter_cases <- function(cases, type) {
   )
 
   # Restore attributes discarded by purrr::keep()
-  cases(filtered, attr(cases, "path"), attr(cases, "deps"))
+  cases(filtered, attr(cases, "pkg_path"), attr(cases, "deps"))
 }
 
 case_mismatch <- function(testcase, expected, name, path) {
   case <- list(
-    testcase = normalizePath(testcase),
-    expected = normalizePath(expected),
+    testcase = testcase,
+    expected = expected,
     name = name,
     path = path
   )
@@ -134,7 +137,7 @@ case_mismatch <- function(testcase, expected, name, path) {
 }
 
 case_new <- function(testcase, name, path) {
-  testcase <- normalizePath(testcase)
+  testcase <- testcase
   case <- list(
     testcase = testcase,
     expected = testcase,
