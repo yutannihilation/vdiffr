@@ -1,4 +1,4 @@
 library("testthat")
 library("vdiffr")
 
-test_check("mockpkg")
+test_check("mockpkgerror")

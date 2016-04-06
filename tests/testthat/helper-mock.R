@@ -1,10 +1,10 @@
 
-create_mock_pkg <- function() {
+create_mock_pkg <- function(pkg = "mock-pkg") {
   dir <- tempfile()
   dir.create(dir)
 
-  file.copy("mock-pkg/", dir, recursive = TRUE)
-  file.path(dir, "mock-pkg")
+  file.copy(paste0(pkg, "/"), dir, recursive = TRUE)
+  file.path(dir, pkg)
 }
 
 mock_pkg_dir <- create_mock_pkg()

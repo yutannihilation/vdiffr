@@ -50,13 +50,29 @@ maybe_collect_case <- function(type, ...) {
   }
 }
 
+expectation_error <- function(exp) {
+  exp <- gsub("^expectation_", "", class(exp)[[1]])
+  exp == "error"
+}
+
 vdiffrReporter <-
   R6::R6Class("vdiffrReporter", inherit = testthat::Reporter,
-
     public = list(
+      failed = FALSE,
+
       initialize = function(pkg_path) {
         collecter <- casesCollecter$new(pkg_path)
         set_active_collecter(collecter)
+      },
+
+      add_result = function(context, test, result) {
+        self$failed <- self$failed || expectation_error(result)
+      },
+
+      end_reporter = function() {
+        if (self$failed) {
+          stop("There was an error during testing", call. = FALSE)
+        }
       }
     )
   )
