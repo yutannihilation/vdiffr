@@ -2,8 +2,8 @@
 casesCollecter <-
   R6::R6Class("casesCollecter",
     public = list(
-      initialize = function(package_path) {
-        private$.cases <- cases(list(), package_path, "svglite")
+      initialize = function(pkg_path) {
+        private$.cases <- cases(list(), pkg_path, "svglite")
       },
 
       add_case = function(case) {
@@ -54,8 +54,8 @@ vdiffrReporter <-
   R6::R6Class("vdiffrReporter", inherit = testthat::Reporter,
 
     public = list(
-      initialize = function(package_path) {
-        collecter <- casesCollecter$new(package_path)
+      initialize = function(pkg_path) {
+        collecter <- casesCollecter$new(pkg_path)
         set_active_collecter(collecter)
       }
     )

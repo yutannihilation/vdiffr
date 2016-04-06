@@ -1,4 +1,9 @@
-
+#' Manage visual test cases with a Shiny app
+#'
+#' @param package Package description, can be path or package
+#'   name. See \code{\link[devtools]{as.package}} for more information.
+#' @seealso \code{\link{collect_cases}()} and
+#'   \code{\link{validate_cases}()}
 #' @export
 manage_cases <- function(package = ".") {
   package <- devtools::as.package(package)
@@ -10,6 +15,22 @@ manage_cases <- function(package = ".") {
   ))
 }
 
+#' Collect and validate cases
+#'
+#' These functions are mainly intended for internal use by
+#' \code{\link{manage_cases}()}. They are useful to programmatically
+#' collect and validate cases.
+#'
+#' @inheritParams manage_cases
+#' @param cases A \code{cases} object returned by one of the
+#'   collecting functions.
+#' @seealso \code{\link{manage_cases}()}
+#' @export
+#' @examples
+#' \dontrun{
+#' new_cases <- collect_new_cases()
+#' validate_cases(new_cases)
+#' }
 collect_cases <- function(package = ".") {
   on.exit(set_active_collecter(NULL))
 
@@ -20,16 +41,19 @@ collect_cases <- function(package = ".") {
   active_collecter()$get_cases()
 }
 
+#' @rdname collect_cases
 #' @export
 collect_new_cases <- function(package = ".") {
   filter_cases(collect_cases(package), "new")
 }
 
+#' @rdname collect_cases
 #' @export
 collect_mismatched_cases <- function(package = ".") {
   filter_cases(collect_cases(package), "mismatched")
 }
 
+#' @rdname collect_cases
 #' @export
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))

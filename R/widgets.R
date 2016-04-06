@@ -1,4 +1,13 @@
+#' HTML Widgets for graphical comparison
+#'
+#' @inheritParams htmlwidgets::createWidget
+#' @param before Path to the picture that is taken as reference.
+#' @param after Path to the picture against which the reference is
+#'   compared.
+#' @name htmlwidgets
+NULL
 
+#' @rdname htmlwidgets
 #' @export
 widget_toggle <- function(before, after, width = NULL, height = NULL) {
   sources <- list(files = list(before = before, after = after))
@@ -11,6 +20,7 @@ widget_toggle <- function(before, after, width = NULL, height = NULL) {
   )
 }
 
+#' @rdname htmlwidgets
 #' @export
 widget_slide <- function(before, after, width = NULL, height = NULL) {
   # Drawing a SVG into a canvas requires that the svg node has 'width'
@@ -26,6 +36,7 @@ widget_slide <- function(before, after, width = NULL, height = NULL) {
   )
 }
 
+#' @rdname htmlwidgets
 #' @export
 widget_diff <- function(before, after, width = NULL, height = NULL) {
   sources <- list(before = before, after = after)
