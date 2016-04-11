@@ -82,6 +82,22 @@ addin menu to launch the Shiny app in an RStudio dialog.
 ![RStudio addin](https://raw.githubusercontent.com/lionel-/vdiffr/readme/rstudio-vdiffr.png)
 
 
+### ESS integration
+
+The next version of ESS will feature devtools integration. Include
+this in your config file to add vdiffr's Shiny app to the package
+development keymap. Call it with `C-c C-w C-v`.
+
+```lisp
+(defun ess-r-vdiffr-manage-cases ()
+  (interactive)
+  (ess-r-package-send-process "vdiffr::manage_cases(%s)\n"
+                              "Manage vdiffr cases for %s"))
+
+(define-key ess-r-package-dev-map "\C-v" 'ess-r-vdiffr-manage-cases)
+```
+
+
 ## Dependency notes
 
 vdiffr currently uses svglite to save the plots in a text format that
