@@ -2,7 +2,7 @@
 context("Cases")
 
 test_that("Attributes are preserved", {
-  cases <- cases(list(), "pkg_path", "deps")
+  cases <- vdiffr:::cases(list(), "pkg_path", "deps")
   new_cases <- filter_cases(cases, "new")
 
   expect_equal(attr(new_cases, "pkg_path"), "pkg_path")
