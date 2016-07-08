@@ -2,7 +2,7 @@
 context("Dependencies")
 
 desc_path <- file.path(mock_pkg_dir, "DESCRIPTION")
-desc <- description::description$new(desc_path)
+desc <- desc::description$new(desc_path)
 
 check_depnote <- function(pkg_name) {
   field_name <- paste0(pkg_name, "Note")

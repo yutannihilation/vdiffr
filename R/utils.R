@@ -37,7 +37,7 @@ capitalise <- function(x) {
 
 update_dependency <- function(dep, pkg_path) {
   desc_path <- file.path(pkg_path, "DESCRIPTION")
-  desc <- description::description$new(desc_path)
+  desc <- desc::description$new(desc_path)
 
   note <- paste0(dep, "Note")
   version <- as.character(utils::packageVersion(dep))

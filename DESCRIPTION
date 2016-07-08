@@ -16,7 +16,7 @@ Imports:
     svglite (>= 1.1.0),
     xml2,
     htmlwidgets (>= 0.6),
-    description
+    desc
 Suggests:
     ggplot2,
     roxygen2,
