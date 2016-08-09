@@ -23,7 +23,7 @@ read_file <- function(file) {
 }
 
 write_file <- function(x, file) {
-  writeChar(x, file)
+  writeChar(x, file, eos = NULL)
 }
 
 capitalise <- function(x) {
