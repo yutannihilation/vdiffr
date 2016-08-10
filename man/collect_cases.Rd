@@ -7,7 +7,7 @@
 \alias{validate_cases}
 \title{Collect and validate cases}
 \usage{
-collect_cases(package = ".")
+collect_cases(package = ".", filter = NULL)
 
 collect_new_cases(package = ".")
 
@@ -18,6 +18,10 @@ validate_cases(cases = collect_new_cases())
 \arguments{
 \item{package}{Package description, can be path or package
 name. See \code{\link[devtools]{as.package}} for more information.}
+
+\item{filter}{If not \code{NULL}, only tests with file names matching this
+regular expression will be executed.  Matching will take on the file
+name after it has been stripped of \code{"test-"} and \code{".R"}.}
 
 \item{cases}{A \code{cases} object returned by one of the
 collecting functions.}

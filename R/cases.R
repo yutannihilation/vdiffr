@@ -14,13 +14,13 @@
 #' new_cases <- collect_new_cases()
 #' validate_cases(new_cases)
 #' }
-collect_cases <- function(package = ".") {
+collect_cases <- function(package = ".", filter = NULL) {
   on.exit(set_active_collecter(NULL))
 
   cat("Running testthat to collect visual cases\n")
   package <- devtools::as.package(package)
   reporter <- vdiffrReporter$new(package$path)
-  devtools::test(package, reporter = reporter)
+  devtools::test(package, filter = filter, reporter = reporter)
 
   active_collecter()$get_cases()
 }

@@ -1,12 +1,13 @@
 #' Manage visual test cases with a Shiny app
 #'
+#' @inheritParams devtools::test
 #' @param package Package description, can be path or package
 #'   name. See \code{\link[devtools]{as.package}} for more information.
 #' @seealso \code{\link{vdiffrAddin}()}, \code{\link{collect_cases}()}
 #'   and \code{\link{validate_cases}()}
 #' @export
-manage_cases <- function(package = ".") {
-  cases <- collect_cases(package)
+manage_cases <- function(package = ".", filter = NULL) {
+  cases <- collect_cases(package, filter = filter)
 
   vdiffrApp <- shiny::shinyApp(
     ui = vdiffrUi(cases),
