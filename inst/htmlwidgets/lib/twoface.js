@@ -1,5 +1,8 @@
 // TwoFace – Canvas based before and after image comparison
 //
+// Copyright (c) 2012-2016 David Hong
+// Distributed under the MIT License
+//
 // http://jsfiddle.net/davidhong/WkM5z/
 //
 // Similar to jQuery Before & After plugin, except it has no external
