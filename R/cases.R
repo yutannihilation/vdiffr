@@ -17,6 +17,7 @@
 collect_cases <- function(package = ".") {
   on.exit(set_active_collecter(NULL))
 
+  cat("Running testthat to collect visual cases\n")
   package <- devtools::as.package(package)
   reporter <- vdiffrReporter$new(package$path)
   devtools::test(package, reporter = reporter)
