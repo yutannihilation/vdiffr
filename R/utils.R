@@ -38,11 +38,19 @@ capitalise <- function(x) {
 update_dependency <- function(dep, pkg_path) {
   desc_path <- file.path(pkg_path, "DESCRIPTION")
   desc <- desc::description$new(desc_path)
+  padding <- "\n    "
 
-  note <- paste0(dep, "Note")
+  note <- desc$get("vdiffrNote")
+  if (identical(note, c(vdiffrNote = NA_character_))) {
+    note <- NULL
+  } else {
+    note <- paste0(note, ",")
+  }
+
   version <- as.character(utils::packageVersion(dep))
+  note <- paste0(note, padding, dep, " (", version, ")")
 
-  desc$set(note, version)
+  desc$set("vdiffrNote", note)
   desc$write()
 
   NULL
