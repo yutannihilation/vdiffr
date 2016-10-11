@@ -46,8 +46,17 @@ validate_cases <- function(cases = collect_new_cases()) {
     stop("Internal error: Package path is missing", call. = FALSE)
   }
 
-  walk(attr(cases, "deps"), update_dependency, pkg_path)
+  write_deps_note(cases, pkg_path)
   walk(cases, update_case, pkg_path)
+}
+
+write_deps_note <- function(cases, pkg_path) {
+  deps <- attr(cases, "deps")
+  versions <- map_chr(deps, package_version)
+  deps <- map2_chr(deps, versions, paste, sep = ": ")
+
+  deps_note_file <- file.path(pkg_path, "tests", "figs", "deps.txt")
+  writeLines(deps, deps_note_file)
 }
 
 update_case <- function(case, pkg_path) {

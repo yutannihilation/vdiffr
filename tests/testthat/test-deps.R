@@ -1,15 +1,13 @@
 
 context("Dependencies")
 
-desc_path <- file.path(mock_pkg_dir, "DESCRIPTION")
-desc <- desc::description$new(desc_path)
+note_path <- file.path(mock_pkg_dir, "tests", "figs", "deps.txt")
+deps <- readLines(note_path)
 
 check_depnote <- function(pkg_name) {
-  pkg_version <- as.character(utils::packageVersion(pkg_name))
-  note <- paste0(pkg_name, " \\(", pkg_version, "\\)")
-  desc_note <- desc$get("vdiffrNote")
-
-  expect_true(grepl(note, desc_note))
+  pkg_version <- package_version(pkg_name)
+  note <- paste0(pkg_name, ": ", pkg_version)
+  expect_true(any(grepl(note, deps)))
 }
 
 test_that("DESCRIPTION notes are updated manually", {
