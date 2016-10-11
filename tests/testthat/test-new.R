@@ -15,8 +15,8 @@ test_that("New cases are skipped", {
 })
 
 test_that("Figs are saved to alternative paths", {
-  path1 <- file.path(mock_pkg_dir, "tests", "path1")
-  path2 <- file.path(mock_pkg_dir, "tests", "path2")
+  path1 <- file.path(mock_pkg_dir, "tests", "figs", "path1")
+  path2 <- file.path(mock_pkg_dir, "tests", "figs", "path2")
 
   expect_true(dir.exists(path1))
   expect_true(dir.exists(path2))

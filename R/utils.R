@@ -11,7 +11,7 @@ maybe_concat_paths <- function(base_path, path) {
   }
 }
 
-validate_path <- function(path) {
+ensure_directories <- function(path) {
   if (!dir.exists(path)) {
     dir.create(path, recursive = TRUE)
   }

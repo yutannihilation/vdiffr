@@ -51,9 +51,9 @@ validate_cases <- function(cases = collect_new_cases()) {
 }
 
 update_case <- function(case, pkg_path) {
-  path <- file.path(pkg_path, "tests", case$path)
-  validate_path(dirname(path))
-  file.copy(case$testcase, path)
+  path <- file.path(pkg_path, "tests", "figs", case$path)
+  ensure_directories(dirname(path))
+  file.copy(case$testcase, path, overwrite = TRUE)
 }
 
 cases <- function(x, pkg_path, deps = NULL) {
@@ -109,26 +109,21 @@ filter_cases <- function(cases, type) {
   cases(filtered, attr(cases, "pkg_path"), attr(cases, "deps"))
 }
 
-case_mismatch <- function(testcase, expected, name, path) {
+case_mismatch <- function(name, path, testcase) {
   case <- list(
-    testcase = testcase,
-    expected = expected,
     name = name,
-    path = path
+    path = path,
+    testcase = testcase
   )
-
   structure(case, class = c("case_mismatch", "case"))
 }
 
-case_new <- function(testcase, name, path) {
-  testcase <- testcase
+case_new <- function(name, path, testcase) {
   case <- list(
-    testcase = testcase,
-    expected = testcase,
     name = name,
-    path = path
+    path = path,
+    testcase = testcase
   )
-
   structure(case, class = c("case_new", "case"))
 }
 
