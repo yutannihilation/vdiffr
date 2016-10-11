@@ -4,7 +4,7 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(fig, fig_name, fig_path = "", ...)
+expect_doppelganger(fig, fig_name, path = "", ...)
 }
 \arguments{
 \item{fig}{A figure to test.}
@@ -12,7 +12,7 @@ expect_doppelganger(fig, fig_name, fig_path = "", ...)
 \item{fig_name}{The name of the test case. This will be used as the
 base for the SVG file name.}
 
-\item{fig_path}{The path where the test case should be stored,
+\item{path}{The path where the test case should be stored,
 relative to the \code{tests/figs/} folder.}
 
 \item{...}{Additional arguments passed to

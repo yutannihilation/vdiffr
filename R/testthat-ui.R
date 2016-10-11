@@ -13,7 +13,7 @@
 #' @param fig A figure to test.
 #' @param fig_name The name of the test case. This will be used as the
 #'   base for the SVG file name.
-#' @param fig_path The path where the test case should be stored,
+#' @param path The path where the test case should be stored,
 #'   relative to the \code{tests/figs/} folder.
 #' @param ... Additional arguments passed to
 #'   \code{\link[testthat]{compare}()} to control specifics of
@@ -27,25 +27,25 @@
 #' expect_doppelganger(disp_hist_base, "disp-histogram-base")
 #' expect_doppelganger(disp_hist_ggplot, "disp-histogram-ggplot")
 #' }
-expect_doppelganger <- function(fig, fig_name, fig_path = "", ...) {
+expect_doppelganger <- function(fig, fig_name, path = "", ...) {
   testcase <- testcase(fig_name)
   write_svg(fig, testcase)
 
   # Climb one level as we are in the testthat folder
-  fig_path <- file.path(fig_path, paste0(fig_name, ".svg"))
-  expected <- file.path("..", "figs", fig_path)
+  path <- file.path(path, paste0(fig_name, ".svg"))
+  expected <- file.path("..", "figs", path)
   ensure_directories(dirname(expected))
 
   if (file.exists(expected)) {
     # Dispatches to compare()'s vdiffr_testcase S3 method
-    testthat::expect_equal(testcase, expected, fig_name = fig_name, fig_path = fig_path, ...)
+    testthat::expect_equal(testcase, expected, fig_name = fig_name, path = path, ...)
   } else {
-    signal_new_case(fig_name, fig_path, testcase)
+    signal_new_case(fig_name, path, testcase)
   }
 }
 
-signal_new_case <- function(fig_name, fig_path, testcase_path) {
-  maybe_collect_case("new", name = fig_name, path = fig_path, testcase = testcase_path)
+signal_new_case <- function(fig_name, path, testcase_path) {
+  maybe_collect_case("new", name = fig_name, path = path, testcase = testcase_path)
   msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
 
   expectation <- testthat::expectation("skip", msg)
@@ -60,12 +60,12 @@ signal_expectation <- function(exp) {
 
 #' @importFrom testthat compare
 #' @export
-compare.vdiffr_testcase <- function(x, y, fig_name, fig_path, ...) {
+compare.vdiffr_testcase <- function(x, y, fig_name, path, ...) {
   equal <- compare_files(x, y)
   if (equal) {
     msg <- "TRUE"
   } else {
-    maybe_collect_case("mismatch", name = fig_name, path = fig_path, testcase = x)
+    maybe_collect_case("mismatch", name = fig_name, path = path, testcase = x)
     msg <- paste0("Figures don't match: ", fig_name, ".svg")
   }
 
