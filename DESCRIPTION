@@ -1,5 +1,5 @@
 Package: vdiffr
-Title: Visual regression testing and graphical diffing
+Title: Visual Regression Testing and Graphical Diffing
 Version: 0.0.0.9001
 Authors@R: person("Lionel", "Henry", email = "lionel.hry@gmail.com", role = c("aut", "cre"))
 Description: vdiffr is an extension to testthat that makes it easy to
@@ -14,9 +14,12 @@ Imports:
     devtools,
     testthat (>= 0.11.0.9000),
     svglite (>= 1.1.0),
+    grDevices,
     xml2,
     htmlwidgets (>= 0.6),
-    desc
+    desc,
+    fontquiver,
+    Rcpp
 Suggests:
     ggplot2,
     roxygen2,
@@ -24,3 +27,8 @@ Suggests:
 License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1
+LinkingTo: Rcpp
+Remotes:
+    davidgohel/gdtools#32,
+    lionel-/fontquiver#6,
+    hadley/svglite#73

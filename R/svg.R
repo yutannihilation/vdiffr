@@ -3,13 +3,17 @@ as_inline_svg <- function(svg) {
   paste0("data:image/svg+xml;utf8,", svg)
 }
 
-as_svg <- function(p) {
-  svg <- svglite::svgstring()
-  tryCatch(
-    print_plot(p),
-    finally = grDevices::dev.off()
-  )
-  svg()
+aliases <- fontquiver::font_families("Bitstream Vera")
+
+testcase <- function(fig_name) {
+  file <- tempfile(fig_name, fileext = ".svg")
+  structure(file, class = "vdiffr_testcase")
+}
+
+write_svg <- function(p, file) {
+  svglite::svglite(file, fonts = aliases)
+  on.exit(grDevices::dev.off())
+  print_plot(p)
 }
 
 print_plot <- function(p) {
@@ -31,10 +35,6 @@ print_plot.recordedplot <- function(p) {
 
 print_plot.function <- function(p) {
   p()
-}
-
-read_svg <- function(file) {
-  structure(read_file(file), class = "svg")
 }
 
 # 'width' and 'height' attributes are necessary for correctly drawing

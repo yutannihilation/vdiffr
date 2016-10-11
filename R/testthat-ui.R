@@ -28,31 +28,33 @@
 #' expect_doppelganger(disp_hist_ggplot, "disp-histogram-ggplot")
 #' }
 expect_doppelganger <- function(fig, fig_name, fig_path = "figs", ...) {
-  testcase <- as_svg(fig)
-  fig_path <- file.path(fig_path, paste0(fig_name, ".svg"))
+  testcase <- testcase(fig_name)
+  write_svg(fig, testcase)
 
   # Climb one level as we are in the testthat folder
-  test_path <- file.path("..", fig_path)
+  fig_path <- file.path(fig_path, paste0(fig_name, ".svg"))
+  expected <- file.path("..", fig_path)
 
-  if (!file.exists(test_path)) {
-    maybe_collect_case("new",
-      testcase = testcase,
-      name = fig_name,
-      path = fig_path
-    )
-    msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
-
-    expectation <- testthat::expectation("skip", msg)
-    signal_expectation(expectation)
-    return(invisible(expectation))
+  if (!file.exists(expected)) {
+    signal_new_case(fig_name, fig_path, testcase)
+  } else {
+    # Dispatches to compare.vdiffr_testcase method
+    testthat::expect_equal(testcase, expected,
+      fig_name = fig_name, fig_path = fig_path, ...)
   }
+}
 
-  expected <- read_svg(test_path)
-  testthat::expect_equal(testcase, expected,
-    fig_name = fig_name,
-    fig_path = fig_path,
-    ...
+signal_new_case <- function(fig_name, fig_path, testcase_path) {
+  maybe_collect_case("new",
+    testcase = testcase_path,
+    name = fig_name,
+    path = fig_path
   )
+  msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
+
+  expectation <- testthat::expectation("skip", msg)
+  signal_expectation(expectation)
+  return(invisible(expectation))
 }
 
 signal_expectation <- function(exp) {
@@ -66,8 +68,8 @@ signal_expectation <- function(exp) {
 
 #' @importFrom testthat compare
 #' @export
-compare.svg <- function(x, y, fig_name, fig_path, ...) {
-  equal <- identical(x, y)
+compare.vdiffr_testcase <- function(x, y, fig_name, fig_path, ...) {
+  equal <- compare_files(x, y)
   if (equal) {
     msg <- "TRUE"
   } else {
@@ -77,14 +79,10 @@ compare.svg <- function(x, y, fig_name, fig_path, ...) {
       name = fig_name,
       path = fig_path
     )
-
     msg <- paste0("Figures don't match: ", fig_name, ".svg")
   }
 
-  comparison <- list(
-    equal = equal,
-    message = msg
-  )
+  comparison <- list(equal = equal, message = msg)
   structure(comparison, class = "comparison")
 }
 

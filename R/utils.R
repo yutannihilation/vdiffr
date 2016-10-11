@@ -18,14 +18,6 @@ validate_path <- function(path) {
   path
 }
 
-read_file <- function(file) {
-  readChar(file, file.info(file)$size)
-}
-
-write_file <- function(x, file) {
-  writeChar(x, file, eos = NULL)
-}
-
 capitalise <- function(x) {
   map_chr(x, function(string) {
     paste0(

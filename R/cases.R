@@ -53,7 +53,7 @@ validate_cases <- function(cases = collect_new_cases()) {
 update_case <- function(case, pkg_path) {
   path <- file.path(pkg_path, "tests", case$path)
   validate_path(dirname(path))
-  write_file(case$testcase, path)
+  file.copy(case$testcase, path)
 }
 
 cases <- function(x, pkg_path, deps = NULL) {
