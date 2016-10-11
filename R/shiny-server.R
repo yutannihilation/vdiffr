@@ -74,10 +74,18 @@ renderDiffer <- function(input, active_cases, widget) {
       return(NULL)
     }
 
-    case_inline_src <- as_inline_svg(case$testcase)
-    expected_inline_src <- as_inline_svg(case$expected)
+    # Inline the SVGs in a src field for now
+    pkg_path <- attr(active_cases(), "pkg_path")
+    before_path <- file.path(pkg_path, "tests", "testthat", case$path)
 
-    widget(case_inline_src, expected_inline_src)
+    after <- as_inline_svg(read_file(case$testcase))
+    if (is_case_new(case)) {
+      before <- after
+    } else {
+      before <- as_inline_svg(read_file(before_path))
+    }
+
+    widget(before, after)
   })
 }
 

@@ -27,6 +27,10 @@ capitalise <- function(x) {
   })
 }
 
+read_file <- function(file) {
+  readChar(file, file.info(file)$size)
+}
+
 update_dependency <- function(dep, pkg_path) {
   desc_path <- file.path(pkg_path, "DESCRIPTION")
   desc <- desc::description$new(desc_path)
