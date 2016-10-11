@@ -4,7 +4,7 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(fig, fig_name, path = "", ...)
+expect_doppelganger(fig, fig_name, path = NULL, ...)
 }
 \arguments{
 \item{fig}{A figure to test.}
@@ -12,8 +12,11 @@ expect_doppelganger(fig, fig_name, path = "", ...)
 \item{fig_name}{The name of the test case. This will be used as the
 base for the SVG file name.}
 
-\item{path}{The path where the test case should be stored,
-relative to the \code{tests/figs/} folder.}
+\item{path}{The path where the test case should be stored, relative
+to the \code{tests/figs/} folder. If \code{NULL} (the default),
+the current testthat context is used to create a
+subfolder. Supply an empty string \code{""} if you want the
+figures to be stored in the root folder.}
 
 \item{...}{Additional arguments passed to
 \code{\link[testthat]{compare}()} to control specifics of

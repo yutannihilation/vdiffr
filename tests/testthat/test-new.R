@@ -17,9 +17,13 @@ test_that("New cases are skipped", {
 test_that("Figs are saved to alternative paths", {
   path1 <- file.path(mock_pkg_dir, "tests", "figs", "path1")
   path2 <- file.path(mock_pkg_dir, "tests", "figs", "path2")
-
-  expect_true(dir.exists(path1))
-  expect_true(dir.exists(path2))
   expect_true(file.exists(file.path(path1, "alt1.svg")))
   expect_true(file.exists(file.path(path2, "alt2.svg")))
+})
+
+test_that("Figs are saved in context subfolders", {
+  path1 <- file.path(mock_pkg_dir, "tests", "figs", "new-plots")
+  path2 <- file.path(mock_pkg_dir, "tests", "figs", "new-plots")
+  expect_true(file.exists(file.path(path1, "context1.svg")))
+  expect_true(file.exists(file.path(path2, "context2.svg")))
 })

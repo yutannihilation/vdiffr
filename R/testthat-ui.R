@@ -13,8 +13,11 @@
 #' @param fig A figure to test.
 #' @param fig_name The name of the test case. This will be used as the
 #'   base for the SVG file name.
-#' @param path The path where the test case should be stored,
-#'   relative to the \code{tests/figs/} folder.
+#' @param path The path where the test case should be stored, relative
+#'   to the \code{tests/figs/} folder. If \code{NULL} (the default),
+#'   the current testthat context is used to create a
+#'   subfolder. Supply an empty string \code{""} if you want the
+#'   figures to be stored in the root folder.
 #' @param ... Additional arguments passed to
 #'   \code{\link[testthat]{compare}()} to control specifics of
 #'   comparison.
@@ -27,21 +30,29 @@
 #' expect_doppelganger(disp_hist_base, "disp-histogram-base")
 #' expect_doppelganger(disp_hist_ggplot, "disp-histogram-ggplot")
 #' }
-expect_doppelganger <- function(fig, fig_name, path = "", ...) {
+expect_doppelganger <- function(fig, fig_name, path = NULL, ...) {
   testcase <- testcase(fig_name)
   write_svg(fig, testcase)
 
+  context <- get(".context", envir = testthat::get_reporter())
+  context <- str_standardise(context)
+  path <- path %||% context
+
   # Climb one level as we are in the testthat folder
   path <- file.path(path, paste0(fig_name, ".svg"))
-  expected <- file.path("..", "figs", path)
-  ensure_directories(dirname(expected))
+  path <- file.path("..", "figs", path)
+  ensure_directories(dirname(path))
 
-  if (file.exists(expected)) {
+  if (file.exists(path)) {
     # Dispatches to compare()'s vdiffr_testcase S3 method
-    testthat::expect_equal(testcase, expected, fig_name = fig_name, path = path, ...)
+    testthat::expect_equal(testcase, path, fig_name = fig_name, ...)
   } else {
     signal_new_case(fig_name, path, testcase)
   }
+}
+
+str_standardise <- function(s, sep = "-") {
+  gsub(" |/", sep, tolower(s))
 }
 
 signal_new_case <- function(fig_name, path, testcase_path) {
@@ -60,12 +71,12 @@ signal_expectation <- function(exp) {
 
 #' @importFrom testthat compare
 #' @export
-compare.vdiffr_testcase <- function(x, y, fig_name, path, ...) {
-  equal <- compare_files(x, y)
+compare.vdiffr_testcase <- function(x, y, fig_name, ...) {
+  equal <- compare_files(x, normalizePath(y))
   if (equal) {
     msg <- "TRUE"
   } else {
-    maybe_collect_case("mismatch", name = fig_name, path = path, testcase = x)
+    maybe_collect_case("mismatch", name = fig_name, path = y, testcase = x)
     msg <- paste0("Figures don't match: ", fig_name, ".svg")
   }
 
