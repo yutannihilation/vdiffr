@@ -56,7 +56,9 @@ expect_doppelganger <- function(fig, fig_name, path = NULL, ...) {
 }
 
 str_standardise <- function(s, sep = "-") {
-  gsub(" |/", sep, tolower(s))
+  s <- gsub("[^a-z0-9]", sep, tolower(s))
+  s <- gsub(paste0(sep, sep, "+"), sep, s)
+  s
 }
 
 compare_figs <- function(testcase, path, fig_name) {
