@@ -22,7 +22,17 @@ collect_cases <- function(package = ".", filter = NULL) {
   reporter <- vdiffrReporter$new(package$path)
   devtools::test(package, filter = filter, reporter = reporter)
 
-  active_collecter()$get_cases()
+  cases <- active_collecter()$get_cases()
+
+  cases_names <- map_chr(cases, "name")
+  is_duplicated <- duplicated(cases_names)
+  if (any(is_duplicated)) {
+    warning(call. = FALSE,
+      "Duplicated expectations: ",
+      paste(cases_names[is_duplicated], collapse = ", "))
+  }
+
+  cases
 }
 
 #' @rdname collect_cases

@@ -9,6 +9,10 @@ test_that("Mismatches fail", {
   expect_equal(class, "expectation_failure")
 })
 
+test_that("Duplicated expectations issue warning", {
+  expect_true(any(grepl("Duplicated expectations: myplot", cases_outputs$warnings)))
+})
+
 test_that("Doppelgangers pass", {
   passed_result <- subset_results(test_results, "test-passed.R", "doppelgangers pass")[[1]]
   expect_is(passed_result, "expectation_success")
