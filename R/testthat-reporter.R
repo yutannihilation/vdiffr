@@ -77,8 +77,9 @@ vdiffrReporter <-
         cat("\n")
         if (!is.null(self$failure)) {
           stop(call. = FALSE,
-            "(while collecting vdiffr cases): ",
-            self$failure$message
+            "while collecting vdiffr cases. Last error:\n",
+            "     test: `", self$failure$test, "`\n",
+            "  message: `", self$failure$message, "`"
           )
         }
       }
