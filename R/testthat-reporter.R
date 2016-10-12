@@ -59,7 +59,7 @@ expectation_error <- function(exp) {
 vdiffrReporter <-
   R6::R6Class("vdiffrReporter", inherit = testthat::Reporter,
     public = list(
-      failed = FALSE,
+      failure = NULL,
 
       initialize = function(pkg_path) {
         collecter <- casesCollecter$new(pkg_path)
@@ -67,12 +67,17 @@ vdiffrReporter <-
       },
 
       add_result = function(context, test, result) {
-        self$failed <- self$failed || expectation_error(result)
+        if (expectation_error(result)) {
+          self$failure <- result
+        }
       },
 
       end_reporter = function() {
-        if (self$failed) {
-          stop("There was an error during testing", call. = FALSE)
+        if (!is.null(self$failure)) {
+          stop(call. = FALSE,
+            "(while collecting vdiffr cases): ",
+            self$failure$message
+          )
         }
       }
     )
