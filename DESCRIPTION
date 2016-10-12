@@ -17,7 +17,6 @@ Imports:
     grDevices,
     xml2,
     htmlwidgets (>= 0.6),
-    desc,
     fontquiver,
     Rcpp
 Suggests:

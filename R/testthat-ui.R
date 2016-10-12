@@ -44,44 +44,71 @@ expect_doppelganger <- function(fig, fig_name, path = NULL, ...) {
   ensure_directories(dirname(path))
 
   if (file.exists(path)) {
-    # Dispatches to compare()'s vdiffr_testcase S3 method
-    testthat::expect_equal(testcase, path, fig_name = fig_name, ...)
+    exp <- compare_figs(testcase, path, fig_name = fig_name)
   } else {
-    signal_new_case(fig_name, path, testcase)
+    maybe_collect_case("new", name = fig_name, path = path, testcase = testcase)
+    msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
+    exp <- expectation_new(msg)
   }
+
+  signal_expectation(exp)
+  invisible(exp)
 }
 
 str_standardise <- function(s, sep = "-") {
   gsub(" |/", sep, tolower(s))
 }
 
-signal_new_case <- function(fig_name, path, testcase_path) {
-  maybe_collect_case("new", name = fig_name, path = path, testcase = testcase_path)
-  msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
+compare_figs <- function(testcase, path, fig_name) {
+  equal <- compare_files(testcase, normalizePath(path))
 
-  expectation <- testthat::expectation("skip", msg)
-  signal_expectation(expectation)
-  invisible(expectation)
-}
-
-signal_expectation <- function(exp) {
-  withRestarts(signalCondition(exp), continue_test = function(e) NULL)
-  invisible(exp)
-}
-
-#' @importFrom testthat compare
-#' @export
-compare.vdiffr_testcase <- function(x, y, fig_name, ...) {
-  equal <- compare_files(x, normalizePath(y))
   if (equal) {
-    msg <- "TRUE"
+    exp <- expectation_match("TRUE")
   } else {
-    maybe_collect_case("mismatch", name = fig_name, path = y, testcase = x)
-    msg <- paste0("Figures don't match: ", fig_name, ".svg")
+    maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
+    msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
+    exp <- expectation_mismatch(msg)
   }
 
-  comparison <- list(equal = equal, message = msg)
-  structure(comparison, class = "comparison")
+  exp
+}
+
+expectation_new <- function(msg) {
+  x <- testthat::expectation("skip", msg)
+  classes <- c(class(x), "vdiffr_new")
+  structure(x, class = classes)
+}
+expectation_mismatch <- function(msg) {
+  exp <- testthat::expectation("failure", msg)
+  classes <- c(class(exp), "vdiffr_mismatch")
+  structure(exp, class = classes)
+}
+expectation_match <- function(msg) {
+  exp <- testthat::expectation("success", msg)
+  classes <- c(class(exp), "vdiffr_match")
+  structure(exp, class = classes)
+}
+
+# From testthat
+expectation_failure <- function(exp) {
+  expectation_type(exp) == "failure"
+}
+expectation_error <- function(exp) {
+  expectation_type(exp) == "error"
+}
+expectation_broken <- function(exp) {
+  expectation_failure(exp) || expectation_error(exp)
+}
+signal_expectation <- function(exp) {
+  withRestarts(
+    if (expectation_broken(exp)) {
+      stop(exp)
+    } else {
+      signalCondition(exp)
+    },
+    continue_test = function(e) NULL
+  )
+  invisible(exp)
 }
 
 #' Add a vdiffr dependency

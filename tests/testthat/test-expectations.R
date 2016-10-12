@@ -2,7 +2,7 @@
 context("Expectations")
 
 test_that("Mismatches fail", {
-  failed_result <- subset_results(test_results, "test-failed.R")[[1]]
+  failed_result <- subset_results(test_results, "test-failed.R", "New plots work are collected")[[1]]
   expect_match(failed_result$message, "Figures don't match: myplot.svg\n")
 
   class <- class(failed_result)[[1]]
@@ -10,6 +10,6 @@ test_that("Mismatches fail", {
 })
 
 test_that("Doppelgangers pass", {
-  passed_result <- subset_results(test_results, "test-passed.R")[[1]]
+  passed_result <- subset_results(test_results, "test-passed.R", "doppelgangers pass")[[1]]
   expect_is(passed_result, "expectation_success")
 })

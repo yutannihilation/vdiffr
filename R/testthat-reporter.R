@@ -67,12 +67,14 @@ vdiffrReporter <-
       },
 
       add_result = function(context, test, result) {
+        cat(single_letter_summary(result))
         if (expectation_error(result)) {
           self$failure <- result
         }
       },
 
       end_reporter = function() {
+        cat("\n")
         if (!is.null(self$failure)) {
           stop(call. = FALSE,
             "(while collecting vdiffr cases): ",
@@ -82,3 +84,25 @@ vdiffrReporter <-
       }
     )
   )
+
+expectation_type <- function(exp) {
+  stopifnot(inherits(exp, "expectation"))
+  if (inherits(exp, "vdiffr_new")) return("new")
+  if (inherits(exp, "vdiffr_mismatch")) return("mismatch")
+  if (inherits(exp, "vdiffr_match")) return("match")
+
+  gsub("^expectation_", "", class(exp)[[1]])
+}
+single_letter_summary <- function(x) {
+  switch(expectation_type(x),
+    new      = "N",
+    mismatch = "X",
+    match    = "o",
+    skip     = "S",
+    success  = ".",
+    error    = "E",
+    failure  = "F",
+    warning  = "W",
+    "?"
+  )
+}

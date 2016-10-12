@@ -6,7 +6,7 @@ p1 <- function() plot(mtcars$disp)
 p2 <- ggplot2::ggplot(mtcars, ggplot2::aes(disp)) +
   ggplot2::geom_histogram()
 
-test_that("New plots work are collected", {
+test_that("New plots are collected", {
   expect_doppelganger(p1, "new1", "")
   expect_doppelganger(p2, "new2", "")
 })

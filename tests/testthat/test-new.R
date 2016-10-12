@@ -2,7 +2,7 @@
 context("New cases")
 
 test_that("New cases are skipped", {
-  new_results <- subset_results(test_results, "test-new.R")
+  new_results <- subset_results(test_results, "test-new.R", "New plots are collected")
 
   msg <- map_chr(new_results, function(result) result$message)
   expected_msg <- "Figure not generated yet: new%s.svg"
