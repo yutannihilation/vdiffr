@@ -5,35 +5,38 @@ as_inline_svg <- function(svg) {
 
 aliases <- fontquiver::font_families("Bitstream Vera")
 
-testcase <- function(fig_name) {
+make_testcase_file <- function(fig_name) {
   file <- tempfile(fig_name, fileext = ".svg")
   structure(file, class = "vdiffr_testcase")
 }
 
-write_svg <- function(p, file) {
+write_svg <- function(p, file, title) {
   svglite::svglite(file, fonts = aliases)
   on.exit(grDevices::dev.off())
-  print_plot(p)
+  print_plot(p, title)
 }
 
-print_plot <- function(p) {
+print_plot <- function(p, title) {
   UseMethod("print_plot")
 }
 
-print_plot.default <- function(p) {
+print_plot.default <- function(p, title) {
   print(p)
 }
 
-print_plot.ggplot <- function(p) {
+print_plot.ggplot <- function(p, title) {
   add_dependency("ggplot2")
+  if (!"title" %in% names(p$labels)) {
+    p <- p + ggplot2::ggtitle(title)
+  }
   print(p)
 }
 
-print_plot.recordedplot <- function(p) {
+print_plot.recordedplot <- function(p, title) {
   grDevices::replayPlot(p)
 }
 
-print_plot.function <- function(p) {
+print_plot.function <- function(p, title) {
   p()
 }
 

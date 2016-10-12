@@ -44,7 +44,7 @@ renderTypeInput <- function(input, reactive_cases) {
 
 renderCaseInput <- function(input, active_cases) {
   shiny::renderUI({
-    names <- names(active_cases())
+    names <- unique(names(active_cases()))
 
     if (length(names)) {
       shiny::selectInput(

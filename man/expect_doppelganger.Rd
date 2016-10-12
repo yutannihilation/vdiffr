@@ -4,13 +4,15 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(fig, fig_name, path = NULL, ...)
+expect_doppelganger(title, fig, path = NULL, ...)
 }
 \arguments{
-\item{fig}{A figure to test.}
+\item{title}{The figure title is used for creating the figure file
+names (all non-alphanumeric characters are converted to
+\code{-}). Also, ggplot2 figures are appended with
+\code{ggtitle(title)}.}
 
-\item{fig_name}{The name of the test case. This will be used as the
-base for the SVG file name.}
+\item{fig}{A figure to test.}
 
 \item{path}{The path where the test case should be stored, relative
 to the \code{tests/figs/} folder. If \code{NULL} (the default),
