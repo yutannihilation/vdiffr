@@ -62,6 +62,7 @@ str_standardise <- function(s, sep = "-") {
   stopifnot(is_scalar_character(s))
   s <- gsub("[^a-z0-9]", sep, tolower(s))
   s <- gsub(paste0(sep, sep, "+"), sep, s)
+  s <- gsub(paste0("^", sep, "|", sep, "$"), "", s)
   s
 }
 
