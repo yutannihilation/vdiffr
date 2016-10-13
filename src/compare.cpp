@@ -5,8 +5,8 @@
 
 // [[Rcpp::export]]
 bool compare_files(std::string expected, std::string test) {
-  std::ifstream file1(expected, std::ifstream::ate | std::ifstream::binary);
-  std::ifstream file2(test, std::ifstream::ate | std::ifstream::binary);
+  std::ifstream file1(expected.c_str(), std::ifstream::ate | std::ifstream::binary);
+  std::ifstream file2(test.c_str(), std::ifstream::ate | std::ifstream::binary);
   std::streamsize size1 = file1.tellg();
   std::streamsize size2 = file2.tellg();
 
