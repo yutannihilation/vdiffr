@@ -3,7 +3,8 @@ as_inline_svg <- function(svg) {
   paste0("data:image/svg+xml;utf8,", svg)
 }
 
-aliases <- fontquiver::font_families("Bitstream Vera")
+aliases <- fontquiver::font_families("Liberation")
+aliases$symbol$symbol <- fontquiver::symbol_font("Symbola")
 
 make_testcase_file <- function(fig_name) {
   file <- tempfile(fig_name, fileext = ".svg")

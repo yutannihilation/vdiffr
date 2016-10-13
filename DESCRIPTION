@@ -1,7 +1,9 @@
 Package: vdiffr
 Title: Visual Regression Testing and Graphical Diffing
 Version: 0.0.0.9001
-Authors@R: person("Lionel", "Henry", email = "lionel.hry@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Lionel", "Henry", , "lionel@rstudio.com", c("cre", "aut")),
+    person("RStudio", role = "cph"))
 Description: vdiffr is an extension to testthat that makes it easy to
     add tests for graphics. It provides a Shiny application to manage
     the test cases.
