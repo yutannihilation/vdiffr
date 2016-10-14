@@ -3,16 +3,16 @@ as_inline_svg <- function(svg) {
   paste0("data:image/svg+xml;utf8,", svg)
 }
 
-aliases <- fontquiver::font_families("Liberation")
-aliases$symbol$symbol <- fontquiver::symbol_font("Symbola")
-
 make_testcase_file <- function(fig_name) {
   file <- tempfile(fig_name, fileext = ".svg")
   structure(file, class = "vdiffr_testcase")
 }
 
+user_aliases <- fontquiver::font_families("Liberation")
+user_aliases$symbol$symbol <- fontquiver::symbol_font("Symbola")
+
 write_svg <- function(p, file, title) {
-  svglite::svglite(file, fonts = aliases)
+  svglite::svglite(file, user_fonts = user_aliases)
   on.exit(grDevices::dev.off())
   print_plot(p, title)
 }
