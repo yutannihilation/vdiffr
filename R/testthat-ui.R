@@ -38,7 +38,7 @@ expect_doppelganger <- function(title, fig, path = NULL, ...) {
   write_svg(fig, testcase, title)
 
   context <- get(".context", envir = testthat::get_reporter())
-  context <- str_standardise(context)
+  context <- str_standardise(context %||% "")
   path <- path %||% context
 
   # Climb one level as we are in the testthat folder
