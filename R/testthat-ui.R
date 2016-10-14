@@ -97,14 +97,8 @@ expectation_match <- function(msg) {
 }
 
 # From testthat
-expectation_failure <- function(exp) {
-  expectation_type(exp) == "failure"
-}
-expectation_error <- function(exp) {
-  expectation_type(exp) == "error"
-}
 expectation_broken <- function(exp) {
-  expectation_failure(exp) || expectation_error(exp)
+  expectation_type(exp) %in% c("failure", "mismatch", "error")
 }
 signal_expectation <- function(exp) {
   withRestarts(
