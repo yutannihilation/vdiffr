@@ -10,6 +10,7 @@
 #' called, or more generally any object with a \code{print} method. If
 #' a ggplot object, a dependency for ggplot2 is automatically added
 #' (see \code{\link{add_dependency}()}).
+#' @inheritParams svglite::svglite
 #' @param title The figure title is used for creating the figure file
 #'   names (all non-alphanumeric characters are converted to
 #'   \code{-}). Also, ggplot2 figures are appended with
@@ -32,10 +33,11 @@
 #' expect_doppelganger(disp_hist_base, "disp-histogram-base")
 #' expect_doppelganger(disp_hist_ggplot, "disp-histogram-ggplot")
 #' }
-expect_doppelganger <- function(title, fig, path = NULL, ...) {
+expect_doppelganger <- function(title, fig, path = NULL, ...,
+                                user_fonts = NULL) {
   fig_name <- str_standardise(title)
   testcase <- make_testcase_file(fig_name)
-  write_svg(fig, testcase, title)
+  write_svg(fig, testcase, title, user_fonts)
 
   context <- get(".context", envir = testthat::get_reporter())
   context <- str_standardise(context %||% "")

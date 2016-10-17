@@ -4,7 +4,7 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(title, fig, path = NULL, ...)
+expect_doppelganger(title, fig, path = NULL, ..., user_fonts = NULL)
 }
 \arguments{
 \item{title}{The figure title is used for creating the figure file
@@ -23,6 +23,12 @@ figures to be stored in the root folder.}
 \item{...}{Additional arguments passed to
 \code{\link[testthat]{compare}()} to control specifics of
 comparison.}
+
+\item{user_fonts}{Named list of fonts to be aliased with specific
+font files. The aliases can be fonts from the fontquiver package,
+strings pointing to a font file, or a list containing \code{name}
+and \code{file} elements with \code{name} indicating the font
+alias in the SVG output.}
 }
 \description{
 If the test has never been validated yet, the test is skipped. If
