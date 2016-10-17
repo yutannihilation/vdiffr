@@ -9,7 +9,7 @@ make_testcase_file <- function(fig_name) {
 }
 
 user_aliases <- fontquiver::font_families("Liberation")
-user_aliases$symbol$symbol <- fontquiver::symbol_font("Symbola")
+user_aliases$symbol$symbol <- fontquiver::font_symbol("Symbola")
 
 write_svg <- function(p, file, title) {
   svglite::svglite(file, user_fonts = user_aliases)
