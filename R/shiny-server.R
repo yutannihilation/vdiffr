@@ -23,9 +23,8 @@ vdiffrServer <- function(cases) {
 
 prettify_types <- function(x) {
   ifelse(x == "case_mismatch", "Mismatched",
-  ifelse(x == "case_new", "New",
-  ifelse(x == "case_orphaned", "Orphaned", stop("Unknown type")
-  )))
+  ifelse(x == "case_new", "New", "Orphaned"
+  ))
 }
 
 renderTypeInput <- function(input, reactive_cases) {
@@ -94,15 +93,20 @@ renderDiffer <- function(input, active_cases, widget) {
   })
 }
 
+withdraw_cases <- function(cases) {
+  validate_cases(filter_cases(cases, c("case_new", "case_mismatch")))
+  delete_orphaned_cases(filter_cases(cases, "case_orphaned"))
+}
+
 validateSingleCase <- function(input, reactive_cases) {
   shiny::observe({
     if (input$case_validation_button > 0) {
       cases <- shiny::isolate(reactive_cases$all)
       case <- shiny::isolate(input$case)
 
-      validate_cases(cases[case])
-
+      withdraw_cases(cases[case])
       cases <- cases[-match(case, names(cases))]
+
       shiny::isolate(reactive_cases$all <- cases)
     }
   })
@@ -115,11 +119,13 @@ validateGroupCases <- function(input, reactive_cases) {
       cases <- shiny::isolate(reactive_cases$all)
 
       if (length(cases) > 0) {
-        validate_cases(active_cases)
-
         type <- shiny::isolate(input$type)
-        opposite_type <- ifelse(type == "new", "mismatched", "new")
-        cases <- filter_cases(cases, opposite_type)
+
+        withdraw_cases(active_cases)
+
+        case_types <- c("case_new", "case_mismatch", "case_orphaned")
+        types <- case_types[!case_types == type]
+        cases <- filter_cases(cases, types)
 
         shiny::isolate(reactive_cases$all <- cases)
       }
