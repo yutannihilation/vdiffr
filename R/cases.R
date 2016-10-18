@@ -39,13 +39,13 @@ collect_cases <- function(package = ".", filter = NULL) {
 #' @rdname collect_cases
 #' @export
 collect_new_cases <- function(package = ".") {
-  filter_cases(collect_cases(package), "new")
+  filter_cases(collect_cases(package), "case_new")
 }
 
 #' @rdname collect_cases
 #' @export
 collect_mismatched_cases <- function(package = ".") {
-  filter_cases(collect_cases(package), "mismatched")
+  filter_cases(collect_cases(package), "case_mismatched")
 }
 
 #' @rdname collect_cases
@@ -98,13 +98,13 @@ c.cases <- function(..., recursive = FALSE) {
 print.cases <- function(x, ...) {
   cat(sprintf("<cases>: %s\n", length(x)))
 
-  mismatched <- filter_cases(x, "mismatched")
+  mismatched <- filter_cases(x, "case_mismatched")
   if (length(mismatched) > 0) {
     cat("\nMismatched:\n")
     print_cases_names(mismatched)
   }
 
-  new <- filter_cases(x, "new")
+  new <- filter_cases(x, "case_new")
   if (length(new) > 0) {
     cat("\nNew:\n")
     print_cases_names(new)
@@ -119,11 +119,7 @@ print_cases_names <- function(cases) {
 }
 
 filter_cases <- function(cases, type) {
-  filtered <- switch(type,
-    new = keep(cases, is_case_new),
-    mismatched = keep(cases, is_case_mismatch),
-    cases
-  )
+  filtered <- keep(cases, inherits, type)
 
   # Restore attributes discarded by purrr::keep()
   cases(filtered, attr(cases, "pkg_path"), attr(cases, "deps"))

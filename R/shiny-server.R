@@ -3,7 +3,7 @@ vdiffrServer <- function(cases) {
   shiny::shinyServer(function(input, output) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
-      type <- input$type %||% "new"
+      type <- input$type %||% "case_new"
       filter_cases(cases$all, type)
     })
 
@@ -21,17 +21,22 @@ vdiffrServer <- function(cases) {
   })
 }
 
+prettify_types <- function(x) {
+  ifelse(x == "case_mismatch", "Mismatched",
+  ifelse(x == "case_new", "New",
+  ifelse(x == "case_orphaned", "Orphaned", stop("Unknown type")
+  )))
+}
+
 renderTypeInput <- function(input, reactive_cases) {
   shiny::renderUI({
     cases <- reactive_cases$all
 
     types <- unique(map_chr(cases, function(case) class(case)[[1]]))
-    types <- ifelse(types == "case_mismatch", "mismatched", "new")
-
     if (length(types) == 0) {
       return(NULL)
     }
-    types <- set_names(types, capitalise(types))
+    types <- set_names(types, prettify_types(types))
 
     shiny::selectInput(
       inputId = "type",
