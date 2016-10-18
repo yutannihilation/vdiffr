@@ -10,7 +10,7 @@ test_that("Mismatches fail", {
 })
 
 test_that("Duplicated expectations issue warning", {
-  expect_true(any(grepl("Duplicated expectations: myplot", cases_outputs$warnings)))
+  expect_true(any(grepl("Duplicated expectations: myplot", mock_cases_outputs$warnings)))
 })
 
 test_that("Doppelgangers pass", {

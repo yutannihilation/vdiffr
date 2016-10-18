@@ -34,3 +34,26 @@ read_file <- function(file) {
 package_version <- function(pkg) {
   as.character(utils::packageVersion(pkg))
 }
+
+adjust_figs_path <- function(path, pkg_path) {
+  # normalizePath() does not expand paths that do not exist so this
+  # expands "../figs/" manually
+  components <- strsplit(path, .Platform$file.sep)[[1]]
+  components <- components[-(1:2)]
+  args <- c(list(pkg_path, "tests", "figs"), as.list(components))
+  path <- do.call(file.path, args)
+
+  path
+}
+
+normalise_path <- function(path) {
+  path <- normalizePath(path, mustWork = FALSE)
+
+  # Get rid of double separators
+  sep <- .Platform$file.sep
+  gsub(paste0(sep, "+"), sep, path)
+}
+
+str_trim_ext <- function(path) {
+  sub("\\..+$", "", path)
+}

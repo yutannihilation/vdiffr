@@ -4,6 +4,8 @@
 \alias{collect_cases}
 \alias{collect_mismatched_cases}
 \alias{collect_new_cases}
+\alias{collect_orphaned_cases}
+\alias{delete_orphaned_cases}
 \alias{validate_cases}
 \title{Collect and validate cases}
 \usage{
@@ -13,7 +15,11 @@ collect_new_cases(package = ".")
 
 collect_mismatched_cases(package = ".")
 
+collect_orphaned_cases(package = ".")
+
 validate_cases(cases = collect_new_cases())
+
+delete_orphaned_cases(cases = collect_orphaned_cases())
 }
 \arguments{
 \item{package}{Package description, can be path or package
@@ -35,6 +41,7 @@ collect and validate cases.
 \dontrun{
 new_cases <- collect_new_cases()
 validate_cases(new_cases)
+delete_orphaned_cases()
 }
 }
 \seealso{

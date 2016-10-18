@@ -13,6 +13,7 @@
 #' \dontrun{
 #' new_cases <- collect_new_cases()
 #' validate_cases(new_cases)
+#' delete_orphaned_cases()
 #' }
 collect_cases <- function(package = ".", filter = NULL) {
   on.exit(set_active_collecter(NULL))
@@ -33,7 +34,30 @@ collect_cases <- function(package = ".", filter = NULL) {
       paste(cases_names[is_duplicated], collapse = ", "))
   }
 
-  cases
+  c(cases, orphaned_cases(cases))
+}
+
+orphaned_cases <- function(cases) {
+  pkg_path <- attr(cases, "pkg_path")
+  paths <- map_chr(cases, "path")
+  paths <- map_chr(paths, adjust_figs_path, pkg_path)
+  paths <- map_chr(paths, normalise_path)
+
+  figs_path <- file.path(pkg_path, "tests", "figs")
+  svg_files <- dir(figs_path, ".*\\.svg$", full.names = TRUE, recursive = TRUE)
+  svg_files <- map_chr(svg_files, normalise_path)
+
+  # Testcases are absolute, paths are relative to 'testthat' folder
+  testcases <- svg_files[!svg_files %in% paths]
+  paths <- map_chr(testcases, function(path) {
+    prefix <- paste0("^", file.path(pkg_path, "tests"))
+    sub(prefix, "..", path)
+  })
+  names <- map_chr(paths, ~str_trim_ext(basename(.x)))
+
+  args <- list(set_names(names), paths, testcases)
+  orphaned_cases <- purrr::pmap(args, case_orphaned)
+  cases(orphaned_cases, pkg_path)
 }
 
 #' @rdname collect_cases
@@ -46,6 +70,12 @@ collect_new_cases <- function(package = ".") {
 #' @export
 collect_mismatched_cases <- function(package = ".") {
   filter_cases(collect_cases(package), "case_mismatched")
+}
+
+#' @rdname collect_cases
+#' @export
+collect_orphaned_cases <- function(package = ".") {
+  filter_cases(collect_cases(package), "case_orphaned")
 }
 
 #' @rdname collect_cases
@@ -74,6 +104,20 @@ update_case <- function(case, pkg_path) {
   path <- file.path(pkg_path, "tests", "figs", case$path)
   ensure_directories(dirname(path))
   file.copy(case$testcase, path, overwrite = TRUE)
+}
+
+#' @rdname collect_cases
+#' @export
+delete_orphaned_cases <- function(cases = collect_orphaned_cases()) {
+  stopifnot(is_cases(cases))
+  pkg_path <- attr(cases, "pkg_path")
+  if (is.null(pkg_path)) {
+    stop("Internal error: Package path is missing", call. = FALSE)
+  }
+
+  cases <- filter_cases(cases, "case_orphaned")
+  paths <- map_chr(cases, "testcase")
+  walk(paths, file.remove)
 }
 
 cases <- function(x, pkg_path, deps = NULL) {
@@ -110,6 +154,19 @@ print.cases <- function(x, ...) {
     print_cases_names(new)
   }
 
+  orphaned <- filter_cases(x, "case_orphaned")
+  if (length(orphaned) > 0) {
+    figs_path <- file.path(attr(x, "pkg_path"), "tests")
+
+    cat("\nOrphaned:\n")
+    files <- map_chr(orphaned, "path")
+    files <- map_chr(files, function(file) {
+      file <- sub(paste0("^", figs_path, .Platform$file.sep), "", file)
+      paste0(" - ", file)
+    })
+    cat(paste(files, collapse = "\n"), "\n")
+  }
+
   invisible(cases)
 }
 
@@ -125,24 +182,23 @@ filter_cases <- function(cases, type) {
   cases(filtered, attr(cases, "pkg_path"), attr(cases, "deps"))
 }
 
-case_mismatch <- function(name, path, testcase) {
-  case <- list(
-    name = name,
-    path = path,
-    testcase = testcase
-  )
-  structure(case, class = c("case_mismatch", "case"))
+make_case_constructor <- function(class) {
+  classes <- c(paste0("case_", class), "case")
+  function(name, path, testcase) {
+    case <- list(
+      name = name,
+      path = path,
+      testcase = testcase
+    )
+    structure(case, class = classes)
+  }
 }
 
-case_new <- function(name, path, testcase) {
-  case <- list(
-    name = name,
-    path = path,
-    testcase = testcase
-  )
-  structure(case, class = c("case_new", "case"))
-}
+case_mismatch <- make_case_constructor("mismatch")
+case_new <- make_case_constructor("new")
+case_orphaned <- make_case_constructor("orphaned")
 
 is_case <- function(case) inherits(case, "case")
 is_case_mismatch <- function(case) inherits(case, "case_mismatch")
 is_case_new <- function(case) inherits(case, "case_new")
+is_case_orphaned <- function(case) inherits(case, "case_orphaned")
