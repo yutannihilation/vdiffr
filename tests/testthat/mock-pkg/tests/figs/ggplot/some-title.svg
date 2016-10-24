@@ -18,11 +18,12 @@
     <rect x='5.48' y='23.97' width='709.04' height='546.55' />
   </clipPath>
 </defs>
-<rect x='5.48' y='23.97' width='709.04' height='546.55' style='stroke-width: 1.07; stroke: none; fill: #EBEBEB;' clip-path='url(#cpMHwwfDB8MHw=)' />
+<rect x='5.48' y='23.97' width='709.04' height='546.55' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' clip-path='url(#cpMHwwfDB8MHw=)' />
+<rect x='5.48' y='23.97' width='709.04' height='546.55' style='stroke-width: 1.07; stroke: #333333;' clip-path='url(#cpMHwwfDB8MHw=)' />
 <defs>
   <clipPath id='cpNS40Nzk0NXw1LjQ3OTQ1fDUuNDc5NDV8NS40Nzk0NXw='>
     <rect x='0.00' y='0.00' width='720.00' height='576.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNS40Nzk0NXw1LjQ3OTQ1fDUuNDc5NDV8NS40Nzk0NXw=)'><text x='321.47' y='17.40' style='font-size: 13.20pt; font-family: Liberation Sans;'>Some title</text></g>
+<g clip-path='url(#cpNS40Nzk0NXw1LjQ3OTQ1fDUuNDc5NDV8NS40Nzk0NXw=)'><text x='5.48' y='17.40' style='font-size: 13.20pt; font-family: Liberation Sans;'>Some title</text></g>
 </svg>
