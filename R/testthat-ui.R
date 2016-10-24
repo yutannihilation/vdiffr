@@ -10,7 +10,6 @@
 #' called, or more generally any object with a \code{print} method. If
 #' a ggplot object, a dependency for ggplot2 is automatically added
 #' (see \code{\link{add_dependency}()}).
-#' @inheritParams svglite::svglite
 #' @param title The figure title is used for creating the figure file
 #'   names (all non-alphanumeric characters are converted to
 #'   \code{-}). Also, ggplot2 figures are appended with
@@ -24,6 +23,9 @@
 #' @param ... Additional arguments passed to
 #'   \code{\link[testthat]{compare}()} to control specifics of
 #'   comparison.
+#' @param user_fonts Passed to \code{\link[svglite]{svglite}()} to
+#'   make sure SVG are reproducible. Defaults to Liberation fonts for
+#'   standard families and Symbola font for symbols.
 #' @export
 #' @examples
 #' \dontrun{
