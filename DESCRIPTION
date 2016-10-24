@@ -15,11 +15,11 @@ Imports:
     shiny,
     devtools,
     testthat (>= 0.11.0.9000),
-    svglite (>= 1.1.0.9000),
+    svglite (>= 1.1.0.9001),
     grDevices,
     xml2,
     htmlwidgets (>= 0.6),
-    fontquiver (>= 0.1.0.9000),
+    fontquiver (>= 0.1.0.9001),
     Rcpp
 Suggests:
     ggplot2,
@@ -30,5 +30,5 @@ LazyData: true
 RoxygenNote: 5.0.1
 LinkingTo: Rcpp
 Remotes:
-    lionel-/fontquiver#6,
-    hadley/svglite#73
+    lionel-/fontquiver,
+    hadley/svglite
