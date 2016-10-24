@@ -78,6 +78,11 @@ compare_figs <- function(testcase, path, fig_name) {
   } else {
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
     msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
+
+    cmd <- paste("diff", testcase, normalizePath(path))
+    info <- system(cmd)
+    msg <- paste0(msg, "\n", info, "\n")
+
     exp <- expectation_mismatch(msg)
   }
 
