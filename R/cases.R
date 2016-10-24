@@ -39,23 +39,26 @@ collect_cases <- function(package = ".", filter = NULL) {
 
 orphaned_cases <- function(cases) {
   pkg_path <- attr(cases, "pkg_path")
-  paths <- map_chr(cases, "path")
-  paths <- map_chr(paths, adjust_figs_path, pkg_path)
-  paths <- map_chr(paths, normalise_path)
+  cases_paths <- map_chr(cases, "path")
+  cases_paths <- map_chr(cases_paths, adjust_figs_path, pkg_path)
+  cases_paths <- map_chr(cases_paths, normalise_path)
 
   figs_path <- file.path(pkg_path, "tests", "figs")
-  svg_files <- dir(figs_path, ".*\\.svg$", full.names = TRUE, recursive = TRUE)
-  svg_files <- map_chr(svg_files, normalise_path)
+  figs_files <- dir(figs_path, ".*\\.svg$", full.names = TRUE, recursive = TRUE)
+  figs_files <- map_chr(figs_files, normalise_path)
 
   # Testcases are absolute, paths are relative to 'testthat' folder
-  testcases <- svg_files[!svg_files %in% paths]
-  paths <- map_chr(testcases, function(path) {
+  svg_paths <- map_chr(figs_files, function(path) {
     prefix <- paste0("^", file.path(pkg_path, "tests"))
     sub(prefix, "..", path)
   })
-  names <- map_chr(paths, ~str_trim_ext(basename(.x)))
 
-  args <- list(set_names(names), paths, testcases)
+  is_orphan <- !figs_files %in% cases_paths
+  orphans_testcases <- figs_files[is_orphan]
+  orphans_paths <- svg_paths[is_orphan]
+  orphans_names <- map_chr(orphans_paths, ~str_trim_ext(basename(.x)))
+
+  args <- list(set_names(orphans_names), orphans_paths, orphans_testcases)
   orphaned_cases <- purrr::pmap(args, case_orphaned)
   cases(orphaned_cases, pkg_path)
 }
@@ -82,6 +85,8 @@ collect_orphaned_cases <- function(package = ".") {
 #' @export
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))
+  cases <- filter_cases(cases, c("case_new", "case_mismatch"))
+
   pkg_path <- attr(cases, "pkg_path")
   if (is.null(pkg_path)) {
     stop("Internal error: Package path is missing", call. = FALSE)
@@ -197,6 +202,7 @@ make_case_constructor <- function(class) {
 case_mismatch <- make_case_constructor("mismatch")
 case_new <- make_case_constructor("new")
 case_orphaned <- make_case_constructor("orphaned")
+case_success <- make_case_constructor("success")
 
 is_case <- function(case) inherits(case, "case")
 is_case_mismatch <- function(case) inherits(case, "case_mismatch")
