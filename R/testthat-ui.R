@@ -74,6 +74,7 @@ compare_figs <- function(testcase, path, fig_name) {
   equal <- compare_files(testcase, normalizePath(path))
 
   if (equal) {
+    maybe_collect_case("success", name = fig_name, path = path, testcase = testcase)
     exp <- expectation_match("TRUE")
   } else {
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)

@@ -8,6 +8,7 @@
 #' @export
 manage_cases <- function(package = ".", filter = NULL) {
   cases <- collect_cases(package, filter = filter)
+  cases <- filter_cases(cases, c("case_new", "case_mismatch", "case_orphaned"))
 
   vdiffrApp <- shiny::shinyApp(
     ui = vdiffrUi(cases),
@@ -26,6 +27,7 @@ manage_cases <- function(package = ".", filter = NULL) {
 vdiffrAddin <- function() {
   pkg_path <- rstudioapi::getActiveProject() %||% "."
   cases <- collect_cases(pkg_path)
+  cases <- filter_cases(cases, c("case_new", "case_mismatch", "case_orphaned"))
 
   vdiffrApp <- shiny::shinyApp(
     ui = vdiffrUi(cases),

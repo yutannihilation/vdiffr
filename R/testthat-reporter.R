@@ -44,6 +44,7 @@ maybe_collect_case <- function(type, ...) {
     case <- switch(type,
       new = case_new(...),
       mismatch = case_mismatch(...),
+      success = case_success(...),
       stop("Unknown case type")
     )
 
