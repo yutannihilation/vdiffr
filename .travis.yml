@@ -10,7 +10,7 @@ matrix:
       sudo: false
     - os: linux
       dist: trusty
-      sudo: false
+      sudo: required
     - os: osx
       osx_image: xcode7.2
       brew_packages: cairo
