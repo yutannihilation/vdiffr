@@ -80,10 +80,10 @@ compare_figs <- function(testcase, path, fig_name) {
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
     msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
 
-    system(paste("diff", testcase, normalizePath(path)))
+    cat("\ntitle:", fig_name, "\n")
     gginfo <- sprintf("ggplot2: %s\n", utils::packageVersion("ggplot2"))
-    cat(gginfo, "\n")
-
+    cat(gginfo)
+    ## system(paste("diff", testcase, normalizePath(path)))
     cat("\nfig:\n", read_file(testcase), "\n\n")
 
     exp <- expectation_mismatch(msg)
