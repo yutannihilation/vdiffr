@@ -79,9 +79,9 @@ compare_figs <- function(testcase, path, fig_name) {
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
     msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
 
-    cmd <- paste("diff", testcase, normalizePath(path))
-    info <- system(cmd)
-    msg <- paste0(msg, "\n", info, "\n")
+    system(paste("diff", testcase, normalizePath(path)))
+    gginfo <- sprintf("ggplot2: %s\n", utils::packageVersion("ggplot2"))
+    cat(gginfo)
 
     exp <- expectation_mismatch(msg)
   }
