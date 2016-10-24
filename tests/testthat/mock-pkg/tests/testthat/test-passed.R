@@ -8,8 +8,15 @@ test_that("ggplot doppelgangers pass", {
 })
 
 test_that("base doppelgangers pass", {
-  p2_orig <- function() plot(mtcars$disp)
-  expect_doppelganger("myplot2", p2_orig, "")
+  p_base <- function() plot(mtcars$disp)
+  expect_doppelganger("myplot2", p_base, "")
+
+  p_base_symbol <- function() {
+    plot.new()
+    text(0.5, 0.8, expression(x[i] + over(x, y)), font = 5)
+  }
+
+  expect_doppelganger("Base doppelganger with symbol", p_base_symbol, "")
 })
 
 library("grid")
