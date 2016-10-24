@@ -81,7 +81,9 @@ compare_figs <- function(testcase, path, fig_name) {
 
     system(paste("diff", testcase, normalizePath(path)))
     gginfo <- sprintf("ggplot2: %s\n", utils::packageVersion("ggplot2"))
-    cat(gginfo)
+    cat(gginfo, "\n")
+
+    cat("\nfig:\n", read_file(testcase), "\n\n")
 
     exp <- expectation_mismatch(msg)
   }
