@@ -21,21 +21,41 @@ devtools::install_github("lionel-/vdiffr")
 ### Adding expectations
 
 vdiffr integrates with testthat through the `expect_doppelganger()`
-expectation. It takes as argument:
+expectation. It takes as arguments:
+
+- A title. This title is used in two ways. First, the title is
+  standardised (it is converted to lowercase and any character that is
+  not alphanumeric or a space is turned into a dash) and used as
+  filename for storing the figure. Secondly, with ggplot2 figures the
+  title is automatically added to the plot with `ggtitle()` (only if
+  no ggtitle has been set).
 
 - A figure. This can be a ggplot object, a recordedplot, a function to
   be called, or more generally any object with a `print` method.
-- A name identifying the test case.
-- Optionally, a path where to store the figures. By default, they are
-  stored in `tests/figs/`.
+
+- Optionally, a path where to store the figures, relative to
+  `tests/figs/`. They are stored in a subfolder according to the
+  current testthat context by default. Supply `path` to change the
+  subfolder.
+
+For example, the following tests will create figures in
+`tests/figs/histograms/` called `base-graphics-histogram.svg` and
+`ggplot2-histogram.svg`:
 
 ```{r}
+context("Histograms")
+
 disp_hist_base <- function() hist(mtcars$disp)
 disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
 
-vdiffr::expect_doppelganger(disp_hist_base, "disp-histogram-base")
-vdiffr::expect_doppelganger(disp_hist_ggplot, "disp-histogram-ggplot")
+vdiffr::expect_doppelganger("Base graphics histogram", disp_hist_base)
+vdiffr::expect_doppelganger("ggplot2 histogram", disp_hist_ggplot)
 ```
+
+Note that in addition to automatic ggtitles, ggplot2 figures are
+assigned the minimalistic theme `theme_test()` (unless they already
+have been assigned a theme).
+
 
 ### Running tests
 
@@ -48,9 +68,9 @@ will be skipped. Failed tests will show as an error.
 
 When you have added new test cases or detected regressions, you can
 manage those from the R command line with the functions
-`collect_cases()` and `validate_cases()`. However it's often more
-comfortable to run the shiny application `manage_cases()`. With this
-app you can:
+`collect_cases()`, `validate_cases()`, and `delete_orphaned_cases()`.
+However it's easier to run the shiny application `manage_cases()`.
+With this app you can:
 
 - Check how a failed case differs from its expected output using three
   widgets: Toggle (click to swap the images), Slide and Diff. If you
@@ -60,6 +80,12 @@ app you can:
   cases) or on a case by case basis. When you validate a failed case,
   the old expected output is replaced by the new one.
 
+- Delete orphaned cases. During a refactoring of your unit tests, some
+  visual expectations may be removed or renamed. This means that some
+  unused figures will linger in the `tests/figs/` folder. These
+  figures appear in the Shiny application under the category
+  "Orphaned" and can be cleaned up from there.
+
 Both `manage_cases()` and `collect_cases()` take `package` as first
 argument, the path to your package sources. This argument has exactly
 the same semantics as in devtools. You can use vdiffr tools the same
@@ -67,11 +93,10 @@ way as you would use `devtools::check()`, for example. The default is
 `"."`, meaning that the package is expected to be found in the current
 folder.
 
-All validated cases are stored in `tests/figs/` or in the path
-specified as an option to `expect_doppelganger()`. This folder may be
-handy to showcase the different graphs offered by your package. You
+All validated cases are stored in `tests/figs/`. This folder may be
+handy to showcase the different graphs offered in your package. You
 can also keep track of how your plots change as you tweak their layout
-by checking the history on Github.
+and add features by checking the history on Github.
 
 
 ### RStudio integration
@@ -84,9 +109,8 @@ addin menu to launch the Shiny app in an RStudio dialog.
 
 ### ESS integration
 
-The next version of ESS will feature devtools integration. Include
-this in your config file to add vdiffr's Shiny app to the package
-development keymap. Call it with `C-c C-w C-v`.
+To use the Shiny app as part of ESS devtools integration with `C-c C-w
+C-v`, include something like this in your init file:
 
 ```lisp
 (defun ess-r-vdiffr-manage-cases ()
@@ -98,55 +122,73 @@ development keymap. Call it with `C-c C-w C-v`.
 ```
 
 
-## Dependency notes
+## Technical Aspects
+
+### Continuous integration on Travis
+
+To work properly, vdiffr requires the C library `FreeType` version
+2.6.1 or later. The FreeType libraries available by default on Travis'
+Linux platforms are not this recent yet. Some adjustments to the
+`travis.yml` file are thusrequired.
+
+**Ubuntu Precise (the default):**
+
+```{yaml}
+addons:
+  apt:
+    sources:
+      - debian-sid
+    packages:
+      - libfreetype6
+```
+
+**Ubuntu Trusty:**
+
+```{yaml}
+sudo: required
+before_install: [
+  "sudo add-apt-repository \"deb http://archive.ubuntu.com/ubuntu/ xenial main\" -y",
+  "sudo apt-get update -q",
+  "sudo apt-get install libfreetype6"
+]
+```
+
+**macOS with XCode 6.1:**
+
+```{yaml}
+osx_image: beta-xcode6.1
+disable_homebrew: true
+latex: false
+```
+
+**macOS with XCode 7.2:**
+
+```{yaml}
+osx_image: xcode7.2
+brew_packages: cairo
+latex: false
+```
+
+
+### Dependency notes
 
 vdiffr currently uses svglite to save the plots in a text format that
 makes it easy to perform comparisons. This makes the test cases
 dependent on that package as the SVG translation of the plot may
 change across different versions of svglite (though that should not
 happen often). For this reason, whenever you validate a graphical test
-case, your `DESCRIPTION` file is updated with a note containing the
-svglite version. This works the same way as the roxygen version note.
+case, the `tests/figs/deps.txt` file is updated with a note containing
+the svglite version. This works the same way as the roxygen version
+note.
 
 Your graphics might be dependent on other packages besides svglite. If
 your package is an extension to ggplot2 for instance, the appearance
 of your plot may change as ggplot2 evolves (as with the 2.0 version
 which tweaked the grayness of the background color among other
 changes). For this reason, `expect_doppelganger()` adds a dependence
-on ggplot2 when you supply a ggplot2 object. Next time you validate a
-case, the `DESCRIPTION` file will be updated with a note describing
-the ggplot2 version with which the tested plots were rendered. You can
-also manually add a dependency on any other package by calling
-`vdiffr::add_dependency()` anywhere in a test file.
-
-
-## Configuration
-
-### Changing default figures folder
-
-By default, figures will be stored in `tests/figs/`. You can change
-this path by providing the `path` argument to
-`expect_doppelganger()`. To set it globally, just write a small
-wrapper in a testthat helper file. Helper files have names starting
-with `helper-` and are executed before the unit tests.
-
-```{r}
-default_path <- "path/default/"
-this_path <- "path/this/"
-that_path <- "path/that/"
-
-expect_doppelganger <- function(fig, fig_name) {
-  vdiffr::expect_doppelganger(fig, fig_name, default_path)
-}
-
-expect_doppelganger_this <- function(fig, fig_name) {
-  vdiffr::expect_doppelganger(fig, fig_name, this_path)
-}
-
-expect_doppelganger_that <- function(fig, fig_name) {
-  vdiffr::expect_doppelganger(fig, fig_name, that_path)
-}
-```
+on ggplot2 when you supply a ggplot2 object. You can also manually add
+a dependency on any other package by calling `vdiffr::add_dependency()`
+anywhere in a test file.
 
 
 ## Implementation
