@@ -85,7 +85,15 @@ svg_add_dims <- function(svg) {
   svg
 }
 
-theme_test <- function(base_size = 11, base_family = "") {
+theme_test <- function(...) {
+  theme <- theme_test_legacy(...)
+  if (utils::packageVersion("ggplot2") > "2.1.0") {
+    theme <- theme + theme_test_recent(...)
+  }
+  theme
+}
+
+theme_test_legacy <- function(base_size = 11, base_family = "") {
   half_line <- base_size / 2
 
   ggplot2::theme(
@@ -105,34 +113,19 @@ theme_test <- function(base_size = 11, base_family = "") {
     axis.line.y =        NULL,
     axis.text =          ggplot2::element_text(size = ggplot2::rel(0.8), colour = "grey30"),
     axis.text.x =        ggplot2::element_text(margin = ggplot2::margin(t = 0.8 * half_line / 2), vjust = 1),
-    ## axis.text.x.top =    ggplot2::element_text(margin = ggplot2::margin(b = 0.8 * half_line / 2), vjust = 0),
     axis.text.y =        ggplot2::element_text(margin = ggplot2::margin(r = 0.8 * half_line / 2), hjust = 1),
-    ## axis.text.y.right =  ggplot2::element_text(margin = ggplot2::margin(l = 0.8 * half_line / 2), hjust = 0),
     axis.ticks =         ggplot2::element_line(colour = "grey20"),
     axis.ticks.length =  grid::unit(half_line / 2, "pt"),
     axis.title.x =       ggplot2::element_text(
                            margin = ggplot2::margin(t = half_line),
                            vjust = 1
                          ),
-    ## axis.title.x.top =   ggplot2::element_text(
-    ##                        margin = ggplot2::margin(b = half_line),
-    ##                        vjust = 0
-    ##                      ),
     axis.title.y =       ggplot2::element_text(
                            angle = 90,
                            margin = ggplot2::margin(r = half_line),
                            vjust = 1
                          ),
-    ## axis.title.y.right = ggplot2::element_text(
-    ##                        angle = -90,
-    ##                        margin = ggplot2::margin(l = half_line),
-    ##                        vjust = 0
-    ##                      ),
-
     legend.background =  ggplot2::element_rect(colour = NA),
-    ## legend.spacing =     grid::unit(0.4, "cm"),
-    ## legend.spacing.x =   NULL,
-    ## legend.spacing.y =   NULL,
     legend.margin =      ggplot2::margin(0, 0, 0, 0, "cm"),
     legend.key =         ggplot2::element_rect(fill = "white", colour=NA),
     legend.key.size =    grid::unit(1.2, "lines"),
@@ -146,26 +139,15 @@ theme_test <- function(base_size = 11, base_family = "") {
     legend.direction =   NULL,
     legend.justification = "center",
     legend.box =         NULL,
-    ## legend.box.margin =  ggplot2::margin(0, 0, 0, 0, "cm"),
-    ## legend.box.background = ggplot2::element_blank(),
-    ## legend.box.spacing = grid::unit(0.4, "cm"),
-
     panel.background =   ggplot2::element_rect(fill = "white", colour = NA),
     panel.border =       ggplot2::element_rect(fill = NA, colour = "grey20"),
     panel.grid.major =   ggplot2::element_blank(),
     panel.grid.minor =   ggplot2::element_blank(),
-    ## panel.spacing =      grid::unit(half_line, "pt"),
-    ## panel.spacing.x =    NULL,
-    ## panel.spacing.y =    NULL,
     panel.ontop    =     FALSE,
-
     strip.background =   ggplot2::element_rect(fill = "grey85", colour = "grey20"),
     strip.text =         ggplot2::element_text(colour = "grey10", size = ggplot2::rel(0.8)),
     strip.text.x =       ggplot2::element_text(margin = ggplot2::margin(t = half_line, b = half_line)),
     strip.text.y =       ggplot2::element_text(angle = -90, margin = ggplot2::margin(l = half_line, r = half_line)),
-    ## strip.placement =    "inside",
-    ## strip.placement.x =  NULL,
-    ## strip.placement.y =  NULL,
     strip.switch.pad.grid = grid::unit(0.1, "cm"),
     strip.switch.pad.wrap = grid::unit(0.1, "cm"),
 
@@ -175,18 +157,49 @@ theme_test <- function(base_size = 11, base_family = "") {
                            hjust = 0, vjust = 1,
                            margin = ggplot2::margin(b = half_line * 1.2)
                          ),
-    ## plot.subtitle =      ggplot2::element_text(
-    ##                        size = ggplot2::rel(0.9),
-    ##                        hjust = 0, vjust = 1,
-    ##                        margin = ggplot2::margin(b = half_line * 0.9)
-    ##                      ),
-    ## plot.caption =       ggplot2::element_text(
-    ##                        size = ggplot2::rel(0.9),
-    ##                        hjust = 1, vjust = 1,
-    ##                        margin = ggplot2::margin(t = half_line * 0.9)
-    ##                      ),
     plot.margin =        ggplot2::margin(half_line, half_line, half_line, half_line),
 
     complete = TRUE
   )
+}
+
+theme_test_recent <- function(base_size = 11, base_family = "") {
+  half_line <- base_size / 2
+
+  ggplot2::theme(
+    axis.text.x.top =    ggplot2::element_text(margin = ggplot2::margin(b = 0.8 * half_line / 2), vjust = 0),
+    axis.text.y.right =  ggplot2::element_text(margin = ggplot2::margin(l = 0.8 * half_line / 2), hjust = 0),
+    axis.title.x.top =   ggplot2::element_text(
+                           margin = ggplot2::margin(b = half_line),
+                           vjust = 0
+                         ),
+    axis.title.y.right = ggplot2::element_text(
+                           angle = -90,
+                           margin = ggplot2::margin(l = half_line),
+                           vjust = 0
+                         ),
+    legend.spacing =     grid::unit(0.4, "cm"),
+    legend.spacing.x =   NULL,
+    legend.spacing.y =   NULL,
+    legend.box.margin =  ggplot2::margin(0, 0, 0, 0, "cm"),
+    legend.box.background = ggplot2::element_blank(),
+    legend.box.spacing = grid::unit(0.4, "cm"),
+
+    panel.spacing =      grid::unit(half_line, "pt"),
+    panel.spacing.x =    NULL,
+    panel.spacing.y =    NULL,
+    strip.placement =    "inside",
+    strip.placement.x =  NULL,
+    strip.placement.y =  NULL,
+    plot.subtitle =      ggplot2::element_text(
+                           size = ggplot2::rel(0.9),
+                           hjust = 0, vjust = 1,
+                           margin = ggplot2::margin(b = half_line * 0.9)
+                         ),
+    plot.caption =       ggplot2::element_text(
+                           size = ggplot2::rel(0.9),
+                           hjust = 1, vjust = 1,
+                           margin = ggplot2::margin(t = half_line * 0.9)
+                         )
+    )
 }
