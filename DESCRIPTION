@@ -20,6 +20,7 @@ Imports:
     xml2,
     htmlwidgets (>= 0.6),
     fontquiver (>= 0.1.0.9001),
+    gdtools (>= 0.0.7.9001),
     Rcpp
 Suggests:
     ggplot2,
@@ -31,4 +32,5 @@ RoxygenNote: 5.0.1
 LinkingTo: Rcpp
 Remotes:
     lionel-/fontquiver,
-    hadley/svglite
+    hadley/svglite,
+    davidgohel/gdtools#32
