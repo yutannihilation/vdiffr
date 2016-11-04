@@ -1,5 +1,5 @@
 
-# vdiffr 0.0.0.9001
+# vdiffr 0.1.0
 
 * Generated SVGs are now reproducible across platforms thanks to
   recent versions of svglite, gdtools, and the new package fontquiver.

@@ -1,11 +1,11 @@
 Package: vdiffr
 Title: Visual Regression Testing and Graphical Diffing
-Version: 0.0.0.9001
+Version: 0.1.0
 Authors@R: c(
     person("Lionel", "Henry", , "lionel@rstudio.com", c("cre", "aut")),
     person("RStudio", role = "cph"))
-Description: vdiffr is an extension to testthat that makes it easy to
-    add tests for graphics. It provides a Shiny application to manage
+Description: An extension to testthat that makes it easy to add
+    graphical unit tests. It provides a Shiny application to manage
     the test cases.
 Depends:
     R (>= 3.2.3)
@@ -14,13 +14,13 @@ Imports:
     R6,
     shiny,
     devtools,
-    testthat (>= 0.11.0.9000),
-    svglite (>= 1.1.0.9001),
+    testthat (>= 1.0.0),
+    svglite (>= 1.2.0),
     grDevices,
     xml2,
     htmlwidgets (>= 0.6),
-    fontquiver (>= 0.1.0.9001),
-    gdtools (>= 0.0.7.9001),
+    fontquiver (>= 0.2.0),
+    gdtools (>= 0.1.1),
     Rcpp
 Suggests:
     ggplot2,
@@ -30,7 +30,3 @@ License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1
 LinkingTo: Rcpp
-Remotes:
-    lionel-/fontquiver,
-    hadley/svglite,
-    davidgohel/gdtools#32
