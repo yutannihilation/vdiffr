@@ -15,8 +15,11 @@ get_aliases <- function() {
 }
 
 write_svg <- function(p, file, title, user_fonts) {
-  if (gdtools::version_freetype() < "2.6.1") {
-    stop("vdiffr requires FreeType >= 2.6.1", call. = FALSE)
+  ver <- gdtools::version_freetype()
+  if (ver < "2.6") {
+    stop(call. = FALSE,
+      "vdiffr requires FreeType >= 2.6.0. Current version: ", ver
+    )
   }
 
   user_fonts <- user_fonts %||% get_aliases()
