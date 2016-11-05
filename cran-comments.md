@@ -1,3 +1,8 @@
+## Resubmission
+
+* Added SystemRequirements field in DESCRIPTION (FreeType 2.6.0)
+* Skip tests when FreeType is too old
+
 ## Test environments
 * local OS X install, R 3.4.0
 * ubuntu 12.04 (on travis-ci), R 3.3.2

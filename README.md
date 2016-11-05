@@ -15,6 +15,18 @@ Get the development version from github with:
 devtools::install_github("lionel-/vdiffr")
 ```
 
+or the last CRAN release with:
+
+```{r}
+install.packages("vdiffr")
+```
+
+vdiffr requires FreeType greater than 2.6.0. It is automatically
+installed on Windows along with gdtools and comes with X11 on
+macOS. If you run an old Linux distribution, it is possible you will
+have to update the relevant package. See the section on Travis-CI
+below for some indications.
+
 
 ## How to use vdiffr
 
@@ -127,9 +139,9 @@ C-v`, include something like this in your init file:
 ### Continuous integration on Travis
 
 To work properly, vdiffr requires the C library `FreeType` version
-2.6.1 or later. The FreeType libraries available by default on Travis'
+2.6.0 or later. The FreeType libraries available by default on Travis'
 Linux platforms are not this recent yet. Some adjustments to the
-`travis.yml` file are thusrequired.
+`travis.yml` file are thus required.
 
 **Ubuntu Precise (the default):**
 
@@ -167,6 +179,30 @@ latex: false
 osx_image: xcode7.2
 brew_packages: cairo
 latex: false
+```
+
+
+### Windows platforms
+
+Appveyor does not require any configuration since FreeType 2.6.0 is
+automatically installed on this platform along with gdtools. However,
+Fontconfig builds a cache of all system fonts the first time it is
+run, which can take a while. It is a good idea to add the following in
+a `fontconfig-helper.R` testthat file in order to speed up the cache
+building on Appveyor and on CRAN's Windows servers:
+
+```{r}
+on_appveyor <- function() {
+  identical(Sys.getenv("APPVEYOR"), "True")
+}
+on_cran <- function() {
+  !identical(Sys.getenv("NOT_CRAN"), "true")
+}
+
+# Use minimal fonts.conf to speed up fc-cache
+if (on_appveyor() || on_cran()) {
+  gdtools::set_dummy_conf()
+}
 ```
 
 
