@@ -7,6 +7,13 @@ create_mock_pkg <- function(pkg = "mock-pkg") {
   file.path(dir, pkg)
 }
 
+subset_results <- function(results, file, test) {
+  subset <- purrr::keep(results, function(result) {
+    result$file == file && result$test == test
+  })
+  subset[[1]]$results
+}
+
 mock_pkg_dir <- create_mock_pkg()
 mock_test_dir <- file.path(mock_pkg_dir, "tests", "testthat")
 
