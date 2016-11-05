@@ -30,6 +30,9 @@
 
 * Give a warning when multiple doppelgangers have the same name (#4).
 
+* Remove CR line endings before comparing svg files for compatibility
+  with Windows
+
 
 # vdiffr 0.0.0.9000
 
