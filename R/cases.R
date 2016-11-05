@@ -49,8 +49,9 @@ orphaned_cases <- function(cases) {
 
   # Testcases are absolute, paths are relative to 'testthat' folder
   svg_paths <- map_chr(figs_files, function(path) {
-    prefix <- paste0("^", file.path(pkg_path, "tests"))
-    sub(prefix, "..", path)
+    prefix <- paste0(file.path(pkg_path, "tests"))
+    rel_path <- substr(path, nchar(prefix) + 1, nchar(path))
+    paste0("..", rel_path)
   })
 
   is_orphan <- !figs_files %in% cases_paths
