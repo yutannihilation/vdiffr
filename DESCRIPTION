@@ -21,7 +21,8 @@ Imports:
     htmlwidgets (>= 0.6),
     fontquiver (>= 0.2.0),
     gdtools (>= 0.1.1),
-    Rcpp
+    Rcpp,
+    pryr
 Suggests:
     ggplot2,
     roxygen2,

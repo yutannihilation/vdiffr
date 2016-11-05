@@ -16,6 +16,8 @@ test_that("Duplicated expectations issue warning", {
 test_that("Doppelgangers pass", {
   ggplot_result <- subset_results(test_results, "test-passed.R", "ggplot doppelgangers pass")[[1]]
   base_result <- subset_results(test_results, "test-passed.R", "base doppelgangers pass")[[1]]
+  grid_result <- subset_results(test_results, "test-passed.R", "base doppelgangers pass")[[1]]
   expect_is(ggplot_result, "expectation_success")
   expect_is(base_result, "expectation_success")
+  expect_is(grid_result, "expectation_success")
 })

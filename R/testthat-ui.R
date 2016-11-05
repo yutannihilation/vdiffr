@@ -70,6 +70,18 @@ str_standardise <- function(s, sep = "-") {
   s
 }
 
+print_svg <- function(title, path) {
+  cat("\n\n", title, ":\n")
+  svg <- readLines(path)
+  svg <- paste(svg, collapse = "\n")
+  cat("\n", svg, "\n")
+}
+print_svg_hex <- function(title, path) {
+  cat("\n\n", title, ":\n")
+  svg <- readChar(path, file.info(path)$size, useBytes = TRUE)
+  cat("\n", pryr::bytes(svg), "\n")
+}
+
 compare_figs <- function(testcase, path, fig_name) {
   equal <- compare_files(testcase, normalizePath(path))
 
@@ -78,14 +90,8 @@ compare_figs <- function(testcase, path, fig_name) {
     exp <- expectation_match("TRUE")
   } else {
     cat("\n\nfig: ", toupper(fig_name), "\n")
-    cat("\n\ntestcase:\n")
-    svg <- readLines(testcase)
-    svg <- paste(svg, collapse = "\n")
-    cat("\n", svg, "\n")
-    cat("\n\nactual:\n")
-    svg <- readLines(normalizePath(path))
-    svg <- paste(svg, collapse = "\n")
-    cat("\n", svg, "\n")
+    print_svg_hex("testcase", testcase)
+    print_svg_hex("orig", normalizePath(path))
 
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
     msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
