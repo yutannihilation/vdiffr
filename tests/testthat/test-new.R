@@ -2,6 +2,8 @@
 context("New cases")
 
 test_that("New cases are skipped", {
+  skip_old_freetype()
+
   new_results <- subset_results(test_results, "test-new.R", "New plots are collected")
 
   msg <- map_chr(new_results, function(result) result$message)
@@ -15,6 +17,8 @@ test_that("New cases are skipped", {
 })
 
 test_that("Figs are saved to alternative paths", {
+  skip_old_freetype()
+
   path1 <- file.path(mock_pkg_dir, "tests", "figs", "path1")
   path2 <- file.path(mock_pkg_dir, "tests", "figs", "path2")
   expect_true(file.exists(file.path(path1, "alt1.svg")))
@@ -22,6 +26,8 @@ test_that("Figs are saved to alternative paths", {
 })
 
 test_that("Figs are saved in context subfolders", {
+  skip_old_freetype()
+
   path1 <- file.path(mock_pkg_dir, "tests", "figs", "new-plots")
   path2 <- file.path(mock_pkg_dir, "tests", "figs", "new-plots")
   expect_true(file.exists(file.path(path1, "context1.svg")))
