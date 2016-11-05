@@ -77,6 +77,16 @@ compare_figs <- function(testcase, path, fig_name) {
     maybe_collect_case("success", name = fig_name, path = path, testcase = testcase)
     exp <- expectation_match("TRUE")
   } else {
+    cat("\n\nfig: ", toupper(fig_name), "\n")
+    cat("\n\ntestcase:\n")
+    svg <- readLines(testcase)
+    svg <- paste(svg, collapse = "\n")
+    cat("\n", svg, "\n")
+    cat("\n\nactual:\n")
+    svg <- readLines(normalizePath(path))
+    svg <- paste(svg, collapse = "\n")
+    cat("\n", svg, "\n")
+
     maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
     msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
     exp <- expectation_mismatch(msg)
