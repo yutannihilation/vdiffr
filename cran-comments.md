@@ -1,7 +1,10 @@
 ## Resubmission
 
-* Added SystemRequirements field in DESCRIPTION (FreeType 2.6.0)
-* Skip tests when FreeType is too old
+This is a resubmission:
+
+* Single quote 'testthat' in Description: field
+* Remove dontrun{} examples
+* Add SystemRequirements field in DESCRIPTION (FreeType 2.6.0)
 
 ## Test environments
 * local OS X install, R 3.4.0
