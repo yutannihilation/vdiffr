@@ -5,9 +5,7 @@
 \alias{collect_mismatched_cases}
 \alias{collect_new_cases}
 \alias{collect_orphaned_cases}
-\alias{delete_orphaned_cases}
-\alias{validate_cases}
-\title{Collect and validate cases}
+\title{Collect cases}
 \usage{
 collect_cases(package = ".", filter = NULL)
 
@@ -16,10 +14,6 @@ collect_new_cases(package = ".")
 collect_mismatched_cases(package = ".")
 
 collect_orphaned_cases(package = ".")
-
-validate_cases(cases = collect_new_cases())
-
-delete_orphaned_cases(cases = collect_orphaned_cases())
 }
 \arguments{
 \item{package}{Package description, can be path or package
@@ -28,21 +22,17 @@ name. See \code{\link[devtools]{as.package}} for more information.}
 \item{filter}{If not \code{NULL}, only tests with file names matching this
 regular expression will be executed.  Matching will take on the file
 name after it has been stripped of \code{"test-"} and \code{".R"}.}
-
-\item{cases}{A \code{cases} object returned by one of the
-collecting functions.}
+}
+\value{
+A \code{cases} object. \code{collect_new_cases()},
+  \code{collect_mismatched_cases()} and
+  \code{collect_orphaned_cases()} return a filtered \code{cases}
+  object.
 }
 \description{
 These functions are mainly intended for internal use by
 \code{\link{manage_cases}()}. They are useful to programmatically
-collect and validate cases.
-}
-\examples{
-\dontrun{
-new_cases <- collect_new_cases()
-validate_cases(new_cases)
-delete_orphaned_cases()
-}
+collect cases.
 }
 \seealso{
 \code{\link{manage_cases}()}

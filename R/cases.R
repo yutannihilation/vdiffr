@@ -1,20 +1,16 @@
-#' Collect and validate cases
+#' Collect cases
 #'
 #' These functions are mainly intended for internal use by
 #' \code{\link{manage_cases}()}. They are useful to programmatically
-#' collect and validate cases.
+#' collect cases.
 #'
 #' @inheritParams manage_cases
-#' @param cases A \code{cases} object returned by one of the
-#'   collecting functions.
 #' @seealso \code{\link{manage_cases}()}
+#' @return A \code{cases} object. \code{collect_new_cases()},
+#'   \code{collect_mismatched_cases()} and
+#'   \code{collect_orphaned_cases()} return a filtered \code{cases}
+#'   object.
 #' @export
-#' @examples
-#' \dontrun{
-#' new_cases <- collect_new_cases()
-#' validate_cases(new_cases)
-#' delete_orphaned_cases()
-#' }
 collect_cases <- function(package = ".", filter = NULL) {
   on.exit(set_active_collecter(NULL))
 
@@ -82,7 +78,15 @@ collect_orphaned_cases <- function(package = ".") {
   filter_cases(collect_cases(package), "case_orphaned")
 }
 
-#' @rdname collect_cases
+#' Cases validation
+#'
+#' These functions are mainly intended for internal use by
+#' \code{\link{manage_cases}()}. They are useful to programmatically
+#' validate cases or delete orphaned cases.
+#'
+#' @seealso \code{\link{manage_cases}()}
+#' @param cases A \code{cases} object returned by one of the
+#'   collecting functions such as \code{\link{collect_cases}()}.
 #' @export
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))
@@ -112,7 +116,7 @@ update_case <- function(case, pkg_path) {
   file.copy(case$testcase, path, overwrite = TRUE)
 }
 
-#' @rdname collect_cases
+#' @rdname validate_cases
 #' @export
 delete_orphaned_cases <- function(cases = collect_orphaned_cases()) {
   stopifnot(is_cases(cases))
