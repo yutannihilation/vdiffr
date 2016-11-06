@@ -3,7 +3,14 @@ Title: Visual Regression Testing and Graphical Diffing
 Version: 0.1.0
 Authors@R: c(
     person("Lionel", "Henry", , "lionel@rstudio.com", c("cre", "aut")),
-    person("RStudio", role = "cph"))
+    person("RStudio", role = "cph"),
+    person("Carl", "Sutherland", role = "aut", comment = "jg-imagediff library"),
+    person("Humble Software", role = "cph", comment = "jg-imagediff library"),
+    person("David", "Hong", role = "aut", comment = "TwoFace library"),
+    person(family = "jQuery Foundation", role = "cph", comment = "jQuery library"),
+    person(family = "jQuery contributors", role = c("ctb", "cph"),
+           comment = "jQuery library; authors listed in inst/htmlwidgets/lib/jquery-authors.txt")
+    )
 Description: An extension to the 'testthat' package that makes it easy
     to add graphical unit tests. It provides a Shiny application to
     manage the test cases.
@@ -26,7 +33,7 @@ Suggests:
     ggplot2,
     roxygen2,
     rstudioapi
-License: GPL-3
+License: GPL-3 | file LICENSE
 LazyData: true
 RoxygenNote: 5.0.1
 LinkingTo: Rcpp

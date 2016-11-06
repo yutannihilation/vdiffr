@@ -5,6 +5,8 @@ This is a resubmission:
 * Single quote 'testthat' in Description: field
 * Remove dontrun{} examples
 * Add SystemRequirements field in DESCRIPTION (FreeType 2.6.0)
+* Update DESCRIPTION and LICENSE files to mention authors and licences
+  of the JS libraries distributed in inst/htmlwidgets/lib/jquery-authors.txt
 
 ## Test environments
 * local OS X install, R 3.4.0
