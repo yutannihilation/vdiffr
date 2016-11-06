@@ -1,6 +1,9 @@
 
 # vdiffr
 
+[![Travis-CI Build Status](https://travis-ci.org/lionel-/vdiffr.svg?branch=master)](https://travis-ci.org/lionel-/vdiffr)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/lionel-/vdiffr?branch=master)](https://ci.appveyor.com/project/lionel-/vdiffr)
+
 vdiffr is an extension to the package testthat that makes it easy to
 test for visual regressions. It provides a Shiny app to manage failed
 tests and visually compare a graphic to its expected output.
