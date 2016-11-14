@@ -4,7 +4,9 @@ title: "vdiffr 0.1.0"
 
 We are very pleased to announce the first release of vdiffr, an
 extension to the testthat package that makes it easy to add visual
-unit tests for plots.
+unit tests for plots. Testing visualisations is a hard task because it
+is difficult to integrate in an automated workflow. vdiffr achieves
+this by generating, storing, and comparing SVG files.
 
 Install vdiffr with:
 
@@ -16,10 +18,17 @@ install.packages("vdiffr")
 ## Create visual unit tests
 
 `expect_doppelganger()` is the main function you'll be using to create
-visual unit tests. It accepts any object whose `print()` method draws
-the object on the graphics device. It also accepts functions, and
-specially integrates with ggplot2 objects. Here is an example of how
-to use it:
+visual unit tests. It accepts three types of output:
+
+* ggplot2 objects, which are specially integrated in vdiffr (see
+  below);
+
+* more generally, any object whose `print()` method draws the object
+  on the graphics device;
+
+* functions.
+
+Here is an example of how to use it:
 
 ```{r, eval=FALSE}
 context("Distributions")
