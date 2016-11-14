@@ -1,4 +1,6 @@
 
+# vdiffr 0.1.0.9000
+
 # vdiffr 0.1.0
 
 * Generated SVGs are now reproducible across platforms thanks to
