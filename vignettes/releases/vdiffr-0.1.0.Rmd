@@ -1,0 +1,76 @@
+---
+title: "vdiffr 0.1.0"
+---
+
+We are very pleased to announce the first release of vdiffr, an
+extension to the testthat package that makes it easy to add visual
+unit tests for plots.
+
+Install vdiffr with:
+
+```{r, eval=FALSE}
+install.packages("vdiffr")
+```
+
+
+## Create visual unit tests
+
+`expect_doppelganger()` is the main function you'll be using to create
+visual unit tests. It accepts any object whose `print()` method draws
+the object on the graphics device. It also accepts functions, and
+specially integrates with ggplot2 objects. Here is an example of how
+to use it:
+
+```{r, eval=FALSE}
+context("Distributions")
+
+test_that("histograms draw correctly", {
+  hist_base <- function() hist(mtcars$disp)
+  hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
+
+  vdiffr::expect_doppelganger("Base graphics histogram", hist_base)
+  vdiffr::expect_doppelganger("ggplot2 histogram", hist_ggplot)
+})
+```
+
+The first argument of `expect_doppelganger()` is a title that will be
+standardised and used as a filename to store the visual case. In
+addition, the current testthat context is looked up to create a
+subdirectory for the figure. The above snippet will thus register two
+visual tests and save the figures as SVG files. The ggplot2 figure,
+for instance, will be saved to
+`tests/figs/distributions/ggplot2-histogram.svg`.
+
+vdiffr treats ggplot2 figures specially. First, it adds a `ggtitle()`
+(if the plot does not already have one) with the title of the unit
+tests provided to `expect_doppelganger()`. This makes the test figure
+self-explanatory when you open the SVG file. Secondly, if the plot
+does not have a ggplot2 theme, a minimalistic testing theme is
+automatically applied to it. This theme will not be tweaked in future
+ggplot2 versions, which guarantees some stability to the visual unit
+tests.
+
+
+## Manage visual tests with a Shiny app
+
+When vdiffr collects visual expectations, it classifies those as
+passing, new, mismatched, or orphaned test cases. New cases need to be
+validated. Sometimes a mismatched test is the result of fixing a bug
+or adding a feature, and those tests need to be updated. Orphaned
+cases are former visual tests that were deleted from the tests. The
+SVG files of orphaned cases need to be cleaned up from the
+`tests/figs` folder. All of these actions can be accomplished from a
+Shiny application which you can launch by typing `manage_cases()` or
+using the RStudio addin that comes with vdiffr.
+
+In addition to validating cases, the Shiny application allows you to
+compare mismatched cases to check where exactly they fail. To this
+end, it makes use of three htmlwidgets distributed with vdiffr:
+`toggle`, `slide`, and `diff`. These widgets make it easy to spot the
+differences between a failed doppelganger and its expected appearance.
+
+![vdiffr in RStudio](https://raw.githubusercontent.com/lionel-/vdiffr/readme/rstudio-vdiffr.png)
+
+
+To learn more about vdiffr, visit its
+[Github README page](https://github.com/lionel-/vdiffr).
