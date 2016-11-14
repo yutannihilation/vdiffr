@@ -38,6 +38,13 @@
 #' }
 expect_doppelganger <- function(title, fig, path = NULL, ...,
                                 user_fonts = NULL) {
+  ver <- gdtools::version_freetype()
+  if (ver < "2.6.0") {
+    msg <- paste("vdiffr requires FreeType >= 2.6.0. Current version:", ver)
+    signal_expectation(testthat::expectation("skip", msg))
+    return()
+  }
+
   fig_name <- str_standardise(title)
   testcase <- make_testcase_file(fig_name)
   write_svg(fig, testcase, title, user_fonts)

@@ -15,13 +15,6 @@ get_aliases <- function() {
 }
 
 write_svg <- function(p, file, title, user_fonts) {
-  ver <- gdtools::version_freetype()
-  if (ver < "2.6") {
-    stop(call. = FALSE,
-      "vdiffr requires FreeType >= 2.6.0. Current version: ", ver
-    )
-  }
-
   user_fonts <- user_fonts %||% get_aliases()
   svglite::svglite(file, user_fonts = user_fonts)
   on.exit(grDevices::dev.off())
