@@ -1,6 +1,9 @@
 
 # vdiffr 0.1.0.9000
 
+* Depends on gdtools 0.1.2 or later as this version fixes a crash on
+  Linux platforms.
+
 # vdiffr 0.1.0
 
 * Generated SVGs are now reproducible across platforms thanks to

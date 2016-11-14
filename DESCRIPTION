@@ -27,7 +27,7 @@ Imports:
     xml2,
     htmlwidgets (>= 0.6),
     fontquiver (>= 0.2.0),
-    gdtools (>= 0.1.1),
+    gdtools (>= 0.1.2),
     Rcpp
 Suggests:
     ggplot2,
