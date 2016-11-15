@@ -18,12 +18,12 @@ on_load <- function() {
   identical(Sys.getenv("DEVTOOLS_LOAD"), "true")
 }
 skip_old_freetype <- function() {
-  if (gdtools::version_freetype() < "2.6.0" ) {
+  if (old_freetype()) {
     skip("FreeType too old for vdiffr")
   }
 }
 
-if (gdtools::version_freetype() >= "2.6.0" && !on_load()) {
+if (!old_freetype() && !on_load()) {
   mock_pkg_dir <- create_mock_pkg()
   mock_test_dir <- file.path(mock_pkg_dir, "tests", "testthat")
 
