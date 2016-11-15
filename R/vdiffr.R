@@ -6,4 +6,5 @@ NULL
 
 old_freetype <- function() {
   gdtools::version_freetype() < "2.6.0"
+  TRUE
 }
