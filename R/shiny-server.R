@@ -10,9 +10,9 @@ vdiffrServer <- function(cases) {
     output$type_controls <- renderTypeInput(input, cases)
     output$case_controls <- renderCaseInput(input, cases$active)
 
-    output$toggle <- renderDiffer(input, cases$active, widget_toggle)
-    output$slide <- renderDiffer(input, cases$active, widget_slide)
-    output$diff <- renderDiffer(input, cases$active, widget_diff)
+    output$toggle <- renderDiffer(input, cases$active, widget_toggle_)
+    output$slide <- renderDiffer(input, cases$active, widget_slide_)
+    output$diff <- renderDiffer(input, cases$active, widget_diff_)
 
     validateGroupCases(input, cases)
     validateSingleCase(input, cases)

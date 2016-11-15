@@ -3,10 +3,19 @@
 \name{htmlwidgets}
 \alias{htmlwidgets}
 \alias{widget_diff}
+\alias{widget_diff_}
 \alias{widget_slide}
+\alias{widget_slide_}
 \alias{widget_toggle}
+\alias{widget_toggle_}
 \title{HTML Widgets for graphical comparison}
 \usage{
+widget_toggle_(before, after, width = NULL, height = NULL)
+
+widget_slide_(before, after, width = NULL, height = NULL)
+
+widget_diff_(before, after, width = NULL, height = NULL)
+
 widget_toggle(before, after, width = NULL, height = NULL)
 
 widget_slide(before, after, width = NULL, height = NULL)
@@ -14,10 +23,9 @@ widget_slide(before, after, width = NULL, height = NULL)
 widget_diff(before, after, width = NULL, height = NULL)
 }
 \arguments{
-\item{before}{Path to the picture that is taken as reference.}
+\item{before}{The picture that is taken as reference.}
 
-\item{after}{Path to the picture against which the reference is
-compared.}
+\item{after}{The picture against which the reference is compared.}
 
 \item{width}{Fixed width for widget (in css units). The default is
 \code{NULL}, which results in intelligent automatic sizing based on the
@@ -28,6 +36,25 @@ widget's container.}
 widget's container.}
 }
 \description{
-HTML Widgets for graphical comparison
+These widgets can be used at the console and embedded in a R
+Markdown document or Shiny application.
+}
+\details{
+The regular versions take plots or functions as \code{before} and
+\code{after} arguments (see \code{\link{expect_doppelganger}()}
+for details). The versions suffixed with underscores take HTML image
+sources. These can be paths to SVG files or inlined SVG
+images. Currently, \code{widget_diff_()} is compatible only with
+inlined images.
+}
+\examples{
+p1 <- function() hist(mtcars$disp)
+p2 <- function() hist(mtcars$drat)
+
+# You can also call these functions in a R Markdown document or
+# in a Shiny application:
+widget_toggle(p1, p2)
+widget_slide(p1, p2)
+widget_diff(p1, p2)
 }
 

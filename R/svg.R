@@ -14,7 +14,7 @@ get_aliases <- function() {
   aliases
 }
 
-write_svg <- function(p, file, title, user_fonts) {
+write_svg <- function(p, file, title, user_fonts = NULL) {
   user_fonts <- user_fonts %||% get_aliases()
   svglite::svglite(file, user_fonts = user_fonts)
   on.exit(grDevices::dev.off())
@@ -31,7 +31,7 @@ print_plot.default <- function(p, title) {
 
 print_plot.ggplot <- function(p, title) {
   add_dependency("ggplot2")
-  if (!"title" %in% names(p$labels)) {
+  if (title != "" && !"title" %in% names(p$labels)) {
     p <- p + ggplot2::ggtitle(title)
   }
   if (!length(p$theme)) {
