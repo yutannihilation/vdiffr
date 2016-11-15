@@ -1,5 +1,9 @@
 
-# vdiffr 0.1.0.9000
+# vdiffr 0.1.1
+
+* `expect_doppelganger()` no longer throws an error when FreeType is
+  too old. Instead, the test is skipped. This ensures that R CMD check
+  passes on those platforms (e.g., CRAN's Solaris test server).
 
 * Depends on gdtools 0.1.2 or later as this version fixes a crash on
   Linux platforms.
