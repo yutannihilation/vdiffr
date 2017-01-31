@@ -1,6 +1,6 @@
 Package: vdiffr
 Title: Visual Regression Testing and Graphical Diffing
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: c(
     person("Lionel", "Henry", , "lionel@rstudio.com", c("cre", "aut")),
     person("RStudio", role = "cph"),
@@ -15,7 +15,7 @@ Description: An extension to the 'testthat' package that makes it easy
     to add graphical unit tests. It provides a Shiny application to
     manage the test cases.
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.1.0)
 Imports:
     purrr (>= 0.2.0),
     R6,

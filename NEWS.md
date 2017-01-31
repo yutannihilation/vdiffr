@@ -1,4 +1,9 @@
 
+# vdiffr 0.1.1.9000
+
+* Set minimal R version required to 3.1.0.
+
+
 # vdiffr 0.1.1
 
 * `expect_doppelganger()` no longer throws an error when FreeType is

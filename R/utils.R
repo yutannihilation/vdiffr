@@ -57,3 +57,17 @@ normalise_path <- function(path) {
 str_trim_ext <- function(path) {
   sub("\\..+$", "", path)
 }
+
+
+# R 3.2.0 compat
+dir.exists <- function(paths) {
+  if (utils::packageVersion("base") >= "3.2.0") {
+    (baseenv()$dir.exists)(paths)
+  } else {
+    purrr::map_lgl(paths, dir_exists)
+  }
+}
+
+dir_exists <- function(path) {
+  !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
+}
