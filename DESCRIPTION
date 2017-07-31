@@ -17,18 +17,18 @@ Description: An extension to the 'testthat' package that makes it easy
 Depends:
     R (>= 3.1.0)
 Imports:
-    purrr (>= 0.2.0),
-    R6,
-    shiny,
     devtools,
-    testthat (>= 1.0.0),
-    svglite (>= 1.2.0),
-    grDevices,
-    xml2,
-    htmlwidgets (>= 0.6),
     fontquiver (>= 0.2.0),
     gdtools (>= 0.1.2),
-    Rcpp
+    grDevices,
+    htmlwidgets (>= 0.6),
+    purrr (>= 0.2.0),
+    R6,
+    Rcpp,
+    shiny,
+    svglite (>= 1.2.0),
+    testthat (>= 1.0.0),
+    xml2
 Suggests:
     ggplot2,
     roxygen2,
