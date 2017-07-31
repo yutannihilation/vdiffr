@@ -3,6 +3,10 @@
 
 * Set minimal R version required to 3.1.0.
 
+* `expect_doppelganger()` gains a `verbose` argument to print the
+  SVG files for failed cases while testing. This is useful to debug
+  failures on remotes.
+
 
 # vdiffr 0.1.1
 

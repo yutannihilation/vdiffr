@@ -16,3 +16,7 @@ test_that("New plots work are collected", {
 test_that("Duplicated expectations issue a warning", {
   expect_doppelganger("myplot", p1_fail, "")
 })
+
+test_that("SVGs of failing cases are printed when `verbose` is TRUE", {
+  expect_doppelganger("myplot", p1_fail, "", verbose = TRUE)
+})

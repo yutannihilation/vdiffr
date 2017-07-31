@@ -71,3 +71,29 @@ dir.exists <- function(paths) {
 dir_exists <- function(path) {
   !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
 }
+
+chr_lines <- function(..., trailing = FALSE) {
+  lines <- paste(chr(...), collapse = "\n")
+  if (trailing) {
+    lines <- paste0(lines, "\n")
+  }
+  lines
+}
+meow <- function(...) {
+  cat(chr_lines(..., trailing = TRUE))
+}
+cxn_meow <- function(.cxn, ...) {
+  cat(chr_lines(..., trailing = TRUE), file = .cxn)
+}
+
+svg_files_lines <- function(case, pkg_path) {
+  name <- case$name
+
+  chr_lines(
+    glue(">>> { name } - original <<<"),
+    readLines(from_test_dir(pkg_path, case$path)),
+    glue(">>> { name } - failing <<<"),
+    readLines(case$testcase)
+  )
+}
+
