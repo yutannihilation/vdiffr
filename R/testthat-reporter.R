@@ -37,17 +37,10 @@ active_collecter <- function() {
   vdiffr_env$active_collecter
 }
 
-maybe_collect_case <- function(type, ...) {
+maybe_collect_case <- function(case) {
   collecter <- active_collecter()
 
   if (!is.null(collecter)) {
-    case <- switch(type,
-      new = case_new(...),
-      mismatch = case_mismatch(...),
-      success = case_success(...),
-      stop("Unknown case type")
-    )
-
     collecter$add_case(case)
   }
 }

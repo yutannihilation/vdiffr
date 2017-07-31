@@ -3,7 +3,7 @@ vdiffrServer <- function(cases) {
   shiny::shinyServer(function(input, output) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
-      type <- input$type %||% "case_new"
+      type <- input$type %||% "new_case"
       filter_cases(cases$all, type)
     })
 
@@ -22,8 +22,8 @@ vdiffrServer <- function(cases) {
 }
 
 prettify_types <- function(x) {
-  ifelse(x == "case_mismatch", "Mismatched",
-  ifelse(x == "case_new", "New", "Orphaned"
+  ifelse(x == "mismatch_case", "Mismatched",
+  ifelse(x == "new_case", "New", "Orphaned"
   ))
 }
 
@@ -83,7 +83,7 @@ renderDiffer <- function(input, active_cases, widget) {
     before_path <- file.path(pkg_path, "tests", "testthat", case$path)
 
     after <- as_inline_svg(read_file(case$testcase))
-    if (is_case_new(case)) {
+    if (is_new_case(case)) {
       before <- after
     } else {
       before <- as_inline_svg(read_file(before_path))
@@ -94,8 +94,8 @@ renderDiffer <- function(input, active_cases, widget) {
 }
 
 withdraw_cases <- function(cases) {
-  validate_cases(filter_cases(cases, c("case_new", "case_mismatch")))
-  delete_orphaned_cases(filter_cases(cases, "case_orphaned"))
+  validate_cases(filter_cases(cases, c("new_case", "mismatch_case")))
+  delete_orphaned_cases(filter_cases(cases, "orphaned_case"))
 }
 
 validateSingleCase <- function(input, reactive_cases) {
@@ -123,7 +123,7 @@ validateGroupCases <- function(input, reactive_cases) {
 
         withdraw_cases(active_cases)
 
-        case_types <- c("case_new", "case_mismatch", "case_orphaned")
+        case_types <- c("new_case", "mismatch_case", "orphaned_case")
         types <- case_types[!case_types == type]
         cases <- filter_cases(cases, types)
 

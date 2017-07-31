@@ -55,27 +55,32 @@ orphaned_cases <- function(cases) {
   orphans_paths <- svg_paths[is_orphan]
   orphans_names <- map_chr(orphans_paths, ~str_trim_ext(basename(.x)))
 
-  args <- list(set_names(orphans_names), orphans_paths, orphans_testcases)
-  orphaned_cases <- purrr::pmap(args, case_orphaned)
+  cases <- purrr::transpose(list(
+    name = orphans_names,
+    path = orphans_paths,
+    testcase = orphans_testcases,
+    verbose = rep_along(orphans_names, FALSE)
+  ))
+  orphaned_cases <- purrr::map(cases, orphaned_case)
   cases(orphaned_cases, pkg_path)
 }
 
 #' @rdname collect_cases
 #' @export
 collect_new_cases <- function(package = ".") {
-  filter_cases(collect_cases(package), "case_new")
+  filter_cases(collect_cases(package), "new_case")
 }
 
 #' @rdname collect_cases
 #' @export
 collect_mismatched_cases <- function(package = ".") {
-  filter_cases(collect_cases(package), "case_mismatched")
+  filter_cases(collect_cases(package), "mismatch_case")
 }
 
 #' @rdname collect_cases
 #' @export
 collect_orphaned_cases <- function(package = ".") {
-  filter_cases(collect_cases(package), "case_orphaned")
+  filter_cases(collect_cases(package), "orphaned_case")
 }
 
 #' Cases validation
@@ -90,7 +95,7 @@ collect_orphaned_cases <- function(package = ".") {
 #' @export
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))
-  cases <- filter_cases(cases, c("case_new", "case_mismatch"))
+  cases <- filter_cases(cases, c("new_case", "mismatch_case"))
 
   pkg_path <- attr(cases, "pkg_path")
   if (is.null(pkg_path)) {
@@ -125,7 +130,7 @@ delete_orphaned_cases <- function(cases = collect_orphaned_cases()) {
     stop("Internal error: Package path is missing", call. = FALSE)
   }
 
-  cases <- filter_cases(cases, "case_orphaned")
+  cases <- filter_cases(cases, "orphaned_case")
   paths <- map_chr(cases, "testcase")
   walk(paths, file.remove)
 }
@@ -152,19 +157,19 @@ c.cases <- function(..., recursive = FALSE) {
 print.cases <- function(x, ...) {
   cat(sprintf("<cases>: %s\n", length(x)))
 
-  mismatched <- filter_cases(x, "case_mismatched")
+  mismatched <- filter_cases(x, "mismatch_case")
   if (length(mismatched) > 0) {
     cat("\nMismatched:\n")
     print_cases_names(mismatched)
   }
 
-  new <- filter_cases(x, "case_new")
+  new <- filter_cases(x, "new_case")
   if (length(new) > 0) {
     cat("\nNew:\n")
     print_cases_names(new)
   }
 
-  orphaned <- filter_cases(x, "case_orphaned")
+  orphaned <- filter_cases(x, "orphaned_case")
   if (length(orphaned) > 0) {
     figs_path <- file.path(attr(x, "pkg_path"), "tests")
 
@@ -192,24 +197,31 @@ filter_cases <- function(cases, type) {
   cases(filtered, attr(cases, "pkg_path"), attr(cases, "deps"))
 }
 
-make_case_constructor <- function(class) {
-  classes <- c(paste0("case_", class), "case")
-  function(name, path, testcase) {
-    case <- list(
-      name = name,
-      path = path,
-      testcase = testcase
-    )
-    structure(case, class = classes)
-  }
+case <- function(case) {
+  set_attrs(case, class = "case")
+}
+mismatch_case <- function(case) {
+  set_attrs(case, class = c("mismatch_case", "case"))
+}
+new_case <- function(case) {
+  set_attrs(case, class = c("new_case", "case"))
+}
+orphaned_case <- function(case) {
+  set_attrs(case, class = c("orphaned_case", "case"))
+}
+success_case <- function(case) {
+  set_attrs(case, class = c("success_case", "case"))
 }
 
-case_mismatch <- make_case_constructor("mismatch")
-case_new <- make_case_constructor("new")
-case_orphaned <- make_case_constructor("orphaned")
-case_success <- make_case_constructor("success")
-
-is_case <- function(case) inherits(case, "case")
-is_case_mismatch <- function(case) inherits(case, "case_mismatch")
-is_case_new <- function(case) inherits(case, "case_new")
-is_case_orphaned <- function(case) inherits(case, "case_orphaned")
+is_case <- function(case) {
+  inherits(case, "case")
+}
+is_mismatch_case <- function(case) {
+  inherits(case, "mismatch_case")
+}
+is_new_case <- function(case) {
+  inherits(case, "new_case")
+}
+is_orphaned_case <- function(case) {
+  inherits(case, "orphaned_case")
+}

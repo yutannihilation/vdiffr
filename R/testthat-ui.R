@@ -61,10 +61,17 @@ expect_doppelganger <- function(title, fig, path = NULL, ...,
   path <- file.path("..", "figs", path)
   ensure_directories(dirname(path))
 
+  case <- case(list(
+    name = fig_name,
+    path = path,
+    testcase = testcase
+  ))
+
   if (file.exists(path)) {
-    exp <- compare_figs(testcase, path, fig_name = fig_name)
+    exp <- compare_figs(case)
   } else {
-    maybe_collect_case("new", name = fig_name, path = path, testcase = testcase)
+    case <- new_case(case)
+    maybe_collect_case(case)
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
     exp <- expectation_new(msg)
   }
@@ -81,16 +88,18 @@ str_standardise <- function(s, sep = "-") {
   s
 }
 
-compare_figs <- function(testcase, path, fig_name) {
-  equal <- compare_files(testcase, normalizePath(path))
+compare_figs <- function(case) {
+  equal <- compare_files(case$testcase, normalizePath(case$path))
 
   if (equal) {
-    maybe_collect_case("success", name = fig_name, path = path, testcase = testcase)
     exp <- expectation_match("TRUE")
+    case <- success_case(case)
+    maybe_collect_case(case)
   } else {
-    maybe_collect_case("mismatch", name = fig_name, path = path, testcase = testcase)
-    msg <- paste0("Figures don't match: ", fig_name, ".svg\n")
+    msg <- paste0("Figures don't match: ", case$name, ".svg\n")
     exp <- expectation_mismatch(msg)
+    case <- mismatch_case(case)
+    maybe_collect_case(case)
   }
 
   exp
