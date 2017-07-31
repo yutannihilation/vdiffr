@@ -55,4 +55,3 @@ if (ver >= "2.6.0" && requireNamespace("ggplot2", quietly = TRUE)) {
   expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
 }
 }
-

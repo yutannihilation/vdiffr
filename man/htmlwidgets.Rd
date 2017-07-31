@@ -2,12 +2,12 @@
 % Please edit documentation in R/widgets.R
 \name{htmlwidgets}
 \alias{htmlwidgets}
-\alias{widget_diff}
-\alias{widget_diff_}
-\alias{widget_slide}
-\alias{widget_slide_}
-\alias{widget_toggle}
 \alias{widget_toggle_}
+\alias{widget_slide_}
+\alias{widget_diff_}
+\alias{widget_toggle}
+\alias{widget_slide}
+\alias{widget_diff}
 \title{HTML Widgets for graphical comparison}
 \usage{
 widget_toggle_(before, after, width = NULL, height = NULL)
@@ -57,4 +57,3 @@ widget_toggle(p1, p2)
 widget_slide(p1, p2)
 widget_diff(p1, p2)
 }
-

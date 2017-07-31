@@ -18,4 +18,3 @@ Dependencies on svglite and ggplot2 are automatically added. In
 addition, \code{add_dependency()} can be called in any testthat
 file to manually add a dependency to a package.
 }
-

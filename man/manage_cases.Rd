@@ -21,4 +21,3 @@ Manage visual test cases with a Shiny app
 \code{\link{vdiffrAddin}()}, \code{\link{collect_cases}()}
   and \code{\link{validate_cases}()}
 }
-

@@ -14,4 +14,3 @@ project, then for the current folder if no project is active.
 \code{\link{manage_cases}()}, \code{\link{collect_cases}()}
   and \code{\link{validate_cases}()}
 }
-

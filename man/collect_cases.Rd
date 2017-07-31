@@ -2,8 +2,8 @@
 % Please edit documentation in R/cases.R
 \name{collect_cases}
 \alias{collect_cases}
-\alias{collect_mismatched_cases}
 \alias{collect_new_cases}
+\alias{collect_mismatched_cases}
 \alias{collect_orphaned_cases}
 \title{Collect cases}
 \usage{
@@ -37,4 +37,3 @@ collect cases.
 \seealso{
 \code{\link{manage_cases}()}
 }
-
