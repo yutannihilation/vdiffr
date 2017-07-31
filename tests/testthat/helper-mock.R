@@ -23,7 +23,21 @@ skip_old_freetype <- function() {
   }
 }
 
-if (!old_freetype() && !on_load()) {
+
+
+stack <- rev(rlang::ctxt_stack())
+
+is_load_all <- function(frame) {
+  if (rlang::is_lang(frame$expr, "load_all")) {
+    identical(frame$fn, devtools::load_all)
+  } else {
+    FALSE
+  }
+}
+
+on_load <- purrr::some(stack, is_load_all)
+
+if (!old_freetype() && !on_load) {
   mock_pkg_dir <- create_mock_pkg()
   mock_test_dir <- file.path(mock_pkg_dir, "tests", "testthat")
 
