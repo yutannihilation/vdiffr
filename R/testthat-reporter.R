@@ -65,11 +65,12 @@ vdiffrReporter <-
 
       add_result = function(context, test, result) {
         cat(single_letter_summary(result))
+
+        case <- attr(result, "vdiffr_case")
         if (expectation_error(result)) {
           self$failure <- result
         }
         if (is_verbose(result)) {
-          case <- attr(result, "vdiffr_case")
           self$verbose_cases <- c(self$verbose_cases, list(case))
         }
       },

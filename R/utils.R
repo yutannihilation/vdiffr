@@ -86,14 +86,43 @@ cxn_meow <- function(.cxn, ...) {
   cat(chr_lines(..., trailing = TRUE), file = .cxn)
 }
 
-svg_files_lines <- function(case, pkg_path) {
+svg_files_lines <- function(case, pkg_path = NULL) {
   name <- case$name
+  if (is_null(pkg_path)) {
+    original_path <- case$path
+  } else {
+    # The reporter is not run from the test directory
+    original_path <- from_test_dir(pkg_path, case$path)
+  }
 
   chr_lines(
-    glue(">>> { name } - original <<<"),
-    readLines(from_test_dir(pkg_path, case$path)),
-    glue(">>> { name } - failing <<<"),
-    readLines(case$testcase)
+    glue(
+      ">>> Failed doppelganger: { case$name } <<<
+       >>> Original SVG:"
+    ),
+    readLines(original_path),
+    ">>> Testcase SVG:",
+    readLines(case$testcase),
+    "<<<"
   )
 }
+from_test_dir <- function(pkg_path, path) {
+  file.path(pkg_path, "tests", "testthat", path)
+}
 
+push_log <- function(case) {
+  if (!is_checking()) {
+    return(invisible(FALSE))
+  }
+
+  log_path <- file.path("..", "vdiffr.fail")
+  file <- file(log_path, "a")
+  on.exit(close(file))
+
+  cxn_meow(file, svg_files_lines(case))
+
+  invisible(TRUE)
+}
+is_checking <- function() {
+  nzchar(Sys.getenv("R_TESTS"))
+}

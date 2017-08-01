@@ -102,8 +102,11 @@ compare_figs <- function(case) {
   } else {
     case <- mismatch_case(case)
     maybe_collect_case(case)
+
     msg <- paste0("Figures don't match: ", case$name, ".svg\n")
     exp <- expectation_mismatch(msg, case)
+
+    push_log(case)
   }
 
   exp

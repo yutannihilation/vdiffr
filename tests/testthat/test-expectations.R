@@ -27,5 +27,5 @@ test_that("Doppelgangers pass", {
 
 test_that("Verbose outputs svg files", {
   output <- mock_cases_outputs$output
-  expect_true(grepl("myplot - original <<<\n<\\?xml version", output))
+  expect_true(grepl(">>> Failed doppelganger: myplot", output))
 })

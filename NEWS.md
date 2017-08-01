@@ -7,6 +7,12 @@
   SVG files for failed cases while testing. This is useful to debug
   failures on remotes.
 
+* When tests are run by `R CMD check`, failures are now recorded in a
+  log file called `vdiffr.fail`. This file will show up in the Travis
+  log and can be retrieved from artifacts on Appveyor. It includes the
+  SVG files for failed cases, which is useful to debug failures on
+  remotes.
+
 
 # vdiffr 0.1.1
 
