@@ -116,9 +116,26 @@ push_log <- function(case) {
   }
 
   log_path <- file.path("..", "vdiffr.fail")
+  log_exists <- file.exists(log_path)
+
   file <- file(log_path, "a")
   on.exit(close(file))
 
+  if (!log_exists) {
+    cxn_meow(file, glue(
+      "R environment:
+       - vdiffr: { utils::packageVersion('vdiffr') }
+       - gdtools: { utils::packageVersion('gdtools') }
+       - svglite: { utils::packageVersion('svglite') }
+
+       System environment:
+       - Fontconfig: { gdtools::version_fontconfig() }
+       - FreeType: { gdtools::version_freetype() }
+       - Cairo: { gdtools::version_cairo() }
+
+      "
+    ))
+  }
   cxn_meow(file, svg_files_lines(case))
 
   invisible(TRUE)
