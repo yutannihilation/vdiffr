@@ -7,7 +7,12 @@ test_that("failures are pushed to log file", {
 
   log <- readLines(file.path(mock_pkg_dir, "tests", "vdiffr.fail"))
 
-  n_logged <- length(grep(">>> Failed doppelganger:", log))
+  n_logged <- length(grep(">> Failed doppelganger:", log))
   n_failures <- length(keep(mock_cases, inherits, "mismatch_case"))
   expect_identical(n_logged, n_failures)
+})
+
+test_that("Verbose outputs svg files", {
+  output <- mock_cases_outputs$output
+  expect_true(grepl(">> Failed doppelganger: myplot", output))
 })

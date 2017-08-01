@@ -97,13 +97,14 @@ svg_files_lines <- function(case, pkg_path = NULL) {
 
   chr_lines(
     glue(
-      ">>> Failed doppelganger: { case$name } <<<
-       >>> Original SVG:"
+      ">> Failed doppelganger: { case$name }
+       > Original SVG:"
     ),
     readLines(original_path),
-    ">>> Testcase SVG:",
+    "",
+    "> Testcase SVG:",
     readLines(case$testcase),
-    "<<<"
+    ""
   )
 }
 from_test_dir <- function(pkg_path, path) {

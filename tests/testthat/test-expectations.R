@@ -24,8 +24,3 @@ test_that("Doppelgangers pass", {
   expect_is(ggplot_result, "expectation_success")
   expect_is(base_result, "expectation_success")
 })
-
-test_that("Verbose outputs svg files", {
-  output <- mock_cases_outputs$output
-  expect_true(grepl(">>> Failed doppelganger: myplot", output))
-})
