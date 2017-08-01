@@ -43,7 +43,13 @@ if (!old_freetype() && !on_load) {
 
   test_results <- testthat::test_dir(mock_test_dir, reporter = "silent")
   mock_cases_outputs <- purrr::quietly(purrr::safely(collect_cases))(mock_pkg_dir)
-  mock_cases <- mock_cases_outputs$result$result
 
+  quietly_out <- mock_cases_outputs$result
+  if (inherits(quietly_out$error, "condition")) {
+    cat("While collecting testing cases:\n")
+    stop(quietly_out$error)
+  }
+
+  mock_cases <- quietly_out$result
   validate_cases(mock_cases)
 }
