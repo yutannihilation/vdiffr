@@ -30,8 +30,13 @@ make sure SVG are reproducible. Defaults to Liberation fonts for
 standard families and Symbola font for symbols.}
 
 \item{verbose}{If \code{TRUE}, the contents of the SVG files for
-the comparison plots are printed during testthat checks. This is
-useful to investigate errors when testing remotely.}
+  the comparison plots are printed during testthat checks. This is
+  useful to investigate errors when testing remotely.
+
+  Note that it is not possible to print the original SVG during
+  interactive use. This is because there is no way of figuring out
+  in which directory this SVG lives. Consequently, only the test
+  case is printed.}
 }
 \description{
 If the test has never been validated yet, the test is skipped. If

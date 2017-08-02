@@ -29,6 +29,11 @@
 #' @param verbose If \code{TRUE}, the contents of the SVG files for
 #'   the comparison plots are printed during testthat checks. This is
 #'   useful to investigate errors when testing remotely.
+#'
+#'   Note that it is not possible to print the original SVG during
+#'   interactive use. This is because there is no way of figuring out
+#'   in which directory this SVG lives. Consequently, only the test
+#'   case is printed.
 #' @export
 #' @examples
 #' ver <- gdtools::version_freetype()
@@ -76,6 +81,7 @@ expect_doppelganger <- function(title, fig, path = NULL, ...,
   } else {
     case <- new_case(case)
     maybe_collect_case(case)
+    maybe_print_svgs(case)
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
     exp <- expectation_new(msg, case)
   }
@@ -110,6 +116,14 @@ compare_figs <- function(case) {
   }
 
   exp
+}
+
+# Print only if we're not collecting. The testthat reporter prints
+# verbose cases at a later point.
+maybe_print_svgs <- function(case, pkg_path = NULL) {
+  if (case$verbose && is_null(active_collecter())) {
+    meow(svg_files_lines(case, pkg_path))
+  }
 }
 
 expectation_new <- function(msg, case) {

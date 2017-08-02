@@ -95,13 +95,22 @@ svg_files_lines <- function(case, pkg_path = NULL) {
     original_path <- from_test_dir(pkg_path, case$path)
   }
 
-  chr_lines(
-    glue(
-      ">> Failed doppelganger: { case$name }
-       > Original SVG:"
-    ),
-    readLines(original_path),
-    "",
+  # If called from interactive use, we most likely can't figure out
+  # where the original SVG lives (most likely in a subdirectory within
+  # the `figs` folder) so we don't print it.
+  if (file.exists(original_path)) {
+    original_lines <- chr_lines(
+      "> Original SVG:",
+      readLines(original_path),
+      ""
+    )
+  } else {
+    original_lines <- ""
+  }
+
+  lines <- chr_lines(
+    glue(">> Failed doppelganger: { case$name }"),
+    original_lines,
     "> Testcase SVG:",
     readLines(case$testcase),
     ""
