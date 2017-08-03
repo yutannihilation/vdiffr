@@ -34,7 +34,8 @@ Imports:
 Suggests:
     ggplot2,
     roxygen2,
-    rstudioapi
+    rstudioapi,
+    yaml
 License: GPL-3 | file LICENSE
 LazyData: true
 RoxygenNote: 6.0.1
