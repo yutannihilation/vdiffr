@@ -1,5 +1,5 @@
 
-# vdiffr 0.1.2
+# vdiffr 0.2.0
 
 This release makes it easier to debug failures on remote systems. It
 also makes vdiffr more robust to failures caused by incompatible
