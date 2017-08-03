@@ -1,7 +1,13 @@
 
-# vdiffr 0.1.1.9000
+# vdiffr 0.2.0
 
-* Set minimal R version required to 3.1.0.
+This release makes it easier to debug failures on remote systems. It
+also makes vdiffr more robust to failures caused by incompatible
+installations: instead of failing, the tests are skipped. This
+prevents spurious failures on CRAN.
+
+
+## Troubleshooting on remotes
 
 * `expect_doppelganger()` gains a `verbose` argument to print the
   SVG files for failed cases while testing. This is useful to debug
@@ -12,6 +18,33 @@
   log and can be retrieved from artifacts on Appveyor. It includes the
   SVG files for failed cases, which is useful to debug failures on
   remotes.
+
+
+## Handling of incompatible systems
+
+The tests are now skipped if the FreeType version used to build the
+comparison SVGs does not match the version installed on the system
+where the tests are run. This is necessary because changes in new
+version of FreeType might affect the computation of text extents,
+which then causes svglite to produce slightly different SVGs. The
+minor version is not taken into account so FreeType 2.7.1 is deemed
+compatible with 2.7.2 but not with 2.8.0.
+
+In practice, this means that package contributors should only
+validate visual cases if their FreeType version matches the one of
+the package maintainer. Also, the maintainer must update the version
+recorded in the package repository (in the file
+`./tests/figs/deps.txt`) when FreeType has been updated on their
+system. Running `vdiffr::validate_cases()` updates the dependency
+file even if there are no visual case to update.
+
+In the future, we may provide a version of vdiffr statically
+compiled with a specific version of FreeType to prevent these issues.
+
+
+## Other changes
+
+* The minimal R version required by vdiffr is now R 3.1.0.
 
 
 # vdiffr 0.1.1

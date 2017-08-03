@@ -107,12 +107,23 @@ validate_cases <- function(cases = collect_new_cases()) {
 }
 
 write_deps_note <- function(cases, pkg_path) {
+  versions_lines <- glue(
+    "Fontconfig: { gdtools::version_fontconfig() }
+     FreeType: { gdtools::version_freetype() }
+     Cairo: { gdtools::version_cairo() }"
+  )
+
   deps <- attr(cases, "deps")
   versions <- map_chr(deps, package_version)
-  deps <- map2_chr(deps, versions, paste, sep = ": ")
+  deps_lines <- map2_chr(deps, versions, paste, sep = ": ")
+
+  deps_lines <- chr_lines(
+    versions_lines,
+    deps_lines
+  )
 
   deps_note_file <- file.path(pkg_path, "tests", "figs", "deps.txt")
-  writeLines(deps, deps_note_file)
+  writeLines(deps_lines, deps_note_file)
 }
 
 update_case <- function(case, pkg_path) {

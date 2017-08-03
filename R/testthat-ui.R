@@ -83,7 +83,7 @@ expect_doppelganger <- function(title, fig, path = NULL, ...,
     maybe_collect_case(case)
     maybe_print_svgs(case)
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
-    exp <- expectation_new(msg, case)
+    exp <- new_exp(msg, case)
   }
 
   signal_expectation(exp)
@@ -104,18 +104,68 @@ compare_figs <- function(case) {
   if (equal) {
     case <- success_case(case)
     maybe_collect_case(case)
-    exp <- expectation_match("TRUE", case)
-  } else {
-    case <- mismatch_case(case)
-    maybe_collect_case(case)
-
-    msg <- paste0("Figures don't match: ", case$name, ".svg\n")
-    exp <- expectation_mismatch(msg, case)
-
-    push_log(case)
+    return(match_exp("TRUE", case))
   }
 
-  exp
+  case <- mismatch_case(case)
+  maybe_collect_case(case)
+  push_log(case)
+
+  cases_ver <- cases_freetype_version()
+  system_ver <- system_freetype_version()
+
+  if (is_null(cases_ver)) {
+    msg <- glue(
+      "Failed doppelganger but vdiffr can't check its FreeType version.
+       Please revalidate cases with a more recent vdiffr"
+    )
+    return(skipped_mismatch_exp(msg, case))
+  }
+
+  if (cases_ver < system_ver) {
+    msg <- glue(
+      "Failed doppelganger was generated with an older FreeType version.
+       Please revalidate cases with vdiffr::validate_cases() or vdiffr::manage_cases()"
+    )
+    return(skipped_mismatch_exp(msg, case))
+  }
+
+  if (cases_ver > system_ver) {
+    msg <- glue(
+      "Failed doppelganger was generated with a newer FreeType version.
+       Please install FreeType {cases_ver} on your system"
+    )
+    return(skipped_mismatch_exp(msg, case))
+  }
+
+  msg <- paste0("Figures don't match: ", case$name, ".svg\n")
+  mismatch_exp(msg, case)
+}
+
+# Go back up one level by default as we should be in the `testthat`
+# folder
+cases_freetype_version <- function(path = "..") {
+  deps <- readLines(file.path(path, "figs", "deps.txt"))
+  ver <- purrr::detect(deps, function(dep) grepl("^FreeType:", dep))
+
+  if (is_null(ver)) {
+    return(NULL)
+  }
+
+  # Strip "FreeType: " prefix and minor version
+  ver <- substr(ver, 11, nchar(ver))
+  ver <- sub(".[0-9]+$", "", ver)
+
+  as_version(ver)
+}
+system_freetype_version <- function() {
+  ver <- sub(".[0-9]+$", "", gdtools::version_freetype())
+  as_version(ver)
+}
+as_version <- function(ver) {
+  ver <- strsplit(ver, ".", fixed = TRUE)[[1]]
+  ver <- as.integer(ver)
+  structure(list(ver), class = c("package_version", "numeric_version"))
 }
 
 # Print only if we're not collecting. The testthat reporter prints
@@ -126,20 +176,22 @@ maybe_print_svgs <- function(case, pkg_path = NULL) {
   }
 }
 
-expectation_new <- function(msg, case) {
-  exp <- testthat::expectation("skip", msg)
-  classes <- c(class(exp), "vdiffr_new")
+new_expectation <- function(msg, case, type, vdiffr_type) {
+  exp <- testthat::expectation(type, msg)
+  classes <- c(class(exp), vdiffr_type)
   set_attrs(exp, class = classes, vdiffr_case = case)
 }
-expectation_mismatch <- function(msg, case) {
-  exp <- testthat::expectation("failure", msg)
-  classes <- c(class(exp), "vdiffr_mismatch")
-  set_attrs(exp, class = classes, vdiffr_case = case)
+new_exp <- function(msg, case) {
+  new_expectation(msg, case, "skip", "vdiffr_new")
 }
-expectation_match <- function(msg, case) {
-  exp <- testthat::expectation("success", msg)
-  classes <- c(class(exp), "vdiffr_match")
-  set_attrs(exp, class = classes, vdiffr_case = case)
+match_exp <- function(msg, case) {
+  new_expectation(msg, case, "success", "vdiffr_match")
+}
+mismatch_exp <- function(msg, case) {
+  new_expectation(msg, case, "failure", "vdiffr_mismatch")
+}
+skipped_mismatch_exp <- function(msg, case) {
+  new_expectation(msg, case, "skip", "vdiffr_mismatch")
 }
 
 # From testthat

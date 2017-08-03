@@ -139,50 +139,28 @@ C-v`, include something like this in your init file:
 
 ## Technical Aspects
 
-### Continuous integration on Travis
+### FreeType dependency
 
-To work properly, vdiffr requires the C library `FreeType` version
-2.6.0 or later. The FreeType libraries available by default on Travis'
-Linux platforms are not this recent yet. Some adjustments to the
-`travis.yml` file are thus required.
+The software FreeType plays a key role in vdiffr. It is used to
+compute the extents of text boxes and thus determine the dimensions of
+graphical elements containing text. These dimensions are then recorded
+in the SVG files.
 
-**Ubuntu Precise (the default):**
+Small changes in the algorithm implemented in FreeType to compute text
+extents will produce different SVGs. For this reason, it is important
+that the FreeType version that was used to create validated cases be
+the same as the one on the system running the tests. To avoid false
+failures, the visual tests are skipped when that's not the case. The
+minor version is not taken into account so FreeType 2.7.1 is deemed
+compatible with 2.7.2 but not with 2.8.0.
 
-```{yaml}
-addons:
-  apt:
-    sources:
-      - debian-sid
-    packages:
-      - libfreetype6
-```
-
-**Ubuntu Trusty:**
-
-```{yaml}
-sudo: required
-before_install: [
-  "sudo add-apt-repository \"deb http://archive.ubuntu.com/ubuntu/ xenial main\" -y",
-  "sudo apt-get update -q",
-  "sudo apt-get install libfreetype6"
-]
-```
-
-**macOS with XCode 6.1:**
-
-```{yaml}
-osx_image: beta-xcode6.1
-disable_homebrew: true
-latex: false
-```
-
-**macOS with XCode 7.2:**
-
-```{yaml}
-osx_image: xcode7.2
-brew_packages: cairo
-latex: false
-```
+In practice, this means that package contributors should only validate
+visual cases if their FreeType version matches the one of the package
+maintainer. Also, the maintainer must update the version recorded in
+the package repository (in the file `./tests/figs/deps.txt`) when
+FreeType has been updated on their system. Running
+`vdiffr::validate_cases()` updates the dependency file even if there
+are no visual case to update.
 
 
 ### Windows platforms

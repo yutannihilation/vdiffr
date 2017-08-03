@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 compare_files <- function(expected, test) {
-    .Call('_vdiffr_compare_files', PACKAGE = 'vdiffr', expected, test)
+    .Call(`_vdiffr_compare_files`, expected, test)
 }
 
