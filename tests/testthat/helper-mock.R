@@ -1,10 +1,16 @@
 
 create_mock_pkg <- function(pkg = "mock-pkg") {
   dir <- tempfile()
-  dir.create(dir)
 
-  file.copy(paste0(pkg, "/"), dir, recursive = TRUE)
-  file.path(dir, pkg)
+  dir.create(dir, recursive = TRUE)
+  file.copy(pkg, dir, recursive = TRUE)
+
+  # Enable `R CMD check` logging
+  from <- file.path(dir, pkg)
+  to <- paste0(from, ".Rcheck")
+  file.rename(from, to)
+
+  to
 }
 
 subset_results <- function(results, file, test) {
@@ -23,6 +29,9 @@ skip_old_freetype <- function() {
   }
 }
 
+is_checking <- function() {
+  nzchar(Sys.getenv("R_TESTS"))
+}
 
 
 stack <- rev(rlang::ctxt_stack())

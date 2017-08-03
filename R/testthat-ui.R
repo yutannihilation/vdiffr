@@ -26,6 +26,14 @@
 #' @param user_fonts Passed to \code{\link[svglite]{svglite}()} to
 #'   make sure SVG are reproducible. Defaults to Liberation fonts for
 #'   standard families and Symbola font for symbols.
+#' @param verbose If \code{TRUE}, the contents of the SVG files for
+#'   the comparison plots are printed during testthat checks. This is
+#'   useful to investigate errors when testing remotely.
+#'
+#'   Note that it is not possible to print the original SVG during
+#'   interactive use. This is because there is no way of figuring out
+#'   in which directory this SVG lives. Consequently, only the test
+#'   case is printed.
 #' @export
 #' @examples
 #' ver <- gdtools::version_freetype()
@@ -41,7 +49,7 @@
 #'   expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
 #' }
 expect_doppelganger <- function(title, fig, path = NULL, ...,
-                                user_fonts = NULL) {
+                                user_fonts = NULL, verbose = FALSE) {
   if (old_freetype()) {
     ver <- gdtools::version_freetype()
     msg <- paste("vdiffr requires FreeType >= 2.6.0. Current version:", ver)
@@ -64,7 +72,8 @@ expect_doppelganger <- function(title, fig, path = NULL, ...,
   case <- case(list(
     name = fig_name,
     path = path,
-    testcase = testcase
+    testcase = testcase,
+    verbose = verbose
   ))
 
   if (file.exists(path)) {
@@ -72,8 +81,9 @@ expect_doppelganger <- function(title, fig, path = NULL, ...,
   } else {
     case <- new_case(case)
     maybe_collect_case(case)
+    maybe_print_svgs(case)
     msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
-    exp <- expectation_new(msg)
+    exp <- expectation_new(msg, case)
   }
 
   signal_expectation(exp)
@@ -92,33 +102,44 @@ compare_figs <- function(case) {
   equal <- compare_files(case$testcase, normalizePath(case$path))
 
   if (equal) {
-    exp <- expectation_match("TRUE")
     case <- success_case(case)
     maybe_collect_case(case)
+    exp <- expectation_match("TRUE", case)
   } else {
-    msg <- paste0("Figures don't match: ", case$name, ".svg\n")
-    exp <- expectation_mismatch(msg)
     case <- mismatch_case(case)
     maybe_collect_case(case)
+
+    msg <- paste0("Figures don't match: ", case$name, ".svg\n")
+    exp <- expectation_mismatch(msg, case)
+
+    push_log(case)
   }
 
   exp
 }
 
-expectation_new <- function(msg) {
-  x <- testthat::expectation("skip", msg)
-  classes <- c(class(x), "vdiffr_new")
-  structure(x, class = classes)
+# Print only if we're not collecting. The testthat reporter prints
+# verbose cases at a later point.
+maybe_print_svgs <- function(case, pkg_path = NULL) {
+  if (case$verbose && is_null(active_collecter())) {
+    meow(svg_files_lines(case, pkg_path))
+  }
 }
-expectation_mismatch <- function(msg) {
+
+expectation_new <- function(msg, case) {
+  exp <- testthat::expectation("skip", msg)
+  classes <- c(class(exp), "vdiffr_new")
+  set_attrs(exp, class = classes, vdiffr_case = case)
+}
+expectation_mismatch <- function(msg, case) {
   exp <- testthat::expectation("failure", msg)
   classes <- c(class(exp), "vdiffr_mismatch")
-  structure(exp, class = classes)
+  set_attrs(exp, class = classes, vdiffr_case = case)
 }
-expectation_match <- function(msg) {
+expectation_match <- function(msg, case) {
   exp <- testthat::expectation("success", msg)
   classes <- c(class(exp), "vdiffr_match")
-  structure(exp, class = classes)
+  set_attrs(exp, class = classes, vdiffr_case = case)
 }
 
 # From testthat

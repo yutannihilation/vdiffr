@@ -54,31 +54,58 @@ vdiffrReporter <-
   R6::R6Class("vdiffrReporter", inherit = testthat::Reporter,
     public = list(
       failure = NULL,
+      verbose_cases = list(),
+      pkg_path = NULL,
 
       initialize = function(pkg_path) {
+        self$pkg_path <- pkg_path
         collecter <- casesCollecter$new(pkg_path)
         set_active_collecter(collecter)
       },
 
       add_result = function(context, test, result) {
         cat(single_letter_summary(result))
+
+        case <- attr(result, "vdiffr_case")
         if (expectation_error(result)) {
           self$failure <- result
+        }
+        if (is_verbose(result)) {
+          self$verbose_cases <- c(self$verbose_cases, list(case))
         }
       },
 
       end_reporter = function() {
-        cat("\n")
+        meow()
+
         if (!is.null(self$failure)) {
-          stop(call. = FALSE,
-            "while collecting vdiffr cases. Last error:\n",
-            "     test: `", self$failure$test, "`\n",
-            "  message: `", self$failure$message, "`"
+          abort(glue(
+            "while collecting vdiffr cases. Last error:
+             test: { self$failure$test }
+             message: { self$failure$message }"
+          ))
+        }
+        if (length(self$verbose_cases)) {
+          meow(
+            glue(
+              "====================
+               vdiffr failing cases
+               ===================="
+            ),
+            map(self$verbose_cases, svg_files_lines, self$pkg_path),
+            (
+              "===================="
+            )
           )
         }
       }
     )
   )
+
+is_verbose <- function(x) {
+  case <- attr(x, "vdiffr_case")
+  !is_null(case) && case$verbose
+}
 
 expectation_type <- function(exp) {
   stopifnot(inherits(exp, "expectation"))
