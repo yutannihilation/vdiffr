@@ -1,5 +1,5 @@
 
-# vdiffr 0.1.1.9000
+# vdiffr 0.1.2
 
 * Set minimal R version required to 3.1.0.
 
