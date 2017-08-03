@@ -14,6 +14,11 @@ Authors@R: c(
 Description: An extension to the 'testthat' package that makes it easy
     to add graphical unit tests. It provides a Shiny application to
     manage the test cases.
+License: GPL-3 | file LICENSE
+LazyData: true
+ByteCompile: true
+SystemRequirements:
+    FreeType >= 2.6.0
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -36,8 +41,6 @@ Suggests:
     roxygen2,
     rstudioapi,
     yaml
-License: GPL-3 | file LICENSE
-LazyData: true
+LinkingTo:
+    Rcpp
 RoxygenNote: 6.0.1
-LinkingTo: Rcpp
-SystemRequirements: FreeType >= 2.6.0
