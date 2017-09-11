@@ -7,7 +7,8 @@ if (cases_ver != system_ver) {
   cat(glue::glue(
     "Skipping tests because the mock package was generated with a different FreeType version
      Mock package: { cases_ver }
-     System: { system_ver }\n"
+     System: { system_ver }
+     \n"
   ))
 } else {
   library("testthat")
