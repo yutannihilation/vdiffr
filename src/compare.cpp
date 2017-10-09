@@ -37,8 +37,8 @@ bool compare_files(std::string expected, std::string test) {
     compare_throw();
 
   // Remove carriage returns from SVGs generated on Windows
-  buffer1.erase(remove_if_it(buffer1.begin(), buffer1.end(), is_cr()), buffer1.end());
-  buffer2.erase(remove_if_it(buffer2.begin(), buffer2.end(), is_cr()), buffer2.end());
+  buffer1.erase(remove_if_it(buffer1.begin(), buffer1.end() - 1, is_cr()), buffer1.end());
+  buffer2.erase(remove_if_it(buffer2.begin(), buffer2.end() - 1, is_cr()), buffer2.end());
 
   return buffer1 == buffer2;
 }
