@@ -125,7 +125,7 @@ push_log <- function(case) {
     return(invisible(FALSE))
   }
 
-  log_path <- file.path("..", "vdiffr.fail")
+  log_path <- file.path("..", "vdiffr.Rout.fail")
   log_exists <- file.exists(log_path)
 
   file <- file(log_path, "a")

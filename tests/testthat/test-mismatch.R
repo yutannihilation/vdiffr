@@ -5,7 +5,7 @@ test_that("failures are pushed to log file", {
     return("Skipping R CMD check tests")
   }
 
-  log <- readLines(file.path(mock_pkg_dir, "tests", "vdiffr.fail"))
+  log <- readLines(file.path(mock_pkg_dir, "tests", "vdiffr.Rout.fail"))
 
   n_logged <- length(grep(">> Failed doppelganger:", log))
   n_failures <- length(keep(mock_cases, inherits, "mismatch_case"))
