@@ -1,15 +1,4 @@
-This version fixes the errors on systems featuring FreeType 2.8.0. It
-should also fix packages depending on vdiffr, such as ggstance.
-
-The win-builder checks failed with this error:
-
-```
-Error in svglite_(file, bg, width, height, pointsize, standalone, aliases) :
-  function 'gdtools_RcppExport_validate' not provided by package 'gdtools'
-```
-
-However I cannot reproduce this error on Appveyor or on R hub.
-
+This version attempts to fix the errors that appeared on some CRAN systems.
 
 ## Test environments
 
@@ -26,10 +15,6 @@ However I cannot reproduce this error on Appveyor or on R hub.
 
 ## Reverse dependencies
 
-We ran R CMD check on all 5 reverse dependencies (summary at
+We ran R CMD check on all 9 reverse dependencies (summary at
 https://github.com/lionel-/vdiffr/tree/master/revdep). No problems
 were found.
-
-We also run R CMD check for the ggstance package on a Debian system
-featuring FreeType 2.8.0. This new version of vdiffr fixes the
-ggstance failures.
