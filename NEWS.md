@@ -1,5 +1,11 @@
 
-# vdiffr 0.2.0.9000
+# vdiffr 0.2.1
+
+This release fixes some CRAN failures.
+
+* Test cases of the mock package were updated to FreeType 2.8.0.
+
+* The unit test log file from the mock package is now preserved.
 
 
 # vdiffr 0.2.0

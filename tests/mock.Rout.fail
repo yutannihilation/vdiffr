@@ -1,5 +1,5 @@
 R environment:
-- vdiffr: 0.2.0.9000
+- vdiffr: 0.2.1
 - gdtools: 0.1.6
 - svglite: 1.2.1
 
