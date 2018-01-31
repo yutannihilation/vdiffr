@@ -1,4 +1,15 @@
 
+# vdiffr 0.2.2
+
+* Skip tests if the system version of Cairo (actually the one gdtools
+  was compiled with) doesn't match the version of Cairo used to
+  generate the testcases. Cairo has an influence on the computation of
+  text metrics which can cause spurious test failures.
+
+  We plan to fix these issues once and for all by embedding gdtools,
+  svglite, Cairo and FreeType in the vdiffr package.
+
+
 # vdiffr 0.2.1
 
 This release fixes some CRAN failures.
