@@ -111,7 +111,15 @@ compare_figs <- function(case) {
   maybe_collect_case(case)
   push_log(case)
 
-  cases_ver <- cases_freetype_version()
+  check_versions_match("FreeType", system_freetype_version(), strip = TRUE)
+  check_versions_match("Cairo", gdtools::version_cairo(), strip = FALSE)
+
+  msg <- paste0("Figures don't match: ", case$name, ".svg\n")
+  mismatch_exp(msg, case)
+}
+
+check_versions_match <- function(dep, version, strip = FALSE) {
+  cases_ver <- cases_pkg_version(dep, strip = strip)
   system_ver <- system_freetype_version()
 
   if (is_null(cases_ver)) {
@@ -119,15 +127,15 @@ compare_figs <- function(case) {
       "Failed doppelganger but vdiffr can't check its FreeType version.
        Please revalidate cases with a more recent vdiffr"
     )
-    return(skipped_mismatch_exp(msg, case))
+    return_from(caller_env(), skipped_mismatch_exp(msg, case))
   }
 
   if (cases_ver < system_ver) {
     msg <- glue(
-      "Failed doppelganger was generated with an older FreeType version.
+      "Failed doppelganger was generated with an older { dep } version.
        Please revalidate cases with vdiffr::validate_cases() or vdiffr::manage_cases()"
     )
-    return(skipped_mismatch_exp(msg, case))
+    return_from(caller_env(), skipped_mismatch_exp(msg, case))
   }
 
   if (cases_ver > system_ver) {
@@ -135,29 +143,32 @@ compare_figs <- function(case) {
       "Failed doppelganger was generated with a newer FreeType version.
        Please install FreeType {cases_ver} on your system"
     )
-    return(skipped_mismatch_exp(msg, case))
+    return_from(caller_env(), skipped_mismatch_exp(msg, case))
   }
-
-  msg <- paste0("Figures don't match: ", case$name, ".svg\n")
-  mismatch_exp(msg, case)
 }
 
 # Go back up one level by default as we should be in the `testthat`
 # folder
-cases_freetype_version <- function(path = "..") {
+cases_pkg_version <- function(pkg, path = "..", strip = FALSE) {
   deps <- readLines(file.path(path, "figs", "deps.txt"))
-  ver <- purrr::detect(deps, function(dep) grepl("^FreeType:", dep))
+  ver <- purrr::detect(deps, function(dep) grepl(sprintf("^%s:", pkg), dep))
 
   if (is_null(ver)) {
     return(NULL)
   }
 
   # Strip "FreeType: " prefix and minor version
-  ver <- substr(ver, 11, nchar(ver))
-  ver <- sub(".[0-9]+$", "", ver)
+  if (strip) {
+    ver <- substr(ver, 11, nchar(ver))
+    ver <- sub(".[0-9]+$", "", ver)
+  }
 
   as_version(ver)
 }
+cases_freetype_version <- function(path = "..") {
+  cases_pkg_version("FreeType", path, strip = TRUE)
+}
+
 system_freetype_version <- function() {
   ver <- sub(".[0-9]+$", "", gdtools::version_freetype())
   as_version(ver)
