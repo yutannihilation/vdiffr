@@ -54,37 +54,36 @@ Version: 0.3
       All declared Imports should be used.
     ```
 
-# viridis
+# projections
 
-Version: 0.4.0
+Version: 0.0.1
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    
-    Attaching package: 'raster'
-    
-    The following object is masked from 'package:colorspace':
-    
-        RGB
-    
-    Loading required package: lattice
-    Loading required package: latticeExtra
-    Loading required package: RColorBrewer
-    
-    Attaching package: 'latticeExtra'
-    
-    The following object is masked from 'package:ggplot2':
-    
-        layer
-    
-    Quitting from lines 204-213 (intro-to-viridis.Rmd) 
-    Error: processing vignette 'intro-to-viridis.Rmd' failed with diagnostics:
-    Cannot create RasterLayer object from this file; perhaps you need to install rgdal first
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘distcrete’ ‘incidence’
+      All declared Imports should be used.
     ```
+
+# sicegar
+
+Version: 0.2.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘dplyr’
+      All declared Imports should be used.
+    ```
+
+# viridis
+
+Version: 0.4.1
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
