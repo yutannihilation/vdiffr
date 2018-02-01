@@ -6,10 +6,6 @@ cache: packages
 matrix:
   include:
     - os: linux
-      dist: precise
-      sudo: false
-      addons: { apt: {sources: debian-sid, packages: libfreetype6}}
-    - os: linux
       dist: trusty
       sudo: required
       before_install: [
