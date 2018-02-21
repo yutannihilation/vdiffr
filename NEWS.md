@@ -1,4 +1,7 @@
 
+# vdiffr 0.2.2.9000
+
+
 # vdiffr 0.2.2
 
 * Skip tests if the system version of Cairo (actually the one gdtools
