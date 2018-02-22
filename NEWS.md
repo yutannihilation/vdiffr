@@ -1,6 +1,9 @@
 
 # vdiffr 0.2.2.9000
 
+* Added global options to disable vdiffr. Set `vdiffr_skip` to `TRUE`
+  to skip all vdiffr expectations.
+
 
 # vdiffr 0.2.2
 

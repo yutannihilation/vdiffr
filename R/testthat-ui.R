@@ -50,6 +50,9 @@
 #' }
 expect_doppelganger <- function(title, fig, path = NULL, ...,
                                 user_fonts = NULL, verbose = FALSE) {
+  if (is_true(peek_option("vdiffr_skip"))) {
+    testthat::skip("Skipping vdiffr test")
+  }
   if (old_freetype()) {
     ver <- gdtools::version_freetype()
     msg <- paste("vdiffr requires FreeType >= 2.6.0. Current version:", ver)
