@@ -9,8 +9,16 @@ Authors@R: c(
     person("David", "Hong", role = "aut", comment = "TwoFace library"),
     person(family = "jQuery Foundation", role = "cph", comment = "jQuery library"),
     person(family = "jQuery contributors", role = c("ctb", "cph"),
-           comment = "jQuery library; authors listed in inst/htmlwidgets/lib/jquery-authors.txt")
+           comment = "jQuery library; authors listed in inst/htmlwidgets/lib/jquery-authors.txt"),
+    person("T Jake", "Luciani", , "jake@apache.org", "aut", comment = "svglite"),
+    person("Matthieu", "Decorde", , "matthieu.decorde@ens-lyon.fr", "aut", comment = "svglite"),
+    person("Vaudor", "Lise", , "lise.vaudor@ens-lyon.fr", "aut", comment = "svglite"),
+    person("Tony", "Plate", role = "ctb", comment = "svglite: Early line dashing code"),
+    person("David", "Gohel", role = "ctb", comment = "svglite: Line dashing code and raster code"),
+    person("Yixuan", "Qiu", role = "ctb", comment = "svglite: Improved styles; polypath implementation"),
+    person("Håkon", "Malmedal", role = "ctb", comment = "svglite: Opacity code")
     )
+Encoding: UTF-8
 Description: An extension to the 'testthat' package that makes it easy
     to add graphical unit tests. It provides a Shiny application to
     manage the test cases.
@@ -33,14 +41,16 @@ Imports:
     R6,
     Rcpp,
     shiny,
-    svglite (>= 1.2.0),
     testthat (>= 1.0.0),
-    xml2
+    xml2 (>= 1.0.0)
 Suggests:
     ggplot2,
+    htmltools,
     roxygen2,
     rstudioapi,
     yaml
 LinkingTo:
-    Rcpp
+    Rcpp,
+    gdtools,
+    BH
 RoxygenNote: 6.0.1

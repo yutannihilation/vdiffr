@@ -17,6 +17,9 @@ Authors:
 \itemize{
   \item Carl Sutherland (jg-imagediff library)
   \item David Hong (TwoFace library)
+  \item T Jake Luciani \email{jake@apache.org} (svglite)
+  \item Matthieu Decorde \email{matthieu.decorde@ens-lyon.fr} (svglite)
+  \item Vaudor Lise \email{lise.vaudor@ens-lyon.fr} (svglite)
 }
 
 Other contributors:
@@ -25,6 +28,10 @@ Other contributors:
   \item Humble Software (jg-imagediff library) [copyright holder]
   \item  jQuery Foundation (jQuery library) [copyright holder]
   \item  jQuery contributors (jQuery library; authors listed in inst/htmlwidgets/lib/jquery-authors.txt) [contributor, copyright holder]
+  \item Tony Plate (svglite: Early line dashing code) [contributor]
+  \item David Gohel (svglite: Line dashing code and raster code) [contributor]
+  \item Yixuan Qiu (svglite: Improved styles; polypath implementation) [contributor]
+  \item Håkon Malmedal (svglite: Opacity code) [contributor]
 }
 
 }
