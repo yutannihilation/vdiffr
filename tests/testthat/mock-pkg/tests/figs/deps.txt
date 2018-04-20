@@ -3,5 +3,4 @@ Fontconfig: 2.12.6
 FreeType: 2.9.0
 Cairo: 1.14.10
 ggplot2: 2.2.1
-svglite: 1.2.1
 utils: 3.4.3

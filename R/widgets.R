@@ -91,8 +91,8 @@ widget_diff <- function(before, after, width = NULL, height = NULL) {
 
 widget_svgs <- function(before, after) {
   out <- suppressMessages(list(
-    before = svglite::stringSVG(print_plot(before, "")),
-    after = svglite::stringSVG(print_plot(after, ""))
+    before = stringSVG(print_plot(before, "")),
+    after = stringSVG(print_plot(after, ""))
   ))
 
   # widget_diff() does not work if SVG doesn't finish with newline

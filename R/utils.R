@@ -136,7 +136,6 @@ push_log <- function(case) {
       "R environment:
        - vdiffr: { utils::packageVersion('vdiffr') }
        - gdtools: { utils::packageVersion('gdtools') }
-       - svglite: { utils::packageVersion('svglite') }
 
        System environment:
        - Fontconfig: { gdtools::version_fontconfig() }

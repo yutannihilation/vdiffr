@@ -116,6 +116,7 @@ write_deps_note <- function(cases, pkg_path) {
   deps <- attr(cases, "deps")
   versions <- map_chr(deps, package_version)
   deps_lines <- map2_chr(deps, versions, paste, sep = ": ")
+  deps_lines <- c(deps_lines, "svglite-embedded: 1.2.1")
 
   deps_lines <- chr_lines(
     versions_lines,

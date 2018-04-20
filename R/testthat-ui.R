@@ -23,9 +23,9 @@
 #' @param ... Additional arguments passed to
 #'   \code{\link[testthat]{compare}()} to control specifics of
 #'   comparison.
-#' @param user_fonts Passed to \code{\link[svglite]{svglite}()} to
-#'   make sure SVG are reproducible. Defaults to Liberation fonts for
-#'   standard families and Symbola font for symbols.
+#' @param user_fonts Passed to \code{svglite()} to make sure SVG are
+#'   reproducible. Defaults to Liberation fonts for standard families
+#'   and Symbola font for symbols.
 #' @param verbose If \code{TRUE}, the contents of the SVG files for
 #'   the comparison plots are printed during testthat checks. This is
 #'   useful to investigate errors when testing remotely.

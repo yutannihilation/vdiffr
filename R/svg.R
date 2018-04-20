@@ -16,7 +16,7 @@ get_aliases <- function() {
 
 write_svg <- function(p, file, title, user_fonts = NULL) {
   user_fonts <- user_fonts %||% get_aliases()
-  svglite::svglite(file, user_fonts = user_fonts)
+  svglite(file, user_fonts = user_fonts)
   on.exit(grDevices::dev.off())
   print_plot(p, title)
 }
