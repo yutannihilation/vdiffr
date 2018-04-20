@@ -121,6 +121,7 @@ compare_figs <- function(case) {
   mismatch_exp(msg, case)
 }
 
+
 # FIXME: The longjumps are confusing and impede unit testing
 check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
   cases_ver <- cases_pkg_version(dep, strip_minor = strip_minor)
@@ -148,6 +149,12 @@ check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
     )
     return_from(caller_env(), skipped_mismatch_exp(msg, case))
   }
+
+  if (cases_ver != system_ver)
+  {
+    abort("Internal error: Unexpected dependency version structure")
+  }
+
 }
 
 # Go back up one level by default as we should be in the `testthat`
@@ -177,11 +184,8 @@ system_freetype_version <- function() {
   ver <- sub(".[0-9]+$", "", gdtools::version_freetype())
   as_version(ver)
 }
-as_version <- function(ver) {
-  ver <- strsplit(ver, ".", fixed = TRUE)[[1]]
-  ver <- as.integer(ver)
-  structure(list(ver), class = c("package_version", "numeric_version"))
-}
+as_version <- function(ver) base::package_version(ver)
+
 
 # Print only if we're not collecting. The testthat reporter prints
 # verbose cases at a later point.
