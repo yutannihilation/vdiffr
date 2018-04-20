@@ -50,12 +50,12 @@ expectation_error <- function(exp) {
   exp == "error"
 }
 
-last_error_save <- NULL
+last_error <- new_environment(list(last = NULL))
 
 #' Print last error that occurred during collection
 #' @export
 last_collection_error <- function() {
-  last_error_save
+  last_error$last
 }
 
 vdiffrReporter <-
@@ -87,7 +87,7 @@ vdiffrReporter <-
         meow()
 
         if (!is.null(self$failure)) {
-          last_error_save <<- self$failure
+          last_error$last <- self$failure
           abort(glue(
             "while collecting vdiffr cases. Last error:
              * test: { self$failure$test }
