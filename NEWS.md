@@ -1,6 +1,15 @@
 
 # vdiffr 0.2.2.9000
 
+* Maintenance release to fix CRAN errors. Thanks to Gregory R. Warnes
+  (@gwarnes-mdsol) and Hiroaki Yutani (@yutannihilation) for helping
+  out with this!
+
+  I'm working on embedding svglite in vdiffr and compiling statically
+  to FreeType and Harfbuzz to make SVG generation deterministic across
+  platforms. Until then vdiffr will remain a bit unstable (but should
+  silently fail if dependencies have diverged).
+
 * Use `last_collection_error()` to print a testthat error that
   occurred while collecting the test cases.
 
