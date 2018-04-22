@@ -1,5 +1,5 @@
 
-# vdiffr 0.2.2.9000
+# vdiffr 0.2.3
 
 * Maintenance release to fix CRAN errors. Thanks to Gregory R. Warnes
   (@gwarnes-mdsol) and Hiroaki Yutani (@yutannihilation) for helping
