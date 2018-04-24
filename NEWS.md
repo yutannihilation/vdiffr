@@ -13,9 +13,6 @@
 * Use `last_collection_error()` to print a testthat error that
   occurred while collecting the test cases.
 
-* Added global options to disable vdiffr. Set `vdiffr_skip` to `TRUE`
-  to skip all vdiffr expectations.
-
 
 # vdiffr 0.2.2
 
