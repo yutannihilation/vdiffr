@@ -117,23 +117,12 @@ update_deps_note <- function(package = ".") {
 }
 
 write_deps_note <- function(cases, pkg_path) {
-  versions_lines <- glue(
-    "Fontconfig: { gdtools::version_fontconfig() }
-     FreeType: { gdtools::version_freetype() }
-     Cairo: { gdtools::version_cairo() }"
-  )
-
   deps <- attr(cases, "deps")
   versions <- map_chr(deps, package_version)
   deps_lines <- map2_chr(deps, versions, paste, sep = ": ")
 
   engine_dep <- glue("vdiffr-svg-engine: { SVG_ENGINE_VER }")
   deps_lines <- c(deps_lines, engine_dep)
-
-  deps_lines <- chr_lines(
-    versions_lines,
-    deps_lines
-  )
 
   deps_note_file <- file.path(pkg_path, "tests", "figs", "deps.txt")
   writeLines(deps_lines, deps_note_file)
