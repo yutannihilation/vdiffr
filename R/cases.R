@@ -116,8 +116,6 @@ update_deps_note <- function(package = ".") {
   write_deps_note(cases, pkg_path)
 }
 
-SVG_ENGINE_VER <- "0.9000"
-
 write_deps_note <- function(cases, pkg_path) {
   versions_lines <- glue(
     "Fontconfig: { gdtools::version_fontconfig() }

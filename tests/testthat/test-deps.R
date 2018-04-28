@@ -12,7 +12,8 @@ check_depnote <- function(pkg_name) {
 check_svglite_depnote <- function(pkg_name) {
   note_path <- file.path(mock_pkg_dir, "tests", "figs", "deps.txt")
   deps <- readLines(note_path)
-  expect_true(sum(grepl("svglite-embedded: 1.2.1", deps)) == 1L)
+  engine_dep <- glue::glue("vdiffr-svg-engine: { svg_engine_ver() }")
+  expect_true(sum(grepl(engine_dep, deps)) == 1L)
 }
 
 test_that("DESCRIPTION notes are updated manually", {
