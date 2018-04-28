@@ -10,4 +10,7 @@ double dbl_format(double x) {
     return x;
 }
 
+#include <freetypeharfbuzz.h>
+
+
 #endif

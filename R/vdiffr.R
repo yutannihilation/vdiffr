@@ -6,6 +6,13 @@
 #' @useDynLib vdiffr, .registration = TRUE
 "_PACKAGE"
 
+.onLoad <- function(lib, pkg) {
+  if (!requireNamespace("freetypeharfbuzz", quietly = TRUE)) {
+    abort("The package `freetypeharfbuzz` is not installed")
+  }
+  library_load()
+}
+
 old_freetype <- function() {
   gdtools::version_freetype() < "2.6.0"
 }

@@ -17,3 +17,7 @@ get_svg_content <- function(p) {
     .Call(`_vdiffr_get_svg_content`, p)
 }
 
+library_load <- function() {
+    .Call(`_vdiffr_library_load`)
+}
+

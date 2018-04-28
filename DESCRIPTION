@@ -32,7 +32,8 @@ Depends:
 Imports:
     devtools,
     fontquiver (>= 0.2.0),
-    gdtools (>= 0.1.2),
+    freetypeharfbuzz,
+    gdtools,
     glue,
     grDevices,
     htmlwidgets (>= 0.6),
@@ -50,7 +51,10 @@ Suggests:
     rstudioapi,
     yaml
 LinkingTo:
-    Rcpp,
+    freetypeharfbuzz,
     gdtools,
+    Rcpp,
     BH
+Remotes:
+    lionel-/freetypeharfbuzz
 RoxygenNote: 6.0.1

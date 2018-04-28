@@ -62,12 +62,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// library_load
+SEXP library_load();
+RcppExport SEXP _vdiffr_library_load() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(library_load());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_vdiffr_compare_files", (DL_FUNC) &_vdiffr_compare_files, 2},
     {"_vdiffr_svglite_", (DL_FUNC) &_vdiffr_svglite_, 7},
     {"_vdiffr_svgstring_", (DL_FUNC) &_vdiffr_svgstring_, 7},
     {"_vdiffr_get_svg_content", (DL_FUNC) &_vdiffr_get_svg_content, 1},
+    {"_vdiffr_library_load", (DL_FUNC) &_vdiffr_library_load, 0},
     {NULL, NULL, 0}
 };
 
