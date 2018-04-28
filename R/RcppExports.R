@@ -5,3 +5,19 @@ compare_files <- function(expected, test) {
     .Call(`_vdiffr_compare_files`, expected, test)
 }
 
+svglite_ <- function(file, bg, width, height, pointsize, standalone, aliases) {
+    .Call(`_vdiffr_svglite_`, file, bg, width, height, pointsize, standalone, aliases)
+}
+
+svgstring_ <- function(env, bg, width, height, pointsize, standalone, aliases) {
+    .Call(`_vdiffr_svgstring_`, env, bg, width, height, pointsize, standalone, aliases)
+}
+
+get_svg_content <- function(p) {
+    .Call(`_vdiffr_get_svg_content`, p)
+}
+
+library_load <- function() {
+    .Call(`_vdiffr_library_load`)
+}
+

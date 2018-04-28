@@ -23,9 +23,9 @@
 #' @param ... Additional arguments passed to
 #'   \code{\link[testthat]{compare}()} to control specifics of
 #'   comparison.
-#' @param user_fonts Passed to \code{\link[svglite]{svglite}()} to
-#'   make sure SVG are reproducible. Defaults to Liberation fonts for
-#'   standard families and Symbola font for symbols.
+#' @param user_fonts Passed to \code{svglite()} to make sure SVG are
+#'   reproducible. Defaults to Liberation fonts for standard families
+#'   and Symbola font for symbols.
 #' @param verbose If \code{TRUE}, the contents of the SVG files for
 #'   the comparison plots are printed during testthat checks. This is
 #'   useful to investigate errors when testing remotely.
@@ -111,8 +111,7 @@ compare_figs <- function(case) {
   maybe_collect_case(case)
   push_log(case)
 
-  check_versions_match(case, "FreeType", system_freetype_version(), strip_minor = TRUE)
-  check_versions_match(case, "Cairo", gdtools::version_cairo(), strip_minor = FALSE)
+  check_versions_match(case, "vdiffr-svg-engine", svg_engine_ver())
 
   msg <- paste0("Figures don't match: ", case$name, ".svg\n")
   mismatch_exp(msg, case)
@@ -125,7 +124,7 @@ check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
 
   if (is_null(cases_ver)) {
     msg <- glue(
-      "Failed doppelganger but vdiffr can't check its { dep } version.
+      "Failed doppelganger but vdiffr can't check its SVG engine version.
        Please revalidate cases with a more recent vdiffr"
     )
     return_from(caller_env(), skipped_mismatch_exp(msg, case))
@@ -133,7 +132,7 @@ check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
 
   if (cases_ver < system_ver) {
     msg <- glue(
-      "Failed doppelganger was generated with an older { dep } version.
+      "Failed doppelganger was generated with an older SVG engine version.
        Please revalidate cases with vdiffr::validate_cases() or vdiffr::manage_cases()"
     )
     return_from(caller_env(), skipped_mismatch_exp(msg, case))
@@ -141,14 +140,13 @@ check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
 
   if (cases_ver > system_ver) {
     msg <- glue(
-      "Failed doppelganger was generated with a newer { dep } version.
+      "Failed doppelganger was generated with a newer SVG engine version.
        Please install { dep } {cases_ver} on your system"
     )
     return_from(caller_env(), skipped_mismatch_exp(msg, case))
   }
 
-  if (cases_ver != system_ver)
-  {
+  if (cases_ver != system_ver) {
     abort("Internal error: Unexpected dependency version structure")
   }
 

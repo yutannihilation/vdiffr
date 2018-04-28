@@ -106,6 +106,16 @@ validate_cases <- function(cases = collect_new_cases()) {
   walk(cases, update_case, pkg_path)
 }
 
+update_deps_note <- function(package = ".") {
+  cases <- collect_cases(package)
+  pkg_path <- attr(cases, "pkg_path")
+  if (is.null(pkg_path)) {
+    stop("Internal error: Package path is missing", call. = FALSE)
+  }
+
+  write_deps_note(cases, pkg_path)
+}
+
 write_deps_note <- function(cases, pkg_path) {
   versions_lines <- glue(
     "Fontconfig: { gdtools::version_fontconfig() }
@@ -116,6 +126,9 @@ write_deps_note <- function(cases, pkg_path) {
   deps <- attr(cases, "deps")
   versions <- map_chr(deps, package_version)
   deps_lines <- map2_chr(deps, versions, paste, sep = ": ")
+
+  engine_dep <- glue("vdiffr-svg-engine: { SVG_ENGINE_VER }")
+  deps_lines <- c(deps_lines, engine_dep)
 
   deps_lines <- chr_lines(
     versions_lines,

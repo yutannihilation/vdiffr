@@ -3,7 +3,7 @@ casesCollecter <-
   R6::R6Class("casesCollecter",
     public = list(
       initialize = function(pkg_path) {
-        default_deps <- c("vdiffr", "svglite")
+        default_deps <- chr()
         private$.cases <- cases(list(), pkg_path, default_deps)
       },
 

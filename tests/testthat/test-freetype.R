@@ -7,14 +7,14 @@ get_result <- function(suffix) {
   result <- test_results[[1]]$results[[1]]
 }
 
-test_that("skip failing tests with newer FreeType", {
+test_that("skip failing tests with newer SVG engine", {
   result <- get_result("newer")
   expect_is(result, "expectation_skip")
-  expect_match(result$message, "newer FreeType")
+  expect_match(result$message, "newer SVG engine")
 })
 
-test_that("skip failing tests with older FreeType", {
+test_that("skip failing tests with older SVG engine", {
   result <- get_result("older")
   expect_is(result, "expectation_skip")
-  expect_match(result$message, "older FreeType")
+  expect_match(result$message, "older SVG engine")
 })

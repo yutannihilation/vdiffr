@@ -25,9 +25,9 @@ figures to be stored in the root folder.}
 \code{\link[testthat]{compare}()} to control specifics of
 comparison.}
 
-\item{user_fonts}{Passed to \code{\link[svglite]{svglite}()} to
-make sure SVG are reproducible. Defaults to Liberation fonts for
-standard families and Symbola font for symbols.}
+\item{user_fonts}{Passed to \code{svglite()} to make sure SVG are
+reproducible. Defaults to Liberation fonts for standard families
+and Symbola font for symbols.}
 
 \item{verbose}{If \code{TRUE}, the contents of the SVG files for
   the comparison plots are printed during testthat checks. This is
