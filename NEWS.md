@@ -1,6 +1,13 @@
 
 # vdiffr 0.2.3.9000
 
+* vdiffr now embeds svglite and compiles statically against the C
+  libraries used to compute font extents and text boxes metrics. This
+  should make SVG generation deterministic across platforms.
+
+  This means you will have to regenerate all your testcases with the
+  new engine, hopefully for the last time.
+
 
 # vdiffr 0.2.3
 
