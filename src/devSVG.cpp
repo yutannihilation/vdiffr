@@ -40,7 +40,6 @@ public:
   bool standalone;
   Rcpp::List system_aliases;
   Rcpp::List user_aliases;
-  XPtrCairoContext cc;
 
   SVGDesc(SvgStreamPtr stream_, bool standalone_, Rcpp::List aliases_):
       stream(stream_),
@@ -48,8 +47,7 @@ public:
       clipx0(0), clipx1(0), clipy0(0), clipy1(0),
       standalone(standalone_),
       system_aliases(Rcpp::wrap(aliases_["system"])),
-      user_aliases(Rcpp::wrap(aliases_["user"])),
-      cc(gdtools::context_create()) {
+      user_aliases(Rcpp::wrap(aliases_["user"])) {
   }
 };
 
@@ -311,14 +309,15 @@ void svg_metric_info(int c, const pGEcontext gc, double* ascent,
     str[1] = '\0';
   }
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
-  gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
+  std::string font_file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
+  double font_size = gc->cex * gc->ps;
+  struct fthb_string_info metrics = { 0 };
 
-  *ascent = fm.ascent;
-  *descent = fm.descent;
-  *width = fm.width;
+  fthb_calc_string_info(str, font_file.c_str(), font_size, &metrics);
+
+  *width = metrics.width;
+  *ascent = metrics.ascent;
+  *descent = metrics.descent;
 }
 
 void svg_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
@@ -511,12 +510,13 @@ void svg_path(double *x, double *y,
 double svg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   SVGDesc *svgd = (SVGDesc*) dd->deviceSpecific;
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
-  gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
+  std::string font_file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
+  double font_size = gc->cex * gc->ps;
+  double string_width = 0.0;
 
-  return fm.width;
+  fthb_calc_string_width(str, font_file.c_str(), font_size, &string_width);
+
+  return string_width;
 }
 
 void svg_rect(double x0, double y0, double x1, double y1,
@@ -593,14 +593,16 @@ void svg_text(double x, double y, const char *str, double rot,
   if (!is_black(gc->col))
     write_style_col(stream, "fill", gc->col);
 
-  std::string font = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
-  write_style_str(stream, "font-family", font.c_str());
+  std::string font_name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
+  write_style_str(stream, "font-family", font_name.c_str());
   write_style_end(stream);
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
-  gdtools::context_set_font(svgd->cc, font, fontsize, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
-  (*stream) << " textLength='" << fm.width << "px'";
+  double string_width = 0.0;
+
+  std::string font_file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
+  fthb_calc_string_width(str, font_file.c_str(), fontsize, &string_width);
+
+  (*stream) << " textLength='" << string_width << "px'";
   (*stream) << " lengthAdjust='spacingAndGlyphs'";
   stream->put('>');
 
