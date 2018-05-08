@@ -200,6 +200,11 @@ theme_test_recent <- function(base_size = 11, base_family = "") {
                            size = ggplot2::rel(0.9),
                            hjust = 1, vjust = 1,
                            margin = ggplot2::margin(t = half_line * 0.9)
-                         )
+                         ),
+    plot.tag =           ggplot2::element_text(
+                           size = ggplot2::rel(1.2),
+                           hjust = 0.5, vjust = 0.5
+                         ),
+    plot.tag.position =  'topleft'
     )
 }
