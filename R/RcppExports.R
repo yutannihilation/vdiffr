@@ -21,3 +21,7 @@ library_load <- function() {
     .Call(`_vdiffr_library_load`)
 }
 
+test_string_width <- function(string, font_size, font_file) {
+    .Call(`_vdiffr_test_string_width`, string, font_size, font_file)
+}
+
