@@ -56,5 +56,6 @@ LinkingTo:
     Rcpp,
     BH
 Remotes:
-    lionel-/freetypeharfbuzz
+    lionel-/freetypeharfbuzz,
+    tidyverse/ggplot2
 RoxygenNote: 6.0.1
