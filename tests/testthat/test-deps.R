@@ -17,12 +17,10 @@ check_svglite_depnote <- function(pkg_name) {
 }
 
 test_that("DESCRIPTION notes are updated manually", {
-  skip_old_freetype()
   check_depnote("utils")
 })
 
 test_that("DESCRIPTION notes are updated automatically", {
-  skip_old_freetype()
   check_depnote("ggplot2")
   check_svglite_depnote()
 })
