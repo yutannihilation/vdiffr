@@ -85,6 +85,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test_string_info
+SEXP test_string_info(SEXP string, SEXP font_size, SEXP font_file);
+RcppExport SEXP _vdiffr_test_string_info(SEXP stringSEXP, SEXP font_sizeSEXP, SEXP font_fileSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type string(stringSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type font_size(font_sizeSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type font_file(font_fileSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_string_info(string, font_size, font_file));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_vdiffr_compare_files", (DL_FUNC) &_vdiffr_compare_files, 2},
@@ -93,6 +106,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vdiffr_get_svg_content", (DL_FUNC) &_vdiffr_get_svg_content, 1},
     {"_vdiffr_library_load", (DL_FUNC) &_vdiffr_library_load, 0},
     {"_vdiffr_test_string_width", (DL_FUNC) &_vdiffr_test_string_width, 3},
+    {"_vdiffr_test_string_info", (DL_FUNC) &_vdiffr_test_string_info, 3},
     {NULL, NULL, 0}
 };
 

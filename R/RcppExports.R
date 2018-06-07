@@ -25,3 +25,7 @@ test_string_width <- function(string, font_size, font_file) {
     .Call(`_vdiffr_test_string_width`, string, font_size, font_file)
 }
 
+test_string_info <- function(string, font_size, font_file) {
+    .Call(`_vdiffr_test_string_info`, string, font_size, font_file)
+}
+
