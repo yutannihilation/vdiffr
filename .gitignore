@@ -3,3 +3,5 @@
 .RData
 revdep/checks
 revdep/library
+src-i386/
+src-x64/
