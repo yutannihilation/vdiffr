@@ -25,10 +25,8 @@ Description: An extension to the 'testthat' package that makes it easy
 License: GPL-3 | file LICENSE
 LazyData: true
 ByteCompile: true
-SystemRequirements:
-    FreeType >= 2.6.0
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.2.0)
 Imports:
     devtools,
     fontquiver (>= 0.2.0),
