@@ -45,7 +45,7 @@ Imports:
     testthat (>= 1.0.0),
     xml2 (>= 1.0.0)
 Suggests:
-    ggplot2,
+    ggplot2 (>= 3.0.0),
     htmltools,
     roxygen2,
     rstudioapi,
@@ -56,6 +56,5 @@ LinkingTo:
     Rcpp,
     BH
 Remotes:
-    lionel-/freetypeharfbuzz,
-    tidyverse/ggplot2
+    lionel-/freetypeharfbuzz
 RoxygenNote: 6.0.1
