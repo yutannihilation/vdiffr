@@ -13,10 +13,6 @@
   library_load()
 }
 
-old_freetype <- function() {
-  gdtools::version_freetype() < "2.6.0"
-}
-
 SVG_ENGINE_VER <- "0.9000"
 
 svg_engine_ver <- function() {
