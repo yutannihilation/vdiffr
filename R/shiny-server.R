@@ -116,8 +116,7 @@ renderDiffer <- function(input, active_cases, widget, is_widget = TRUE) {
 
 withdraw_cases <- function(cases) {
   validate_cases(filter_cases(cases, c("new_case", "mismatch_case")))
-  delete_orphaned_cases(filter_cases
-                        (cases, "orphaned_case"))
+  delete_orphaned_cases(filter_cases(cases, "orphaned_case"))
 }
 
 validateSingleCase <- function(input, reactive_cases) {
