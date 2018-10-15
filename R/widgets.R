@@ -12,8 +12,8 @@
 #' @inheritParams htmlwidgets::createWidget
 #' @param before The picture that is taken as reference.
 #' @param after The picture against which the reference is compared.
-#' @param input Optionally, a Shiny `input` handle. Normally from the
-#'   [manage_cases()] UI.
+#' @param ... Unused. Meant for collecting unknown arguments and allow
+#'   widget extensions.
 #' @name htmlwidgets
 #' @examples
 #' p1 <- function() hist(mtcars$disp)
@@ -28,7 +28,7 @@ NULL
 
 #' @rdname htmlwidgets
 #' @export
-widget_toggle_ <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_toggle_ <- function(before, after, ..., width = NULL, height = NULL) {
   sources <- list(files = list(before = before, after = after))
 
   htmlwidgets::createWidget("vdiffr-toggle",
@@ -41,7 +41,7 @@ widget_toggle_ <- function(before, after, input = NULL, width = NULL, height = N
 
 #' @rdname htmlwidgets
 #' @export
-widget_slide_ <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_slide_ <- function(before, after, ..., width = NULL, height = NULL) {
   # Drawing a SVG into a canvas requires that the svg node has 'width'
   # and 'height' attributes set. Otherwise the result is oddly cropped.
   sources <- list(before = before, after = after)
@@ -57,7 +57,7 @@ widget_slide_ <- function(before, after, input = NULL, width = NULL, height = NU
 
 #' @rdname htmlwidgets
 #' @export
-widget_diff_ <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_diff_ <- function(before, after, ..., width = NULL, height = NULL) {
   sources <- list(before = before, after = after)
   sources <- list(sources = map(sources, svg_add_dims))
 
@@ -69,8 +69,7 @@ widget_diff_ <- function(before, after, input = NULL, width = NULL, height = NUL
   )
 }
 
-
-diff_text_ <- function(before, after, input) {
+diff_text_ <- function(before, after, input, ...) {
   # https://github.com/brodieG/diffobj/issues/125#issuecomment-414699100
   shiny::HTML(
     as.character(
@@ -87,21 +86,21 @@ diff_text_ <- function(before, after, input) {
 
 #' @rdname htmlwidgets
 #' @export
-widget_toggle <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_toggle <- function(before, after, ..., width = NULL, height = NULL) {
   files <- widget_svgs(before, after)
   widget_toggle_(files$before, files$after, width, height)
 }
 
 #' @rdname htmlwidgets
 #' @export
-widget_slide <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_slide <- function(before, after, ..., width = NULL, height = NULL) {
   files <- widget_svgs(before, after)
   widget_slide_(files$before, files$after, width, height)
 }
 
 #' @rdname htmlwidgets
 #' @export
-widget_diff <- function(before, after, input = NULL, width = NULL, height = NULL) {
+widget_diff <- function(before, after, ..., width = NULL, height = NULL) {
   files <- widget_svgs(before, after)
   widget_diff_(files$before, files$after, width, height)
 }
