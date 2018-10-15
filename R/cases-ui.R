@@ -2,9 +2,8 @@
 #'
 #' @inheritParams devtools::test
 #' @param package Package description, can be path or package
-#'   name. See \code{\link[devtools]{as.package}} for more information.
-#' @seealso \code{\link{vdiffrAddin}()}, \code{\link{collect_cases}()}
-#'   and \code{\link{validate_cases}()}
+#'   name. See [devtools::as.package()] for more information.
+#' @seealso [vdiffrAddin()], [collect_cases()], and [validate_cases()]
 #' @export
 manage_cases <- function(package = ".", filter = NULL) {
   cases <- collect_cases(package, filter = filter)
@@ -21,8 +20,7 @@ manage_cases <- function(package = ".", filter = NULL) {
 #'
 #' The package is detected by looking for the currently active
 #' project, then for the current folder if no project is active.
-#' @seealso \code{\link{manage_cases}()}, \code{\link{collect_cases}()}
-#'   and \code{\link{validate_cases}()}
+#' @seealso [manage_cases()], [collect_cases()], and [validate_cases()]
 #' @export
 vdiffrAddin <- function() {
   pkg_path <- rstudioapi::getActiveProject() %||% "."

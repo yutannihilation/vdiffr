@@ -3,31 +3,29 @@
 #' If the test has never been validated yet, the test is skipped. If
 #' the test has previously been validated but \code{fig} does not look
 #' like its expected output, an error is issued. Use
-#' \code{\link{validate_cases}()} or \code{\link{manage_cases}()} to
-#' (re)validate the test.
+#' [validate_cases()] or [manage_cases()] to (re)validate
+#' the test.
 #'
-#' \code{fig} can be a ggplot object, a recordedplot, a function to be
-#' called, or more generally any object with a \code{print} method. If
-#' a ggplot object, a dependency for ggplot2 is automatically added
-#' (see \code{\link{add_dependency}()}).
+#' `fig` can be a ggplot object, a recordedplot, a function to be
+#' called, or more generally any object with a `print` method. If a
+#' ggplot object, a dependency for ggplot2 is automatically added (see
+#' [add_dependency()].
 #' @param title The figure title is used for creating the figure file
 #'   names (all non-alphanumeric characters are converted to
-#'   \code{-}). Also, ggplot2 figures are appended with
-#'   \code{ggtitle(title)}.
+#'   `"-"`). Also, ggplot2 figures are appended with `ggtitle(title)`.
 #' @param fig A figure to test.
 #' @param path The path where the test case should be stored, relative
-#'   to the \code{tests/figs/} folder. If \code{NULL} (the default),
-#'   the current testthat context is used to create a
-#'   subfolder. Supply an empty string \code{""} if you want the
-#'   figures to be stored in the root folder.
-#' @param ... Additional arguments passed to
-#'   \code{\link[testthat]{compare}()} to control specifics of
-#'   comparison.
+#'   to the `tests/figs/` folder. If `NULL` (the default), the current
+#'   testthat context is used to create a subfolder. Supply an empty
+#'   string `""` if you want the figures to be stored in the root
+#'   folder.
+#' @param ... Additional arguments passed to [testthat::compare()] to
+#'   control specifics of comparison.
 #' @param user_fonts Passed to \code{svglite()} to make sure SVG are
 #'   reproducible. Defaults to Liberation fonts for standard families
 #'   and Symbola font for symbols.
-#' @param verbose If \code{TRUE}, the contents of the SVG files for
-#'   the comparison plots are printed during testthat checks. This is
+#' @param verbose If `TRUE`, the contents of the SVG files for the
+#'   comparison plots are printed during testthat checks. This is
 #'   useful to investigate errors when testing remotely.
 #'
 #'   Note that it is not possible to print the original SVG during
@@ -222,10 +220,10 @@ signal_expectation <- function(exp) {
 #'
 #' It is useful to record the version number of all the packages on
 #' which your visual test cases depend. A note containing a version
-#' number is added to the \code{DESCRIPTION} file for each dependency.
+#' number is added to the `DESCRIPTION` file for each dependency.
 #' Dependencies on svglite and ggplot2 are automatically added. In
-#' addition, \code{add_dependency()} can be called in any testthat
-#' file to manually add a dependency to a package.
+#' addition, `add_dependency()` can be called in any testthat file to
+#' manually add a dependency to a package.
 #'
 #' @param deps A vector containing the names of the packages for which
 #'   a dependency should be added.

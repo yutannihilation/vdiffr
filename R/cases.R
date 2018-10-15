@@ -1,15 +1,14 @@
 #' Collect cases
 #'
 #' These functions are mainly intended for internal use by
-#' \code{\link{manage_cases}()}. They are useful to programmatically
-#' collect cases.
+#' [manage_cases()]. They are useful to programmatically collect
+#' cases.
 #'
 #' @inheritParams manage_cases
-#' @seealso \code{\link{manage_cases}()}
-#' @return A \code{cases} object. \code{collect_new_cases()},
-#'   \code{collect_mismatched_cases()} and
-#'   \code{collect_orphaned_cases()} return a filtered \code{cases}
-#'   object.
+#' @seealso [manage_cases()]
+#' @return A `cases` object. `collect_new_cases()`,
+#'   `collect_mismatched_cases()` and `collect_orphaned_cases()`
+#'   return a filtered `cases` object.
 #' @export
 collect_cases <- function(package = ".", filter = NULL) {
   on.exit(set_active_collecter(NULL))
@@ -86,12 +85,12 @@ collect_orphaned_cases <- function(package = ".") {
 #' Cases validation
 #'
 #' These functions are mainly intended for internal use by
-#' \code{\link{manage_cases}()}. They are useful to programmatically
-#' validate cases or delete orphaned cases.
+#' [manage_cases()]. They are useful to programmatically validate
+#' cases or delete orphaned cases.
 #'
-#' @seealso \code{\link{manage_cases}()}
-#' @param cases A \code{cases} object returned by one of the
-#'   collecting functions such as \code{\link{collect_cases}()}.
+#' @seealso [manage_cases()]
+#' @param cases A `cases` object returned by one of the collecting
+#'   functions such as [collect_cases()].
 #' @export
 validate_cases <- function(cases = collect_new_cases()) {
   stopifnot(is_cases(cases))

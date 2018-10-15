@@ -8,7 +8,7 @@ manage_cases(package = ".", filter = NULL)
 }
 \arguments{
 \item{package}{Package description, can be path or package
-name. See \code{\link[devtools]{as.package}} for more information.}
+name. See \code{\link[devtools:as.package]{devtools::as.package()}} for more information.}
 
 \item{filter}{If not \code{NULL}, only tests with file names matching this
 regular expression will be executed.  Matching will take on the file
@@ -18,6 +18,5 @@ name after it has been stripped of \code{"test-"} and \code{".R"}.}
 Manage visual test cases with a Shiny app
 }
 \seealso{
-\code{\link{vdiffrAddin}()}, \code{\link{collect_cases}()}
-  and \code{\link{validate_cases}()}
+\code{\link[=vdiffrAddin]{vdiffrAddin()}}, \code{\link[=collect_cases]{collect_cases()}}, and \code{\link[=validate_cases]{validate_cases()}}
 }

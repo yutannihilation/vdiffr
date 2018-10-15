@@ -10,14 +10,14 @@ validate_cases(cases = collect_new_cases())
 delete_orphaned_cases(cases = collect_orphaned_cases())
 }
 \arguments{
-\item{cases}{A \code{cases} object returned by one of the
-collecting functions such as \code{\link{collect_cases}()}.}
+\item{cases}{A \code{cases} object returned by one of the collecting
+functions such as \code{\link[=collect_cases]{collect_cases()}}.}
 }
 \description{
 These functions are mainly intended for internal use by
-\code{\link{manage_cases}()}. They are useful to programmatically
-validate cases or delete orphaned cases.
+\code{\link[=manage_cases]{manage_cases()}}. They are useful to programmatically validate
+cases or delete orphaned cases.
 }
 \seealso{
-\code{\link{manage_cases}()}
+\code{\link[=manage_cases]{manage_cases()}}
 }

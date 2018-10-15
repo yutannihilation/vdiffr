@@ -10,46 +10,44 @@ expect_doppelganger(title, fig, path = NULL, ..., user_fonts = NULL,
 \arguments{
 \item{title}{The figure title is used for creating the figure file
 names (all non-alphanumeric characters are converted to
-\code{-}). Also, ggplot2 figures are appended with
-\code{ggtitle(title)}.}
+\code{"-"}). Also, ggplot2 figures are appended with \code{ggtitle(title)}.}
 
 \item{fig}{A figure to test.}
 
 \item{path}{The path where the test case should be stored, relative
-to the \code{tests/figs/} folder. If \code{NULL} (the default),
-the current testthat context is used to create a
-subfolder. Supply an empty string \code{""} if you want the
-figures to be stored in the root folder.}
+to the \code{tests/figs/} folder. If \code{NULL} (the default), the current
+testthat context is used to create a subfolder. Supply an empty
+string \code{""} if you want the figures to be stored in the root
+folder.}
 
-\item{...}{Additional arguments passed to
-\code{\link[testthat]{compare}()} to control specifics of
-comparison.}
+\item{...}{Additional arguments passed to \code{\link[testthat:compare]{testthat::compare()}} to
+control specifics of comparison.}
 
 \item{user_fonts}{Passed to \code{svglite()} to make sure SVG are
 reproducible. Defaults to Liberation fonts for standard families
 and Symbola font for symbols.}
 
-\item{verbose}{If \code{TRUE}, the contents of the SVG files for
-  the comparison plots are printed during testthat checks. This is
-  useful to investigate errors when testing remotely.
+\item{verbose}{If \code{TRUE}, the contents of the SVG files for the
+comparison plots are printed during testthat checks. This is
+useful to investigate errors when testing remotely.
 
-  Note that it is not possible to print the original SVG during
-  interactive use. This is because there is no way of figuring out
-  in which directory this SVG lives. Consequently, only the test
-  case is printed.}
+Note that it is not possible to print the original SVG during
+interactive use. This is because there is no way of figuring out
+in which directory this SVG lives. Consequently, only the test
+case is printed.}
 }
 \description{
 If the test has never been validated yet, the test is skipped. If
 the test has previously been validated but \code{fig} does not look
 like its expected output, an error is issued. Use
-\code{\link{validate_cases}()} or \code{\link{manage_cases}()} to
-(re)validate the test.
+\code{\link[=validate_cases]{validate_cases()}} or \code{\link[=manage_cases]{manage_cases()}} to (re)validate
+the test.
 }
 \details{
 \code{fig} can be a ggplot object, a recordedplot, a function to be
-called, or more generally any object with a \code{print} method. If
-a ggplot object, a dependency for ggplot2 is automatically added
-(see \code{\link{add_dependency}()}).
+called, or more generally any object with a \code{print} method. If a
+ggplot object, a dependency for ggplot2 is automatically added (see
+\code{\link[=add_dependency]{add_dependency()}}.
 }
 \examples{
 ver <- gdtools::version_freetype()

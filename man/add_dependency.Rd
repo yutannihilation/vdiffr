@@ -15,6 +15,6 @@ It is useful to record the version number of all the packages on
 which your visual test cases depend. A note containing a version
 number is added to the \code{DESCRIPTION} file for each dependency.
 Dependencies on svglite and ggplot2 are automatically added. In
-addition, \code{add_dependency()} can be called in any testthat
-file to manually add a dependency to a package.
+addition, \code{add_dependency()} can be called in any testthat file to
+manually add a dependency to a package.
 }

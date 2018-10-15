@@ -41,11 +41,10 @@ Markdown document or Shiny application.
 }
 \details{
 The regular versions take plots or functions as \code{before} and
-\code{after} arguments (see \code{\link{expect_doppelganger}()}
-for details). The versions suffixed with underscores take HTML image
-sources. These can be paths to SVG files or inlined SVG
-images. Currently, \code{widget_diff_()} is compatible only with
-inlined images.
+\code{after} arguments (see \code{\link[=expect_doppelganger]{expect_doppelganger()}} for details). The
+versions suffixed with underscores take HTML image sources. These
+can be paths to SVG files or inlined SVG images. Currently,
+\code{widget_diff_()} is compatible only with inlined images.
 }
 \examples{
 p1 <- function() hist(mtcars$disp)

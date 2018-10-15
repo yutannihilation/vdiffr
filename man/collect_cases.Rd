@@ -17,7 +17,7 @@ collect_orphaned_cases(package = ".")
 }
 \arguments{
 \item{package}{Package description, can be path or package
-name. See \code{\link[devtools]{as.package}} for more information.}
+name. See \code{\link[devtools:as.package]{devtools::as.package()}} for more information.}
 
 \item{filter}{If not \code{NULL}, only tests with file names matching this
 regular expression will be executed.  Matching will take on the file
@@ -25,15 +25,14 @@ name after it has been stripped of \code{"test-"} and \code{".R"}.}
 }
 \value{
 A \code{cases} object. \code{collect_new_cases()},
-  \code{collect_mismatched_cases()} and
-  \code{collect_orphaned_cases()} return a filtered \code{cases}
-  object.
+\code{collect_mismatched_cases()} and \code{collect_orphaned_cases()}
+return a filtered \code{cases} object.
 }
 \description{
 These functions are mainly intended for internal use by
-\code{\link{manage_cases}()}. They are useful to programmatically
-collect cases.
+\code{\link[=manage_cases]{manage_cases()}}. They are useful to programmatically collect
+cases.
 }
 \seealso{
-\code{\link{manage_cases}()}
+\code{\link[=manage_cases]{manage_cases()}}
 }

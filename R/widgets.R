@@ -3,12 +3,11 @@
 #' These widgets can be used at the console and embedded in a R
 #' Markdown document or Shiny application.
 #'
-#' The regular versions take plots or functions as \code{before} and
-#' \code{after} arguments (see \code{\link{expect_doppelganger}()}
-#' for details). The versions suffixed with underscores take HTML image
-#' sources. These can be paths to SVG files or inlined SVG
-#' images. Currently, \code{widget_diff_()} is compatible only with
-#' inlined images.
+#' The regular versions take plots or functions as `before` and
+#' `after` arguments (see [expect_doppelganger()] for details). The
+#' versions suffixed with underscores take HTML image sources. These
+#' can be paths to SVG files or inlined SVG images. Currently,
+#' `widget_diff_()` is compatible only with inlined images.
 #'
 #' @inheritParams htmlwidgets::createWidget
 #' @param before The picture that is taken as reference.
