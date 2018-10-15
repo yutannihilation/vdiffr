@@ -69,14 +69,14 @@ widget_diff_ <- function(before, after, ..., width = NULL, height = NULL) {
   )
 }
 
-diff_text_ <- function(before, after, input, ...) {
+diff_text_ <- function(before, after, ..., mode = "unified") {
   # https://github.com/brodieG/diffobj/issues/125#issuecomment-414699100
   shiny::HTML(
     as.character(
       diffobj::diffChr(
         before,
         after,
-        mode = input$mode %||% "unified",
+        mode = mode,
         format = 'html',
         style = list(html.output = 'diff.w.style')
       )

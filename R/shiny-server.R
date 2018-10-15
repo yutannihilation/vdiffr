@@ -13,7 +13,14 @@ vdiffrServer <- function(cases) {
     output$toggle <- renderDiffer(input, cases$active, widget_toggle_)
     output$slide <- renderDiffer(input, cases$active, widget_slide_)
     output$diff <- renderDiffer(input, cases$active, widget_diff_)
-    output$diff_text <- renderDiffer(input, cases$active, diff_text_, renderer = shiny::renderUI)
+
+    output$diff_text <- renderDiffer(
+      input,
+      cases$active,
+      diff_text_,
+      renderer = shiny::renderUI,
+      watcher = diff_text_watcher
+    )
     output$diff_text_controls <- renderDiffControls(input)
 
     validateGroupCases(input, cases)
@@ -21,6 +28,10 @@ vdiffrServer <- function(cases) {
 
     output$status <- renderStatus(input, cases)
   })
+}
+
+diff_text_watcher <- function(input) {
+  compact(list(mode = input$mode))
 }
 
 prettify_types <- function(x) {
@@ -80,10 +91,15 @@ renderDiffControls <- function(input) {
   })
 }
 
+#' @param watcher A function that takes the Shiny input as argument
+#'   and returns a list of additional arguments to be passed to the
+#'   widget
+#' @noRd
 renderDiffer <- function(input,
                          active_cases,
                          widget,
-                         renderer = renderToggle) {
+                         renderer = renderToggle,
+                         watcher = NULL) {
   renderer({
     # When renderDiffer() is first called, renderCaseInput() has not
     # been called yet.
@@ -111,7 +127,13 @@ renderDiffer <- function(input,
       before <- as_inline_svg(read_file(before_path))
     }
 
-    widget(before, after, input)
+    if (is_null(watcher)) {
+      args <- NULL
+    } else {
+      args <- watcher(input)
+    }
+
+    eval_bare(expr(widget(before, after, !!!args)))
   })
 }
 
