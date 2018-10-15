@@ -50,16 +50,10 @@ ggplot object, a dependency for ggplot2 is automatically added (see
 \code{\link[=add_dependency]{add_dependency()}}.
 }
 \examples{
-ver <- gdtools::version_freetype()
+disp_hist_base <- function() hist(mtcars$disp)
+expect_doppelganger("disp-histogram-base", disp_hist_base)
 
-if (ver >= "2.6.0") {
-  disp_hist_base <- function() hist(mtcars$disp)
-  expect_doppelganger("disp-histogram-base", disp_hist_base)
-}
-
-if (ver >= "2.6.0" && requireNamespace("ggplot2", quietly = TRUE)) {
-  library("ggplot2")
-  disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
-  expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
-}
+library("ggplot2")
+disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
+expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
 }

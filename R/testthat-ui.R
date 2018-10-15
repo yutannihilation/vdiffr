@@ -34,18 +34,12 @@
 #'   case is printed.
 #' @export
 #' @examples
-#' ver <- gdtools::version_freetype()
+#' disp_hist_base <- function() hist(mtcars$disp)
+#' expect_doppelganger("disp-histogram-base", disp_hist_base)
 #'
-#' if (ver >= "2.6.0") {
-#'   disp_hist_base <- function() hist(mtcars$disp)
-#'   expect_doppelganger("disp-histogram-base", disp_hist_base)
-#' }
-#'
-#' if (ver >= "2.6.0" && requireNamespace("ggplot2", quietly = TRUE)) {
-#'   library("ggplot2")
-#'   disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
-#'   expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
-#' }
+#' library("ggplot2")
+#' disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
+#' expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
 expect_doppelganger <- function(title, fig, path = NULL, ...,
                                 user_fonts = NULL, verbose = FALSE) {
   fig_name <- str_standardise(title)
