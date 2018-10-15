@@ -8,7 +8,7 @@ make_testcase_file <- function(fig_name) {
   structure(file, class = "vdiffr_testcase")
 }
 
-write_svg <- function(p, file, title) {
+write_svg <- function(p, file, title = "") {
   svglite(file, user_fonts = get_aliases())
   on.exit(grDevices::dev.off())
   print_plot(p, title)
@@ -19,15 +19,15 @@ get_aliases <- function() {
   aliases
 }
 
-print_plot <- function(p, title) {
+print_plot <- function(p, title = "") {
   UseMethod("print_plot")
 }
 
-print_plot.default <- function(p, title) {
+print_plot.default <- function(p, title = "") {
   print(p)
 }
 
-print_plot.ggplot <- function(p, title) {
+print_plot.ggplot <- function(p, title = "") {
   add_dependency("ggplot2")
   if (title != "" && !"title" %in% names(p$labels)) {
     p <- p + ggplot2::ggtitle(title)
