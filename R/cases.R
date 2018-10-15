@@ -211,19 +211,19 @@ filter_cases <- function(cases, type) {
 }
 
 case <- function(case) {
-  set_attrs(case, class = "case")
+  structure(case, class = "case")
 }
 mismatch_case <- function(case) {
-  set_attrs(case, class = c("mismatch_case", "case"))
+  structure(case, class = c("mismatch_case", "case"))
 }
 new_case <- function(case) {
-  set_attrs(case, class = c("new_case", "case"))
+  structure(case, class = c("new_case", "case"))
 }
 orphaned_case <- function(case) {
-  set_attrs(case, class = c("orphaned_case", "case"))
+  structure(case, class = c("orphaned_case", "case"))
 }
 success_case <- function(case) {
-  set_attrs(case, class = c("success_case", "case"))
+  structure(case, class = c("success_case", "case"))
 }
 
 is_case <- function(case) {

@@ -187,7 +187,7 @@ maybe_print_svgs <- function(case, pkg_path = NULL) {
 new_expectation <- function(msg, case, type, vdiffr_type) {
   exp <- testthat::expectation(type, msg)
   classes <- c(class(exp), vdiffr_type)
-  set_attrs(exp, class = classes, vdiffr_case = case)
+  structure(exp, class = classes, vdiffr_case = case)
 }
 new_exp <- function(msg, case) {
   new_expectation(msg, case, "skip", "vdiffr_new")
