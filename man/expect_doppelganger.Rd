@@ -4,8 +4,7 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(title, fig, path = NULL, ..., user_fonts = NULL,
-  verbose = FALSE)
+expect_doppelganger(title, fig, path = NULL, ..., verbose = FALSE)
 }
 \arguments{
 \item{title}{The figure title is used for creating the figure file
@@ -22,10 +21,6 @@ folder.}
 
 \item{...}{Additional arguments passed to \code{\link[testthat:compare]{testthat::compare()}} to
 control specifics of comparison.}
-
-\item{user_fonts}{Passed to \code{svglite()} to make sure SVG are
-reproducible. Defaults to Liberation fonts for standard families
-and Symbola font for symbols.}
 
 \item{verbose}{If \code{TRUE}, the contents of the SVG files for the
 comparison plots are printed during testthat checks. This is

@@ -21,9 +21,6 @@
 #'   folder.
 #' @param ... Additional arguments passed to [testthat::compare()] to
 #'   control specifics of comparison.
-#' @param user_fonts Passed to \code{svglite()} to make sure SVG are
-#'   reproducible. Defaults to Liberation fonts for standard families
-#'   and Symbola font for symbols.
 #' @param verbose If `TRUE`, the contents of the SVG files for the
 #'   comparison plots are printed during testthat checks. This is
 #'   useful to investigate errors when testing remotely.
@@ -40,11 +37,14 @@
 #' library("ggplot2")
 #' disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
 #' expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
-expect_doppelganger <- function(title, fig, path = NULL, ...,
-                                user_fonts = NULL, verbose = FALSE) {
+expect_doppelganger <- function(title,
+                                fig,
+                                path = NULL,
+                                ...,
+                                verbose = FALSE) {
   fig_name <- str_standardise(title)
   testcase <- make_testcase_file(fig_name)
-  write_svg(fig, testcase, title, user_fonts)
+  write_svg(fig, testcase, title)
 
   context <- get(".context", envir = testthat::get_reporter())
   context <- str_standardise(context %||% "")

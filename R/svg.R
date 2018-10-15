@@ -8,17 +8,15 @@ make_testcase_file <- function(fig_name) {
   structure(file, class = "vdiffr_testcase")
 }
 
+write_svg <- function(p, file, title) {
+  svglite(file, user_fonts = get_aliases())
+  on.exit(grDevices::dev.off())
+  print_plot(p, title)
+}
 get_aliases <- function() {
   aliases <- fontquiver::font_families("Liberation")
   aliases$symbol$symbol <- fontquiver::font_symbol("Symbola")
   aliases
-}
-
-write_svg <- function(p, file, title, user_fonts = NULL) {
-  user_fonts <- user_fonts %||% get_aliases()
-  svglite(file, user_fonts = user_fonts)
-  on.exit(grDevices::dev.off())
-  print_plot(p, title)
 }
 
 print_plot <- function(p, title) {

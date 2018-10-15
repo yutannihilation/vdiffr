@@ -1,6 +1,11 @@
 
 # vdiffr 0.2.3.9000
 
+* The `user_fonts` argument of `expect_doppelganger()` is defunct. It
+  wasn't used in any package and complicated the UI for no real
+  benefit. The fonts used to generate the SVGs are now hardcoded to
+  Liberation and Symbola.
+
 * vdiffr now embeds svglite and compiles statically against the C
   libraries used to compute font extents and text boxes metrics. This
   should make SVG generation deterministic across platforms.
