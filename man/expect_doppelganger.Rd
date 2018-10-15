@@ -4,7 +4,8 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(title, fig, path = NULL, ..., verbose = FALSE)
+expect_doppelganger(title, fig, path = NULL, ..., verbose = FALSE,
+  writer = write_svg)
 }
 \arguments{
 \item{title}{The figure title is used for creating the figure file
@@ -30,6 +31,11 @@ Note that it is not possible to print the original SVG during
 interactive use. This is because there is no way of figuring out
 in which directory this SVG lives. Consequently, only the test
 case is printed.}
+
+\item{writer}{A function that takes the plot, a target SVG file,
+and an optional plot title. It should transform the plot to SVG
+in a deterministic way and write it to the target file. See
+\code{\link[=write_svg]{write_svg()}} (the default) for an example.}
 }
 \description{
 If the test has never been validated yet, the test is skipped. If

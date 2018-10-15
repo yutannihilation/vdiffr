@@ -29,6 +29,10 @@
 #'   interactive use. This is because there is no way of figuring out
 #'   in which directory this SVG lives. Consequently, only the test
 #'   case is printed.
+#' @param writer A function that takes the plot, a target SVG file,
+#'   and an optional plot title. It should transform the plot to SVG
+#'   in a deterministic way and write it to the target file. See
+#'   [write_svg()] (the default) for an example.
 #' @export
 #' @examples
 #' disp_hist_base <- function() hist(mtcars$disp)
@@ -41,10 +45,11 @@ expect_doppelganger <- function(title,
                                 fig,
                                 path = NULL,
                                 ...,
-                                verbose = FALSE) {
+                                verbose = FALSE,
+                                writer = write_svg) {
   fig_name <- str_standardise(title)
   testcase <- make_testcase_file(fig_name)
-  write_svg(fig, testcase, title)
+  writer(fig, testcase, title)
 
   context <- get(".context", envir = testthat::get_reporter())
   context <- str_standardise(context %||% "")
