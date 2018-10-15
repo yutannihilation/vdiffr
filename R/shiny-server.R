@@ -13,7 +13,7 @@ vdiffrServer <- function(cases) {
     output$toggle <- renderDiffer(input, cases$active, widget_toggle_)
     output$slide <- renderDiffer(input, cases$active, widget_slide_)
     output$diff <- renderDiffer(input, cases$active, widget_diff_)
-    output$diff_text <- renderDiffer(input, cases$active, diff_text_, is_widget = FALSE)
+    output$diff_text <- renderDiffer(input, cases$active, diff_text_, renderer = shiny::renderUI)
     output$diff_text_controls <- renderDiffControls(input)
 
     validateGroupCases(input, cases)
@@ -80,10 +80,11 @@ renderDiffControls <- function(input) {
   })
 }
 
-renderDiffer <- function(input, active_cases, widget, is_widget = TRUE) {
-  # if widget() returns an htmlwidget, use renderToggle; otherwise assume it's HTML tags
-  renderFunction <- if (is_widget) renderToggle else shiny::renderUI
-  renderFunction({
+renderDiffer <- function(input,
+                         active_cases,
+                         widget,
+                         renderer = renderToggle) {
+  renderer({
     # When renderDiffer() is first called, renderCaseInput() has not
     # been called yet.
     if (is.null(input$case)) {
