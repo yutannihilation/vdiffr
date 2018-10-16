@@ -14,11 +14,24 @@ vdiffrServer <- function(cases) {
     output$slide <- renderDiffer(input, cases$active, widget_slide_)
     output$diff <- renderDiffer(input, cases$active, widget_diff_)
 
+    output$diff_text <- renderDiffer(
+      input,
+      cases$active,
+      diff_text_,
+      renderer = shiny::renderUI,
+      watcher = diff_text_watcher
+    )
+    output$diff_text_controls <- renderDiffControls(input)
+
     validateGroupCases(input, cases)
     validateSingleCase(input, cases)
 
     output$status <- renderStatus(input, cases)
   })
+}
+
+diff_text_watcher <- function(input) {
+  compact(list(mode = input$mode))
 }
 
 prettify_types <- function(x) {
@@ -61,8 +74,33 @@ renderCaseInput <- function(input, active_cases) {
   })
 }
 
-renderDiffer <- function(input, active_cases, widget) {
-  renderToggle({
+renderDiffControls <- function(input) {
+  shiny::renderUI({
+    if (!identical(input$active_tab, "diff_text")) {
+      return(htmltools::tags$div())
+    }
+
+    htmltools::tagList(
+      shiny::br(),
+      shiny::br(),
+      shiny::selectInput(
+        "mode", "Select a diff mode",
+        choices = c("unified", "sidebyside", "context", "auto")
+      )
+    )
+  })
+}
+
+#' @param watcher A function that takes the Shiny input as argument
+#'   and returns a list of additional arguments to be passed to the
+#'   widget
+#' @noRd
+renderDiffer <- function(input,
+                         active_cases,
+                         widget,
+                         renderer = renderToggle,
+                         watcher = NULL) {
+  renderer({
     # When renderDiffer() is first called, renderCaseInput() has not
     # been called yet.
     if (is.null(input$case)) {
@@ -89,7 +127,13 @@ renderDiffer <- function(input, active_cases, widget) {
       before <- as_inline_svg(read_file(before_path))
     }
 
-    widget(before, after)
+    if (is_null(watcher)) {
+      args <- NULL
+    } else {
+      args <- watcher(input)
+    }
+
+    eval_bare(expr(widget(before, after, !!!args)))
   })
 }
 
