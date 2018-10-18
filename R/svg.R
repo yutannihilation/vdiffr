@@ -8,28 +8,40 @@ make_testcase_file <- function(fig_name) {
   structure(file, class = "vdiffr_testcase")
 }
 
+#' Default SVG writer
+#'
+#' This is the default SVG writer for vdiffr test cases. It uses
+#' embedded versions of [svglite](http://r-lib.github.io/svglite/),
+#' [harfbuzz](https://harfbuzz.github.io/), and the Liberation and
+#' Symbola fonts in order to create deterministic SVGs.
+#'
+#' @param plot A plot object to convert to SVG. Can be a ggplot2 object,
+#'   a [recorded plot][grDevices::recordPlot], or any object with a
+#'   [print()][base::print] method.
+#' @param file The file to write the SVG to.
+#' @param title An optional title for the test case.
+#'
+#' @export
+write_svg <- function(plot, file, title = "") {
+  svglite(file, user_fonts = get_aliases())
+  on.exit(grDevices::dev.off())
+  print_plot(plot, title)
+}
 get_aliases <- function() {
   aliases <- fontquiver::font_families("Liberation")
   aliases$symbol$symbol <- fontquiver::font_symbol("Symbola")
   aliases
 }
 
-write_svg <- function(p, file, title, user_fonts = NULL) {
-  user_fonts <- user_fonts %||% get_aliases()
-  svglite(file, user_fonts = user_fonts)
-  on.exit(grDevices::dev.off())
-  print_plot(p, title)
-}
-
-print_plot <- function(p, title) {
+print_plot <- function(p, title = "") {
   UseMethod("print_plot")
 }
 
-print_plot.default <- function(p, title) {
+print_plot.default <- function(p, title = "") {
   print(p)
 }
 
-print_plot.ggplot <- function(p, title) {
+print_plot.ggplot <- function(p, title = "") {
   add_dependency("ggplot2")
   if (title != "" && !"title" %in% names(p$labels)) {
     p <- p + ggplot2::ggtitle(title)

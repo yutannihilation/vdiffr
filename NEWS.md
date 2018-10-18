@@ -1,6 +1,20 @@
 
 # vdiffr 0.2.3.9000
 
+* `expect_doppelganger()` now takes a `writer` argument. This makes it
+  easy to use vdiffr with a different SVG engine. See `?write_svg` for
+  an example function. Packages implementing a different SVG engine
+  should wrap around `expect_doppelganger()` to pass their custom
+  writer.
+
+* `write_svg()` is now an exported function. It provides a template
+  (function arguments and return value) for SVG writer functions.
+
+* The `user_fonts` argument of `expect_doppelganger()` is defunct. It
+  wasn't used in any package and complicated the UI for no real
+  benefit. The fonts used to generate the SVGs are now hardcoded to
+  Liberation and Symbola.
+
 * vdiffr now embeds svglite and compiles statically against the C
   libraries used to compute font extents and text boxes metrics. This
   should make SVG generation deterministic across platforms.
