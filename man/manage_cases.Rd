@@ -4,7 +4,7 @@
 \alias{manage_cases}
 \title{Manage visual test cases with a Shiny app}
 \usage{
-manage_cases(package = ".", filter = NULL)
+manage_cases(package = ".", filter = NULL, ..., options = list())
 }
 \arguments{
 \item{package}{Package description, can be path or package
@@ -13,6 +13,14 @@ name. See \code{\link[devtools:as.package]{devtools::as.package()}} for more inf
 \item{filter}{If not \code{NULL}, only tests with file names matching this
 regular expression will be executed.  Matching will take on the file
 name after it has been stripped of \code{"test-"} and \code{".R"}.}
+
+\item{...}{Unused.}
+
+\item{options}{Named options that should be passed to the \code{runApp} call
+(these can be any of the following: "port", "launch.browser", "host", "quiet",
+"display.mode" and "test.mode"). You can also specify \code{width} and
+\code{height} parameters which provide a hint to the embedding environment
+about the ideal height/width for the app.}
 }
 \description{
 Manage visual test cases with a Shiny app
