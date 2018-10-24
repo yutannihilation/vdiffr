@@ -1,6 +1,9 @@
 
 # vdiffr 0.2.3.9000
 
+* `manage_cases()` gains an `options` argument that is passed to
+  `shiny::shinyApp()` (@KZARCA).
+
 * `expect_doppelganger()` now takes a `writer` argument. This makes it
   easy to use vdiffr with a different SVG engine. See `?write_svg` for
   an example function. Packages implementing a different SVG engine
