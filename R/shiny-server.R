@@ -120,11 +120,11 @@ renderDiffer <- function(input,
     pkg_path <- attr(active_cases(), "pkg_path")
     before_path <- file.path(pkg_path, "tests", "testthat", case$path)
 
-    after <- as_inline_svg(hash_encode_url(read_file(case$testcase)))
+    after <- as_inline_svg(read_file(case$testcase))
     if (is_new_case(case)) {
       before <- after
     } else {
-      before <- as_inline_svg(hash_encode_url(read_file(before_path)))
+      before <- as_inline_svg(read_file(before_path))
     }
 
     if (is_null(watcher)) {
