@@ -1,5 +1,8 @@
 
 as_inline_svg <- function(svg) {
+  # https://stackoverflow.com/questions/30733607/svg-data-image-not-working-on-firefox
+  svg <- hash_encode_url(svg)
+
   paste0("data:image/svg+xml;utf8,", svg)
 }
 

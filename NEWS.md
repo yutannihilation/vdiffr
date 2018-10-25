@@ -1,6 +1,9 @@
 
 # vdiffr 0.2.3.9000
 
+* Fixed a bug in the Shiny app that prevented SVGs from being
+  displayed in Firefox (@KZARCA, #29).
+
 * `manage_cases()` gains an `options` argument that is passed to
   `shiny::shinyApp()` (@KZARCA).
 

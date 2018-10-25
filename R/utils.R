@@ -152,3 +152,7 @@ push_log <- function(case) {
 is_checking <- function() {
   nzchar(Sys.getenv("R_TESTS"))
 }
+
+hash_encode_url <- function(url){
+  gsub("#", "%23", url)
+}
