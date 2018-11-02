@@ -31,7 +31,7 @@ Imports:
     devtools,
     diffobj,
     fontquiver (>= 0.2.0),
-    freetypeharfbuzz,
+    freetypeharfbuzz (>= 0.2.5),
     gdtools,
     glue,
     grDevices,
@@ -54,7 +54,5 @@ LinkingTo:
     gdtools,
     Rcpp,
     BH
-Remotes:
-    lionel-/freetypeharfbuzz
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
