@@ -8,6 +8,10 @@ vdiffr is an extension to the package testthat that makes it easy to
 test for visual regressions. It provides a Shiny app to manage failed
 tests and visually compare a graphic to its expected output.
 
+**Important:** The CRAN version no longer works properly. Please use
+the development version which removes the dependency on the system
+FreeType library.
+
 
 ## Installation
 
@@ -23,12 +27,6 @@ or the last CRAN release with:
 ```{r}
 install.packages("vdiffr")
 ```
-
-vdiffr requires FreeType greater than 2.6.0. It is automatically
-installed on Windows along with gdtools and comes with X11 on
-macOS. If you run an old Linux distribution, it is possible you will
-have to update the relevant package. See the section on Travis-CI
-below for some indications.
 
 
 ## How to use vdiffr
@@ -135,77 +133,6 @@ C-v`, include something like this in your init file:
 
 (define-key ess-r-package-dev-map "\C-v" 'ess-r-vdiffr-manage-cases)
 ```
-
-
-## Technical Aspects
-
-### FreeType dependency
-
-The software FreeType plays a key role in vdiffr. It is used to
-compute the extents of text boxes and thus determine the dimensions of
-graphical elements containing text. These dimensions are then recorded
-in the SVG files.
-
-Small changes in the algorithm implemented in FreeType to compute text
-extents will produce different SVGs. For this reason, it is important
-that the FreeType version that was used to create validated cases be
-the same as the one on the system running the tests. To avoid false
-failures, the visual tests are skipped when that's not the case. The
-minor version is not taken into account so FreeType 2.7.1 is deemed
-compatible with 2.7.2 but not with 2.8.0.
-
-In practice, this means that package contributors should only validate
-visual cases if their FreeType version matches the one of the package
-maintainer. Also, the maintainer must update the version recorded in
-the package repository (in the file `./tests/figs/deps.txt`) when
-FreeType has been updated on their system. Running
-`vdiffr::validate_cases()` updates the dependency file even if there
-are no visual case to update.
-
-
-### Windows platforms
-
-Appveyor does not require any configuration since FreeType 2.6.0 is
-automatically installed on this platform along with gdtools. However,
-Fontconfig builds a cache of all system fonts the first time it is
-run, which can take a while. It is a good idea to add the following in
-a `fontconfig-helper.R` testthat file in order to speed up the cache
-building on Appveyor and on CRAN's Windows servers:
-
-```{r}
-on_appveyor <- function() {
-  identical(Sys.getenv("APPVEYOR"), "True")
-}
-on_cran <- function() {
-  !identical(Sys.getenv("NOT_CRAN"), "true")
-}
-
-# Use minimal fonts.conf to speed up fc-cache
-if (on_appveyor() || on_cran()) {
-  gdtools::set_dummy_conf()
-}
-```
-
-
-### Dependency notes
-
-vdiffr currently uses svglite to save the plots in a text format that
-makes it easy to perform comparisons. This makes the test cases
-dependent on that package as the SVG translation of the plot may
-change across different versions of svglite (though that should not
-happen often). For this reason, whenever you validate a graphical test
-case, the `tests/figs/deps.txt` file is updated with a note containing
-the svglite version. This works the same way as the roxygen version
-note.
-
-Your graphics might be dependent on other packages besides svglite. If
-your package is an extension to ggplot2 for instance, the appearance
-of your plot may change as ggplot2 evolves (as with the 2.0 version
-which tweaked the grayness of the background color among other
-changes). For this reason, `expect_doppelganger()` adds a dependence
-on ggplot2 when you supply a ggplot2 object. You can also manually add
-a dependency on any other package by calling `vdiffr::add_dependency()`
-anywhere in a test file.
 
 
 ## Implementation
