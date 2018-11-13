@@ -102,76 +102,9 @@ compare_figs <- function(case) {
   maybe_collect_case(case)
   push_log(case)
 
-  check_versions_match(case, "vdiffr-svg-engine", svg_engine_ver())
-
   msg <- paste0("Figures don't match: ", case$name, ".svg\n")
   mismatch_exp(msg, case)
 }
-
-
-# FIXME: The longjumps are confusing and impede unit testing
-check_versions_match <- function(case, dep, system_ver, strip_minor = FALSE) {
-  cases_ver <- cases_pkg_version(dep, strip_minor = strip_minor)
-
-  if (is_null(cases_ver)) {
-    msg <- glue(
-      "Failed doppelganger but vdiffr can't check its SVG engine version.
-       Please revalidate cases with a more recent vdiffr"
-    )
-    return_from(caller_env(), skipped_mismatch_exp(msg, case))
-  }
-
-  if (cases_ver < system_ver) {
-    msg <- glue(
-      "Failed doppelganger was generated with an older SVG engine version.
-       Please revalidate cases with vdiffr::validate_cases() or vdiffr::manage_cases()"
-    )
-    return_from(caller_env(), skipped_mismatch_exp(msg, case))
-  }
-
-  if (cases_ver > system_ver) {
-    msg <- glue(
-      "Failed doppelganger was generated with a newer SVG engine version.
-       Please install { dep } {cases_ver} on your system"
-    )
-    return_from(caller_env(), skipped_mismatch_exp(msg, case))
-  }
-
-  if (cases_ver != system_ver) {
-    abort("Internal error: Unexpected dependency version structure")
-  }
-
-}
-
-# Go back up one level by default as we should be in the `testthat`
-# folder
-cases_pkg_version <- function(pkg, path = "..", strip_minor = FALSE) {
-  deps <- readLines(file.path(path, "figs", "deps.txt"))
-  ver <- purrr::detect(deps, function(dep) grepl(sprintf("^%s:", pkg), dep))
-
-  if (is_null(ver)) {
-    return(NULL)
-  }
-
-  # Strip prefixes like "FreeType: " or "Cairo: "
-  ver <- substr(ver, nchar(pkg) + 3, nchar(ver))
-  # Strip minor version
-  if (strip_minor) {
-    ver <- sub(".[0-9]+$", "", ver)
-  }
-
-  as_version(ver)
-}
-cases_freetype_version <- function(path = "..") {
-  cases_pkg_version("FreeType", path, strip_minor = TRUE)
-}
-
-system_freetype_version <- function() {
-  ver <- sub(".[0-9]+$", "", gdtools::version_freetype())
-  as_version(ver)
-}
-as_version <- function(ver) base::package_version(ver)
-
 
 # Print only if we're not collecting. The testthat reporter prints
 # verbose cases at a later point.
