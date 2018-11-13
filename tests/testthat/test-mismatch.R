@@ -2,6 +2,7 @@ context("mismatch")
 
 test_that("failures are pushed to log file", {
   if (!is_checking()) {
+    expect_true(TRUE)
     return("Skipping R CMD check tests")
   }
 
