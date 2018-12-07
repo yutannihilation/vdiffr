@@ -27,6 +27,8 @@ vdiffrServer <- function(cases) {
     validateSingleCase(input, cases)
 
     output$status <- renderStatus(input, cases)
+
+    quitApp(input)
   })
 }
 
@@ -197,5 +199,13 @@ renderStatus <- function(input, reactive_cases) {
     }
 
     list(shiny::br(), paragraph)
+  })
+}
+
+quitApp <- function(input) {
+  shiny::observe({
+    if (input$quit_button > 0) {
+      shiny::stopApp()
+    }
   })
 }
