@@ -116,7 +116,7 @@ compare_figs <- function(case) {
 # verbose cases at a later point.
 maybe_print_svgs <- function(case, pkg_path = NULL) {
   if (case$verbose && is_null(active_collecter())) {
-    meow(svg_files_lines(case, pkg_path))
+    cat_line(svg_files_lines(case, pkg_path))
   }
 }
 

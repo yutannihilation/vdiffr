@@ -84,7 +84,7 @@ vdiffrReporter <-
       },
 
       end_reporter = function() {
-        meow()
+        cat_line()
 
         if (!is.null(self$failure)) {
           last_error$last <- self$failure
@@ -96,7 +96,7 @@ vdiffrReporter <-
           ))
         }
         if (length(self$verbose_cases)) {
-          meow(
+          cat_line(
             glue(
               "====================
                vdiffr failing cases

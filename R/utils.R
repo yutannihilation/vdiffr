@@ -72,18 +72,15 @@ dir_exists <- function(path) {
   !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
 }
 
-chr_lines <- function(..., trailing = FALSE) {
+cat_line <- function(..., trailing = TRUE, file = "") {
+  cat(paste_line(..., trailing = trailing), file = file)
+}
+paste_line <- function(..., trailing = FALSE) {
   lines <- paste(chr(...), collapse = "\n")
   if (trailing) {
     lines <- paste0(lines, "\n")
   }
   lines
-}
-meow <- function(...) {
-  cat(chr_lines(..., trailing = TRUE))
-}
-cxn_meow <- function(.cxn, ...) {
-  cat(chr_lines(..., trailing = TRUE), file = .cxn)
 }
 
 svg_files_lines <- function(case, pkg_path = NULL) {
@@ -99,7 +96,7 @@ svg_files_lines <- function(case, pkg_path = NULL) {
   # where the original SVG lives (most likely in a subdirectory within
   # the `figs` folder) so we don't print it.
   if (file.exists(original_path)) {
-    original_lines <- chr_lines(
+    original_lines <- paste_line(
       "> Original SVG:",
       readLines(original_path),
       ""
@@ -108,7 +105,7 @@ svg_files_lines <- function(case, pkg_path = NULL) {
     original_lines <- ""
   }
 
-  lines <- chr_lines(
+  lines <- paste_line(
     glue(">> Failed doppelganger: { case$name }"),
     original_lines,
     "> Testcase SVG:",
@@ -132,20 +129,13 @@ push_log <- function(case) {
   on.exit(close(file))
 
   if (!log_exists) {
-    cxn_meow(file, glue(
-      "R environment:
+    cat_line(file = file, glue(
+      "Environment:
        - vdiffr: { utils::packageVersion('vdiffr') }
-       - gdtools: { utils::packageVersion('gdtools') }
-
-       System environment:
-       - Fontconfig: { gdtools::version_fontconfig() }
-       - FreeType: { gdtools::version_freetype() }
-       - Cairo: { gdtools::version_cairo() }
-
-      "
+       - freetypeharfbuzz: { utils::packageVersion('freetypeharfbuzz') }"
     ))
   }
-  cxn_meow(file, svg_files_lines(case))
+  cat_line(file = file, svg_files_lines(case))
 
   invisible(TRUE)
 }
