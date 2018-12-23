@@ -14,7 +14,7 @@ collect_cases <- function(package = ".", filter = NULL) {
   on.exit(set_active_collecter(NULL))
 
   message("Running testthat to collect visual cases\n\n",
-    "  N = New visual case\n  X = Failed doppelganger\n  o = Convincing doppelganger\n")
+    "  N = New visual case\n  X = Failed doppelganger\n  o = Successful doppelganger\n")
   package <- devtools::as.package(package)
   reporter <- vdiffrReporter$new(package$path)
   suppressMessages(devtools::test(package, filter = filter, reporter = reporter))
