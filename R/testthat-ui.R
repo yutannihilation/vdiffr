@@ -10,9 +10,15 @@
 #' called, or more generally any object with a `print` method. If a
 #' ggplot object, a dependency for ggplot2 is automatically added (see
 #' [add_dependency()].
-#' @param title The figure title is used for creating the figure file
-#'   names (all non-alphanumeric characters are converted to
-#'   `"-"`). Also, ggplot2 figures are appended with `ggtitle(title)`.
+#'
+#' @param title A brief description of what is being tested in the
+#'   figure. For instance: "Points and lines overlap".
+#'
+#'   If a ggplot2 figure doesn't have a title already, `title` is
+#'   applied to the figure with `ggtitle()`.
+#'
+#'   The title is also used as file name for storing SVG (in a
+#'   sanitzed form, with special characters converted to `"-"`).
 #' @param fig A figure to test.
 #' @param path The path where the test case should be stored, relative
 #'   to the `tests/figs/` folder. If `NULL` (the default), the current

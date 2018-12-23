@@ -8,9 +8,14 @@ expect_doppelganger(title, fig, path = NULL, ..., verbose = FALSE,
   writer = write_svg)
 }
 \arguments{
-\item{title}{The figure title is used for creating the figure file
-names (all non-alphanumeric characters are converted to
-\code{"-"}). Also, ggplot2 figures are appended with \code{ggtitle(title)}.}
+\item{title}{A brief description of what is being tested in the
+figure. For instance: "Points and lines overlap".
+
+If a ggplot2 figure doesn't have a title already, \code{title} is
+applied to the figure with \code{ggtitle()}.
+
+The title is also used as file name for storing SVG (in a
+sanitzed form, with special characters converted to \code{"-"}).}
 
 \item{fig}{A figure to test.}
 
