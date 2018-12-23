@@ -1,6 +1,9 @@
 
 # vdiffr 0.2.3.9000
 
+* vdiffr now advises user to run `manage_cases()` when a figure was
+  not validated yet (#25).
+
 * Fixed a bug in the Shiny app that prevented SVGs from being
   displayed in Firefox (@KZARCA, #29).
 

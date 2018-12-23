@@ -5,7 +5,7 @@ test_that("New cases are skipped", {
   new_results <- subset_results(test_results, "test-new.R", "New plots are collected")
 
   msg <- map_chr(new_results, function(result) result$message)
-  expected_msg <- "Figure not generated yet: new%s.svg"
+  expected_msg <- "Figure not generated yet: new%s.svg\nPlease run `vdiffr::manage_cases()` to validate the figure."
   expected_msg <- c(sprintf(expected_msg, "1"), sprintf(expected_msg, "2"))
   expect_equal(msg, expected_msg)
 

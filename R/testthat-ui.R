@@ -79,7 +79,10 @@ expect_doppelganger <- function(title,
     case <- new_case(case)
     maybe_collect_case(case)
     maybe_print_svgs(case)
-    msg <- paste0("Figure not generated yet: ", fig_name, ".svg")
+    msg <- paste_line(
+      sprintf("Figure not generated yet: %s.svg", fig_name),
+      "Please run `vdiffr::manage_cases()` to validate the figure."
+    )
     exp <- new_exp(msg, case)
   }
 
