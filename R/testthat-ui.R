@@ -41,18 +41,33 @@
 #'   [write_svg()] (the default) for an example.
 #' @export
 #' @examples
-#' disp_hist_base <- function() hist(mtcars$disp)
-#' expect_doppelganger("disp-histogram-base", disp_hist_base)
+#' if (FALSE) {  # Not run
 #'
 #' library("ggplot2")
-#' disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
-#' expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
+#'
+#' test_that("plots have known output", {
+#'   disp_hist_base <- function() hist(mtcars$disp)
+#'   expect_doppelganger("disp-histogram-base", disp_hist_base)
+#'
+#'   disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
+#'   expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
+#' })
+#'
+#' }
 expect_doppelganger <- function(title,
                                 fig,
                                 path = NULL,
                                 ...,
                                 verbose = FALSE,
                                 writer = write_svg) {
+  if (!is_collecting()) {
+    abort(paste_line(
+      "`expect_doppelganger()` can't be called interactively.",
+      "* Call `vdiffr::manage_cases()` to validate or revalidate figures.",
+      "* Call `devtools::test()` to test the figures."
+    ))
+  }
+
   fig_name <- str_standardise(title)
   testcase <- make_testcase_file(fig_name)
   writer(fig, testcase, title)
@@ -88,6 +103,11 @@ expect_doppelganger <- function(title,
 
   signal_expectation(exp)
   invisible(exp)
+}
+
+# FIXME: Use TESTTHAT_PKG envvar after devtools and testthat release
+is_collecting <- function() {
+  !inherits(testthat::get_reporter(), "StopReporter")
 }
 
 str_standardise <- function(s, sep = "-") {
