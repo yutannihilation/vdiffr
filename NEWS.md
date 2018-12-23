@@ -1,6 +1,9 @@
 
 # vdiffr 0.2.3.9000
 
+* New `VDIFFR_LOG_PATH` environment variable. When set, vdiffr pushes
+  diffs of failed SVG comparisons to that file.
+
 * `add_dependency()` is soft-deprecated without replacement.
 
   We plan to implement the concept of "regression test" in

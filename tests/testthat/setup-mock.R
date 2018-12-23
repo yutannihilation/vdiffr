@@ -10,14 +10,12 @@ subset_results <- function(results, file, test) {
 mock_pkg_dir <- create_mock_pkg()
 mock_test_dir <- file.path(mock_pkg_dir, "tests", "testthat")
 
-# So the mock package writes the log file
-old <- Sys.getenv("R_TESTS")
-Sys.setenv(R_TESTS = TRUE)
+log_var <- c(VDIFFR_LOG_PATH = file.path(mock_pkg_dir, "tests", "vdiffr.Rout.fail"))
+withr::with_envvar(log_var, {
+  test_results <- testthat::test_dir(mock_test_dir, reporter = "silent")
+})
 
-test_results <- testthat::test_dir(mock_test_dir, reporter = "silent")
 mock_cases_outputs <- purrr::quietly(purrr::safely(collect_cases))(mock_pkg_dir)
-
-Sys.setenv(R_TESTS = old)
 
 quietly_out <- mock_cases_outputs$result
 if (inherits(quietly_out$error, "condition")) {

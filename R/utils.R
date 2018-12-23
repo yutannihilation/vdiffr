@@ -91,38 +91,28 @@ svg_files_lines <- function(case, pkg_path = NULL) {
     # The reporter is not run from the test directory
     original_path <- from_test_dir(pkg_path, case$path)
   }
-
-  # If called from interactive use, we most likely can't figure out
-  # where the original SVG lives (most likely in a subdirectory within
-  # the `figs` folder) so we don't print it.
-  if (file.exists(original_path)) {
-    original_lines <- paste_line(
-      "> Original SVG:",
-      readLines(original_path),
-      ""
-    )
-  } else {
-    original_lines <- ""
+  if (!file.exists(original_path)) {
+    return(chr())
   }
 
-  lines <- paste_line(
-    glue(">> Failed doppelganger: { case$name }"),
-    original_lines,
-    "> Testcase SVG:",
-    readLines(case$testcase),
-    ""
-  )
+  diff_lines(case, original_path, case$testcase)
 }
 from_test_dir <- function(pkg_path, path) {
   file.path(pkg_path, "tests", "testthat", path)
 }
 
 push_log <- function(case) {
-  if (!is_checking()) {
-    return(invisible(FALSE))
+  log_path <- Sys.getenv("VDIFFR_LOG_PATH")
+
+  # If no envvar is set, check if we are running under R CMD check. In
+  # that case, always push a log file.
+  if (!nzchar(log_path)) {
+    if (!is_checking()) {
+      return(invisible(FALSE))
+    }
+    log_path <- testthat::test_path("..", "vdiffr.Rout.fail")
   }
 
-  log_path <- file.path("..", "vdiffr.Rout.fail")
   log_exists <- file.exists(log_path)
 
   file <- file(log_path, "a")
@@ -135,13 +125,35 @@ push_log <- function(case) {
       vdiffr_info()
     )
   }
-  cat_line(file = file, svg_files_lines(case))
 
-  invisible(TRUE)
+  diff_lines <- diff_lines(case, case$path, case$testcase)
+  cat_line(file = file, !!!diff_lines)
 }
 is_checking <- function() {
-  nzchar(Sys.getenv("R_TESTS"))
+  !nzchar(Sys.getenv("NOT_CRAN"))
 }
+
+diff_lines <- function(case,
+                       before_path,
+                       after_path) {
+  before <- readLines(before_path)
+  after <- readLines(after_path)
+
+  diff <- diffobj::diffChr(
+    before,
+    after,
+    format = "raw"
+  )
+
+  # No format() method?
+  lines <- utils::capture.output(print(diff))
+
+  paste_line(
+    glue("Failed doppelganger: {case$name} ({case$path})"),
+    !!!lines
+  )
+}
+
 
 vdiffr_info <- function() {
   glue(

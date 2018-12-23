@@ -50,6 +50,7 @@ Suggests:
     ggplot2 (>= 3.0.0),
     roxygen2,
     rstudioapi,
+    withr,
     yaml
 LinkingTo:
     freetypeharfbuzz,
