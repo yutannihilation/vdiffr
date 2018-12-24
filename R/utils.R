@@ -83,24 +83,6 @@ paste_line <- function(..., trailing = FALSE) {
   lines
 }
 
-svg_files_lines <- function(case, pkg_path = NULL) {
-  name <- case$name
-  if (is_null(pkg_path)) {
-    original_path <- case$path
-  } else {
-    # The reporter is not run from the test directory
-    original_path <- from_test_dir(pkg_path, case$path)
-  }
-  if (!file.exists(original_path)) {
-    return(chr())
-  }
-
-  diff_lines(case, original_path, case$testcase)
-}
-from_test_dir <- function(pkg_path, path) {
-  file.path(pkg_path, "tests", "testthat", path)
-}
-
 push_log <- function(case) {
   log_path <- Sys.getenv("VDIFFR_LOG_PATH")
 

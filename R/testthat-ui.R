@@ -25,19 +25,36 @@
 #'   folder.
 #' @param ... Additional arguments passed to [testthat::compare()] to
 #'   control specifics of comparison.
-#' @param verbose If `TRUE`, the contents of the SVG files for the
-#'   comparison plots are printed during testthat checks. This is
-#'   useful to investigate errors when testing remotely.
-#'
-#'   Note that it is not possible to print the original SVG during
-#'   interactive use. This is because there is no way of figuring out
-#'   in which directory this SVG lives. Consequently, only the test
-#'   case is printed.
+#' @param verbose Soft-deprecated. See the debugging section.
 #' @param writer A function that takes the plot, a target SVG file,
 #'   and an optional plot title. It should transform the plot to SVG
 #'   in a deterministic way and write it to the target file. See
 #'   [write_svg()] (the default) for an example.
-#' @export
+#'
+#' @section Debugging:
+#'
+#' It is sometimes difficult to understand the cause of a failure.
+#' This usually indicates that the plot is not created
+#' deterministically. Potential culprits are:
+#'
+#' * Some of the plot components depend on random variation. Try
+#'   setting a seed.
+#'
+#' * The plot depends on some system library. For instance sf plots
+#'   depend on libraries like GEOS and GDAL. It might not be possible
+#'   to test these plots with vdiffr (which can still be used for
+#'   manual inspection, add a [testthat::skip()] before the
+#'   `expect_doppelganger()` call in that case).
+#'
+#' To help you understand the causes of a failure, vdiffr
+#' automatically logs the SVG diff of all failures when run under R
+#' CMD check. The log is located in `tests/vdiffr.Rout.fail` and
+#' should be displayed on Travis.
+#'
+#' You can also set the `VDIFFR_LOG_PATH` environment variable with
+#' `Sys.setenv()` to unconditionally (also interactively) log failures
+#' in the file pointed by the variable.
+#'
 #' @examples
 #' if (FALSE) {  # Not run
 #'
@@ -52,17 +69,25 @@
 #' })
 #'
 #' }
+#' @export
 expect_doppelganger <- function(title,
                                 fig,
                                 path = NULL,
                                 ...,
-                                verbose = FALSE,
+                                verbose = NULL,
                                 writer = write_svg) {
   if (!is_collecting()) {
     abort(paste_line(
       "`expect_doppelganger()` can't be called interactively.",
       "* Call `vdiffr::manage_cases()` to validate or revalidate figures.",
       "* Call `devtools::test()` to test the figures."
+    ))
+  }
+
+  if (!is_null(verbose)) {
+    signal_soft_deprecated(paste_line(
+      "The `verbose` argument is soft-deprecated as of vdiffr 0.3.0.",
+      "Please use the log file intead. See section 'Debugging' of `?expect_doppelganger`."
     ))
   }
 
@@ -82,8 +107,7 @@ expect_doppelganger <- function(title,
   case <- case(list(
     name = fig_name,
     path = path,
-    testcase = testcase,
-    verbose = verbose
+    testcase = testcase
   ))
 
   if (file.exists(path)) {
@@ -91,7 +115,6 @@ expect_doppelganger <- function(title,
   } else {
     case <- new_case(case)
     maybe_collect_case(case)
-    maybe_print_svgs(case)
     msg <- paste_line(
       sprintf("Figure not generated yet: %s.svg", fig_name),
       "Please run `vdiffr::manage_cases()` to validate the figure."
@@ -131,14 +154,6 @@ compare_figs <- function(case) {
 
   msg <- paste0("Figures don't match: ", case$name, ".svg\n")
   mismatch_exp(msg, case)
-}
-
-# Print only if we're not collecting. The testthat reporter prints
-# verbose cases at a later point.
-maybe_print_svgs <- function(case, pkg_path = NULL) {
-  if (case$verbose && is_null(active_collecter())) {
-    cat_line(svg_files_lines(case, pkg_path), file = stderr())
-  }
 }
 
 new_expectation <- function(msg, case, type, vdiffr_type) {

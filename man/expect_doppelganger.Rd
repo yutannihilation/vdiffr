@@ -4,7 +4,7 @@
 \alias{expect_doppelganger}
 \title{Does a figure look like its expected output?}
 \usage{
-expect_doppelganger(title, fig, path = NULL, ..., verbose = FALSE,
+expect_doppelganger(title, fig, path = NULL, ..., verbose = NULL,
   writer = write_svg)
 }
 \arguments{
@@ -28,14 +28,7 @@ folder.}
 \item{...}{Additional arguments passed to \code{\link[testthat:compare]{testthat::compare()}} to
 control specifics of comparison.}
 
-\item{verbose}{If \code{TRUE}, the contents of the SVG files for the
-comparison plots are printed during testthat checks. This is
-useful to investigate errors when testing remotely.
-
-Note that it is not possible to print the original SVG during
-interactive use. This is because there is no way of figuring out
-in which directory this SVG lives. Consequently, only the test
-case is printed.}
+\item{verbose}{Soft-deprecated. See the debugging section.}
 
 \item{writer}{A function that takes the plot, a target SVG file,
 and an optional plot title. It should transform the plot to SVG
@@ -53,6 +46,32 @@ the test.
 \code{fig} can be a ggplot object, a recordedplot, a function to be
 called, or more generally any object with a \code{print} method.
 }
+\section{Debugging}{
+
+
+It is sometimes difficult to understand the cause of a failure.
+This usually indicates that the plot is not created
+deterministically. Potential culprits are:
+\itemize{
+\item Some of the plot components depend on random variation. Try
+setting a seed.
+\item The plot depends on some system library. For instance sf plots
+depend on libraries like GEOS and GDAL. It might not be possible
+to test these plots with vdiffr (which can still be used for
+manual inspection, add a \code{\link[testthat:skip]{testthat::skip()}} before the
+\code{expect_doppelganger()} call in that case).
+}
+
+To help you understand the causes of a failure, vdiffr
+automatically logs the SVG diff of all failures when run under R
+CMD check. The log is located in \code{tests/vdiffr.Rout.fail} and
+should be displayed on Travis.
+
+You can also set the \code{VDIFFR_LOG_PATH} environment variable with
+\code{Sys.setenv()} to unconditionally (also interactively) log failures
+in the file pointed by the variable.
+}
+
 \examples{
 if (FALSE) {  # Not run
 

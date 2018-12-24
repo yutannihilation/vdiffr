@@ -1,6 +1,15 @@
 
 # vdiffr 0.2.3.9000
 
+* The `verbose` argument of `expect_doppelganger()` is
+  soft-deprecated. Please use the vdiffr failure log instead. It is
+  created automatically when run under R CMD check in
+  `tests/vdiffr.Rout.fail`, and should be displayed on Travis.
+
+  You can also set the `VDIFFR_LOG_PATH` environment variable with
+  `Sys.setenv()` to unconditionally (also interactively) log failures
+  in the file pointed by the variable.
+
 * New `VDIFFR_LOG_PATH` environment variable. When set, vdiffr pushes
   diffs of failed SVG comparisons to that file.
 
