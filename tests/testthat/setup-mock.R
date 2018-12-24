@@ -1,31 +1,9 @@
 
-create_mock_pkg <- function(pkg = "mock-pkg") {
-  dir <- tempfile()
-
-  dir.create(dir, recursive = TRUE)
-  file.copy(pkg, dir, recursive = TRUE)
-
-  # Enable `R CMD check` logging
-  from <- file.path(dir, pkg)
-  to <- paste0(from, ".Rcheck")
-  file.rename(from, to)
-
-  to
-}
-
 subset_results <- function(results, file, test) {
   subset <- purrr::keep(results, function(result) {
     result$file == file && result$test == test
   })
   subset[[1]]$results
-}
-
-on_load <- function() {
-  identical(Sys.getenv("DEVTOOLS_LOAD"), "true")
-}
-
-is_checking <- function() {
-  nzchar(Sys.getenv("R_TESTS"))
 }
 
 
