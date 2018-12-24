@@ -1,5 +1,0 @@
-Fontconfig: 2.12.1
-vdiffr: 0.1.2
-svglite: 1.2.0
-ggplot2: 2.2.1
-vdiffr-svg-engine: 20.0000

@@ -153,7 +153,12 @@ match_exp <- function(msg, case) {
   new_expectation(msg, case, "success", "vdiffr_match")
 }
 mismatch_exp <- function(msg, case) {
-  new_expectation(msg, case, "failure", "vdiffr_mismatch")
+  if (is_vdiffr_stale()) {
+    msg <- "The vdiffr engine is too old. Please update vdiffr and revalidate the figures."
+    new_expectation(msg, case, "skip", "vdiffr_mismatch")
+  } else {
+    new_expectation(msg, case, "failure", "vdiffr_mismatch")
+  }
 }
 skipped_mismatch_exp <- function(msg, case) {
   new_expectation(msg, case, "skip", "vdiffr_mismatch")

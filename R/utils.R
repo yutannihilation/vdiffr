@@ -151,6 +151,26 @@ vdiffr_info <- function() {
   )
 }
 
+is_vdiffr_stale <- function() {
+  deps_file <- testthat::test_path("..", "figs", "deps.txt")
+
+  if (!file.exists(deps_file)) {
+    return(FALSE)
+  }
+  deps <- readLines(deps_file)
+
+  ver <- purrr::detect(deps, function(dep) grepl("^vdiffr-svg-engine: ", dep))
+  if (is_null(ver)) {
+    return(TRUE)
+  }
+
+  ver <- substr(ver, nchar("vdiffr-svg-engine") + 3, nchar(ver))
+  ver <- base::package_version(ver)
+  current <- base::package_version(SVG_ENGINE_VER)
+
+  ver < current
+}
+
 hash_encode_url <- function(url){
   gsub("#", "%23", url)
 }

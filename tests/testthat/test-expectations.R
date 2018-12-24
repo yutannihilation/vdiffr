@@ -19,3 +19,14 @@ test_that("Doppelgangers pass", {
   expect_is(ggplot_result, "expectation_success")
   expect_is(base_result, "expectation_success")
 })
+
+test_that("skip mismatches if vdiffr is stale", {
+  mock_dir <- create_mock_pkg("mock-pkg-skip-stale")
+
+  mock_test_dir <- file.path(mock_dir, "tests", "testthat")
+  test_results <- testthat::test_dir(mock_test_dir, reporter = "silent")
+  result <- test_results[[1]]$results[[1]]
+
+  expect_is(result, "expectation_skip")
+  expect_match(result$message, "The vdiffr engine is too old")
+})
