@@ -101,30 +101,15 @@ validate_cases <- function(cases = collect_new_cases()) {
     stop("Internal error: Package path is missing", call. = FALSE)
   }
 
-  write_deps_note(cases, pkg_path)
+  write_deps_note(pkg_path)
   walk(cases, update_case, pkg_path)
 }
 
-update_deps_note <- function(package = ".") {
-  cases <- collect_cases(package)
-  pkg_path <- attr(cases, "pkg_path")
-  if (is.null(pkg_path)) {
-    stop("Internal error: Package path is missing", call. = FALSE)
-  }
+write_deps_note <- function(pkg = NULL) {
+  pkg <- pkg %||% usethis::proj_get()
 
-  write_deps_note(cases, pkg_path)
-}
-
-write_deps_note <- function(cases, pkg_path) {
-  deps <- attr(cases, "deps")
-  versions <- map_chr(deps, package_version)
-  deps_lines <- map2_chr(deps, versions, paste, sep = ": ")
-
-  engine_dep <- glue("vdiffr-svg-engine: { SVG_ENGINE_VER }")
-  deps_lines <- c(deps_lines, engine_dep)
-
-  deps_note_file <- file.path(pkg_path, "tests", "figs", "deps.txt")
-  writeLines(deps_lines, deps_note_file)
+  deps_note_file <- file.path(pkg, "tests", "figs", "deps.txt")
+  cat(vdiffr_info(), file = deps_note_file)
 }
 
 update_case <- function(case, pkg_path) {

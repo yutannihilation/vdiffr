@@ -43,6 +43,7 @@ Imports:
     Rcpp,
     shiny,
     testthat (>= 1.0.0),
+    usethis (>= 1.4.0),
     xml2 (>= 1.0.0)
 Suggests:
     crayon,

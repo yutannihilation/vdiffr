@@ -129,11 +129,11 @@ push_log <- function(case) {
   on.exit(close(file))
 
   if (!log_exists) {
-    cat_line(file = file, glue(
-      "Environment:
-       - vdiffr: { utils::packageVersion('vdiffr') }
-       - freetypeharfbuzz: { utils::packageVersion('freetypeharfbuzz') }"
-    ))
+    cat_line(
+      file = file,
+      "Environment:",
+      vdiffr_info()
+    )
   }
   cat_line(file = file, svg_files_lines(case))
 
@@ -141,6 +141,14 @@ push_log <- function(case) {
 }
 is_checking <- function() {
   nzchar(Sys.getenv("R_TESTS"))
+}
+
+vdiffr_info <- function() {
+  glue(
+    "- vdiffr-svg-engine: { SVG_ENGINE_VER }
+     - vdiffr: { utils::packageVersion('vdiffr') }
+     - freetypeharfbuzz: { utils::packageVersion('freetypeharfbuzz') }"
+  )
 }
 
 hash_encode_url <- function(url){
