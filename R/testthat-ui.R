@@ -76,7 +76,7 @@ expect_doppelganger <- function(title,
 
   # Climb one level as we are in the testthat folder
   path <- file.path(path, paste0(fig_name, ".svg"))
-  path <- file.path("..", "figs", path)
+  path <- testthat::test_path("..", "figs", path)
   ensure_directories(dirname(path))
 
   case <- case(list(
