@@ -45,7 +45,6 @@ print_plot.default <- function(p, title = "") {
 }
 
 print_plot.ggplot <- function(p, title = "") {
-  add_dependency("ggplot2")
   if (title != "" && !"title" %in% names(p$labels)) {
     p <- p + ggplot2::ggtitle(title)
   }

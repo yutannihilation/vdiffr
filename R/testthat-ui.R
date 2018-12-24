@@ -7,9 +7,7 @@
 #' the test.
 #'
 #' `fig` can be a ggplot object, a recordedplot, a function to be
-#' called, or more generally any object with a `print` method. If a
-#' ggplot object, a dependency for ggplot2 is automatically added (see
-#' [add_dependency()].
+#' called, or more generally any object with a `print` method.
 #'
 #' @param title A brief description of what is being tested in the
 #'   figure. For instance: "Points and lines overlap".
@@ -188,8 +186,11 @@ signal_expectation <- function(exp) {
 #'
 #' @param deps A vector containing the names of the packages for which
 #'   a dependency should be added.
+#'
+#' @keywords internal
 #' @export
 add_dependency <- function(deps) {
+  signal_soft_deprecated("`add_dependency()` is soft-deprecated as of vdiffr 0.3.0, without replacement")
   collecter <- active_collecter()
   if (!is.null(collecter)) {
     walk(deps, collecter$add_dep)

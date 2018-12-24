@@ -1,6 +1,16 @@
 
 # vdiffr 0.2.3.9000
 
+* `add_dependency()` is soft-deprecated without replacement.
+
+  We plan to implement the concept of "regression test" in
+  testthat. These would be expectations that do not make R CMD check
+  fail, but would signal regressions in known outputs when testthat is
+  run interactively. Visual expectations would be implemented as
+  regression tests because upstream changes in packages like ggplot2
+  should not cause check failures in downstream packages. Regression
+  tests would be for monitoring regressions (changes).
+
 * vdiffr now advises user to run `manage_cases()` when a figure was
   not validated yet (#25).
 

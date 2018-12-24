@@ -51,9 +51,7 @@ the test.
 }
 \details{
 \code{fig} can be a ggplot object, a recordedplot, a function to be
-called, or more generally any object with a \code{print} method. If a
-ggplot object, a dependency for ggplot2 is automatically added (see
-\code{\link[=add_dependency]{add_dependency()}}.
+called, or more generally any object with a \code{print} method.
 }
 \examples{
 if (FALSE) {  # Not run
