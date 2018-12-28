@@ -175,9 +175,6 @@ mismatch_exp <- function(msg, case) {
     new_expectation(msg, case, "failure", "vdiffr_mismatch")
   }
 }
-skipped_mismatch_exp <- function(msg, case) {
-  new_expectation(msg, case, "skip", "vdiffr_mismatch")
-}
 
 # From testthat
 expectation_broken <- function(exp) {
