@@ -176,10 +176,7 @@ mismatch_exp <- function(msg, case) {
   }
 }
 
-# From testthat
-expectation_broken <- function(exp) {
-  expectation_type(exp) %in% c("failure", "mismatch", "error")
-}
+# FIXME: Should probably be exported from testthat
 signal_expectation <- function(exp) {
   withRestarts(
     if (expectation_broken(exp)) {
@@ -190,6 +187,9 @@ signal_expectation <- function(exp) {
     continue_test = function(e) NULL
   )
   invisible(exp)
+}
+expectation_broken <- function(exp) {
+  expectation_type(exp) %in% c("failure", "mismatch", "error")
 }
 
 #' Add a vdiffr dependency
