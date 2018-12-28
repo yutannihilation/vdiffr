@@ -111,15 +111,9 @@ expect_doppelganger <- function(title,
   ))
 
   if (file.exists(path)) {
-    exp <- compare_figs(case)
+    exp <- case_compare(case)
   } else {
-    case <- new_case(case)
-    maybe_collect_case(case)
-    msg <- paste_line(
-      sprintf("Figure not generated yet: %s.svg", fig_name),
-      "Please run `vdiffr::manage_cases()` to validate the figure."
-    )
-    exp <- new_exp(msg, case)
+    exp <- case_declare(case, fig_name)
   }
 
   signal_expectation(exp)
@@ -138,7 +132,7 @@ str_standardise <- function(s, sep = "-") {
   s
 }
 
-compare_figs <- function(case) {
+case_compare <- function(case) {
   equal <- compare_files(case$testcase, normalizePath(case$path))
 
   if (equal) {
@@ -153,6 +147,16 @@ compare_figs <- function(case) {
 
   msg <- paste0("Figures don't match: ", case$name, ".svg\n")
   mismatch_exp(msg, case)
+}
+case_declare <- function(case, fig_name) {
+  case <- new_case(case)
+  maybe_collect_case(case)
+
+  msg <- paste_line(
+    sprintf("Figure not generated yet: %s.svg", fig_name),
+    "Please run `vdiffr::manage_cases()` to validate the figure."
+  )
+  new_exp(msg, case)
 }
 
 new_expectation <- function(msg, case, type, vdiffr_type) {
