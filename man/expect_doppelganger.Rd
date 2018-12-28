@@ -17,7 +17,12 @@ applied to the figure with \code{ggtitle()}.
 The title is also used as file name for storing SVG (in a
 sanitzed form, with special characters converted to \code{"-"}).}
 
-\item{fig}{A figure to test.}
+\item{fig}{A figure to test. This can be a ggplot object, a
+recordedplot, or more generally any object with a \code{print} method.
+
+For plots that can't be represented as printable objects, you can
+pass a function. This function must construct the plot and print
+it.}
 
 \item{path}{The path where the test case should be stored, relative
 to the \code{tests/figs/} folder. If \code{NULL} (the default), the current
@@ -36,16 +41,46 @@ in a deterministic way and write it to the target file. See
 \code{\link[=write_svg]{write_svg()}} (the default) for an example.}
 }
 \description{
-If the test has never been validated yet, the test is skipped. If
-the test has previously been validated but \code{fig} does not look
-like its expected output, an error is issued. Use
-\code{\link[=validate_cases]{validate_cases()}} or \code{\link[=manage_cases]{manage_cases()}} to (re)validate
-the test.
+\code{expect_doppelganger()} takes a figure to check visually.
+\itemize{
+\item If the figure has yet to be validated, the test is skipped. Call
+\code{\link[=manage_cases]{manage_cases()}} to validate the new figure, so vdiffr knows what
+to compare against.
+\item If the test has been validated, \code{fig} is compared to the
+validated figure. If the plot differs, a failure is issued
+(except on CRAN, see section on regression testing below).
+
+Either fix the problem, or call \code{\link[=manage_cases]{manage_cases()}} to validate the
+new figure appearance.
 }
-\details{
-\code{fig} can be a ggplot object, a recordedplot, a function to be
-called, or more generally any object with a \code{print} method.
 }
+\section{Regression testing versus Unit testing}{
+
+
+Failures to match a validated appearance are only reported when the
+tests are run locally, on Travis, Appveyor, or any environment
+where the \code{Sys.getenv("CI")} or \code{Sys.getenv("NOT_CRAN")} variables
+are set. Because vdiffr is more of a monitoring than a unit testing
+tool, it shouldn't cause R CMD check failures on the CRAN machines.
+
+Checking the appearance of a figure is inherently fragile. It is
+similar to testing for errors by matching exact error messages:
+these messages are susceptible to change at any time. Similarly,
+the appearance of plots depends on a lot of upstream code, such as
+the way margins and spacing are computed. vdiffr uses a special
+ggplot2 theme that should change very rarely, but there are just
+too many upstream factors that could cause breakages. For this
+reason, figure mismatches are not necessarily representative of
+actual failures.
+
+Visual testing is not an alternative to writing unit tests for the
+internal data transformations performed during the creation of your
+figure. It is more of a monitoring tool that allows you to quickly
+check how the appearance of your figures changes over time, and to
+manually assess whether changes reflect actual problems in your
+package.
+}
+
 \section{Debugging}{
 
 

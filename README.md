@@ -41,6 +41,8 @@ that each plot is correct.
 
 1) Run `devtools::test()` to execute the tests as normal.
 
+When a figure doesn't matched the saved version, vdiffr signals a failure when it is run interactively, or when it is run on Travis or Appveyor. Mismatches do not cause R CMD check to fail on CRAN machines. See the testing versus monitoring section below.
+
 
 ### Adding expectations
 
@@ -121,6 +123,23 @@ and add features by checking the history on Github.
 You can run the tests the usual way, for example with
 `devtools::test()`. New cases for which you just wrote an expectation
 will be skipped. Failed tests will show as an error.
+
+
+### Testing versus Monitoring
+
+When a figure doesn't match its saved version, it is only reported as a failure under these circumstances:
+
+- When the `NOT_CRAN` environment is set. In particular, devtools sets this when running the tests interactively.
+
+- On Travis, Appveyor, or any environment where the `Sys.getenv("CI")` is set.
+
+Otherwise, the failure is ignored. The motivation for this is that vdiffr is a monitoring tool and shouldn't cause R CMD check failures on the CRAN machines.
+
+Checking the appearance of a figure is inherently fragile. It is a bit like testing for errors by matching exact error messages. These messages are susceptible to change at any time. Similarly, the appearance of plots depends on a lot of upstream code, such as the way margins and spacing are computed. vdiffr uses a special ggplot2 theme that should change very rarely, but there are just too many upstream factors that could cause breakages. For this reason, figure mismatches are not necessarily representative of actual failures.
+
+Visual testing is not an alternative to writing unit tests for the internal data transformations performed during the creation of your figure. It is more of a monitoring tool that allows you to quickly check how the appearance of your figures changes over time, and to manually assess whether changes reflect actual problems in your packages.
+
+If you want vdiffr to fail on CRAN machines as well, just set the environment variable `CI` to `"true"` in a `setup-vdiffr.R` file in your testthat folder.
 
 
 ### RStudio integration
