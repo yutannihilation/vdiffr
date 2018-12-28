@@ -27,8 +27,3 @@ test_that("Duplicated expectations issue a warning", {
   skip_if_maintenance()
   expect_doppelganger("myplot", p1_fail, "")
 })
-
-test_that("SVGs of failing cases are printed when `verbose` is TRUE", {
-  skip_if_maintenance()
-  expect_doppelganger("myplot", p1_fail, "", verbose = TRUE)
-})
