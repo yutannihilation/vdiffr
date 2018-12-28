@@ -172,5 +172,5 @@ hash_encode_url <- function(url){
 }
 
 is_ci <- function() {
-  nzchar(Sys.getenv("CI"))
+  nzchar(Sys.getenv("CI")) || nzchar(Sys.getenv("NOT_CRAN"))
 }

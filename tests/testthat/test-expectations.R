@@ -1,14 +1,18 @@
 
 context("Expectations")
 
-test_that("Mismatches are skipped except on CI", {
-  skipped_result <- subset_results(test_results, "test-failed.R", "New plots work are collected")[[1]]
-  expect_match(skipped_result$message, "Figures don't match: myplot.svg\n")
-  expect_is(skipped_result, "expectation_regression")
+test_that("Mismatches are skipped except on CI and interactively", {
+  notcran_result <- subset_results(test_results, "test-failed.R", "mismatches are hard failures when NOT_CRAN is set")[[1]]
+  expect_match(notcran_result$message, "Figures don't match: myplot.svg\n")
+  expect_is(notcran_result, "expectation_failure")
 
-  failed_result <- subset_results(test_results, "test-failed.R", "figure mismatches are hard failures on CI")[[1]]
+  failed_result <- subset_results(test_results, "test-failed.R", "mismatches are hard failures when CI is set")[[1]]
   expect_match(failed_result$message, "Figures don't match: myplot.svg\n")
   expect_is(failed_result, "expectation_failure")
+
+  skipped_result <- subset_results(test_results, "test-failed.R", "mismatches are skipped when NOT_CRAN is unset")[[1]]
+  expect_match(skipped_result$message, "Figures don't match: myplot.svg\n")
+  expect_is(skipped_result, "expectation_regression")
 })
 
 test_that("Duplicated expectations issue warning", {
