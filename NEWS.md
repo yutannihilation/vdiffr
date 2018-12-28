@@ -16,6 +16,9 @@ to regenerate all your testcases with the new version of vdiffr. You
 can expect very few future releases that will require updating
 figures, hopefully once every few years.
 
+Now that vdiffr has a stable engine, the next release will focus on
+improving the Shiny UI.
+
 
 ## Features
 
