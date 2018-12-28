@@ -12,7 +12,7 @@ test_that("Mismatches are skipped except on CI and interactively", {
 
   skipped_result <- subset_results(test_results, "test-failed.R", "mismatches are skipped when NOT_CRAN is unset")[[1]]
   expect_match(skipped_result$message, "Figures don't match: myplot.svg\n")
-  expect_is(skipped_result, "expectation_regression")
+  expect_is(skipped_result, "expectation_skip")
 })
 
 test_that("Duplicated expectations issue warning", {

@@ -199,28 +199,9 @@ case_declare <- function(case, fig_name) {
 }
 
 new_expectation <- function(msg, case, type, vdiffr_type) {
-  exp <- vdiffr_expectation(type, msg)
+  exp <- testthat::expectation(type, msg)
   classes <- c(class(exp), vdiffr_type)
   structure(exp, class = classes, vdiffr_case = case)
-}
-
-# FIXME: Use `testthat::expectation()` once it supports regressions
-vdiffr_expectation <- function(type, message, srcref = NULL) {
-  type <- match.arg(type, c("success", "failure", "error", "regression", "skip", "warning"))
-
-  structure(
-    list(
-      message = message,
-      srcref = srcref
-    ),
-    class = c(
-      paste0("expectation_", type),
-      "expectation",
-      # Make broken expectations catchable by try()
-      if (type %in% c("failure", "error")) "error",
-      "condition"
-    )
-  )
 }
 
 new_exp <- function(msg, case) {
@@ -234,11 +215,9 @@ mismatch_exp <- function(msg, case) {
     msg <- "The vdiffr engine is too old. Please update vdiffr and revalidate the figures."
     new_expectation(msg, case, "skip", "vdiffr_mismatch")
   } else if (is_ci()) {
-    # FIXME: Remove this branch once testthat interprets regressions
-    # as failures on CI
     new_expectation(msg, case, "failure", "vdiffr_mismatch")
   } else {
-    new_expectation(msg, case, "regression", "vdiffr_mismatch")
+    new_expectation(msg, case, "skip", "vdiffr_mismatch")
   }
 }
 
