@@ -104,12 +104,13 @@ push_log <- function(case) {
     cat_line(
       file = file,
       "Environment:",
-      vdiffr_info()
+      vdiffr_info(),
+      ""
     )
   }
 
   diff_lines <- diff_lines(case, case$path, case$testcase)
-  cat_line(file = file, !!!diff_lines)
+  cat_line(file = file, "", !!!diff_lines, "")
 }
 is_checking <- function() {
   !nzchar(Sys.getenv("NOT_CRAN"))
@@ -132,6 +133,7 @@ diff_lines <- function(case,
 
   paste_line(
     glue("Failed doppelganger: {case$name} ({case$path})"),
+    "",
     !!!lines
   )
 }
