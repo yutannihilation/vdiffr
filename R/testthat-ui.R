@@ -123,7 +123,6 @@ expect_doppelganger <- function(title,
   }
 
   signal_expectation(exp)
-  invisible(exp)
 }
 
 # FIXME: Use TESTTHAT_PKG envvar after devtools and testthat release
