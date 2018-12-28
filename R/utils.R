@@ -170,3 +170,7 @@ is_vdiffr_stale <- function() {
 hash_encode_url <- function(url){
   gsub("#", "%23", url)
 }
+
+is_ci <- function() {
+  nzchar(Sys.getenv("CI"))
+}

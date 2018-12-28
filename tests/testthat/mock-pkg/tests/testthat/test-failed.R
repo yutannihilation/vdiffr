@@ -22,6 +22,12 @@ test_that("Duplicated expectations issue a warning", {
   expect_doppelganger("myplot", p1_fail, "")
 })
 
+test_that("figure mismatches are hard failures on CI", {
+  skip_if_maintenance()
+  withr::local_envvar(c(CI = "true"))
+  expect_doppelganger("myplot", p1_fail, "")
+})
+
 
 # Maintenance --------------------------------------------------------
 
