@@ -12,12 +12,6 @@ skip_if_maintenance <- function() {
   }
 }
 
-test_that("(maintenance) Reset failing figure", {
-  if (!maintenance) {
-    skip("maintenance")
-  }
-  expect_doppelganger("myplot", p1_orig, "")
-})
 test_that("New plots work are collected", {
   skip_if_maintenance()
   expect_doppelganger("myplot", p1_fail, "")
@@ -26,4 +20,14 @@ test_that("New plots work are collected", {
 test_that("Duplicated expectations issue a warning", {
   skip_if_maintenance()
   expect_doppelganger("myplot", p1_fail, "")
+})
+
+
+# Maintenance --------------------------------------------------------
+
+test_that("(maintenance) Reset failing figure", {
+  if (!maintenance) {
+    skip("maintenance")
+  }
+  expect_doppelganger("myplot", p1_orig, "")
 })
