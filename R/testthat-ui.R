@@ -143,7 +143,10 @@ case_compare <- function(case) {
 
   case <- mismatch_case(case)
   maybe_collect_case(case)
-  push_log(case)
+
+  if (is_null(active_collecter())) {
+    push_log(case)
+  }
 
   msg <- paste0("Figures don't match: ", case$name, ".svg\n")
   mismatch_exp(msg, case)
