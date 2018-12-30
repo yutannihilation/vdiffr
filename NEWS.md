@@ -2,7 +2,12 @@
 # vdiffr 0.2.99.9000
 
 This release of vdiffr features a major overhaul of the internals to
-make the package more robust and reliable across platforms:
+make the package more robust.
+
+
+## Cross-platform reliability
+
+vdiffr now works reliably across platforms:
 
 * svglite is now embedded in vdiffr to protect against updates of the
   SVG generation engine.
@@ -18,6 +23,34 @@ figures, hopefully once every few years.
 
 Now that vdiffr has a stable engine, the next release will focus on
 improving the Shiny UI.
+
+
+## Regression testing versus Unit testing
+
+Another important change is that figure mismatches are no longer
+reported as failures, except when the tests are run locally, on
+Travis, Appveyor, or any environment where the `Sys.getenv("CI")` or
+`Sys.getenv("NOT_CRAN")` variables are set. Because vdiffr is more of
+a monitoring than a unit testing tool, it shouldn't cause R CMD check
+failures on the CRAN machines.
+
+Despite our efforts to make vdiffr robust and reliable across
+platforms, checking the appearance of a figure is still inherently
+fragile. It is similar to testing for errors by matching exact error
+messages: these messages are susceptible to change at any
+time. Similarly, the appearance of plots depends on a lot of upstream
+code, such as the way margins and spacing are computed. vdiffr uses a
+special ggplot2 theme that should change very rarely, but there are
+just too many upstream factors that could cause breakages. For this
+reason, figure mismatches are not necessarily representative of actual
+failures.
+
+Visual testing is not an alternative to writing unit tests for the
+internal data transformations performed during the creation of your
+figure. It is more of a monitoring tool that allows you to quickly
+check how the appearance of your figures changes over time, and to
+manually assess whether changes reflect actual problems in your
+package.
 
 
 ## Features
