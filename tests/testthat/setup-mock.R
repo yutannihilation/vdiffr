@@ -10,8 +10,11 @@ subset_results <- function(results, file, test) {
 mock_pkg_dir <- create_mock_pkg()
 mock_test_dir <- file.path(mock_pkg_dir, "tests", "testthat")
 
-log_var <- c(VDIFFR_LOG_PATH = file.path(mock_pkg_dir, "tests", "vdiffr.Rout.fail"))
-withr::with_envvar(log_var, {
+vars <- c(
+  VDIFFR_LOG_PATH = file.path(mock_pkg_dir, "tests", "vdiffr.Rout.fail"),
+  NOT_CRAN = "true"
+)
+withr::with_envvar(vars, {
   test_results <- testthat::test_dir(mock_test_dir, reporter = "silent")
 })
 
