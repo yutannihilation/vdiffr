@@ -109,7 +109,7 @@ write_deps_note <- function(pkg = NULL) {
   pkg <- pkg %||% usethis::proj_get()
 
   deps_note_file <- file.path(pkg, "tests", "figs", "deps.txt")
-  cat(vdiffr_info(), file = deps_note_file)
+  cat_line(vdiffr_info(), file = deps_note_file)
 }
 
 update_case <- function(case, pkg_path) {
