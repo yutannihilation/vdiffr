@@ -11,7 +11,7 @@ test_that("Mismatches are skipped except on CI and interactively", {
   expect_is(failed_result, "expectation_failure")
 
   skipped_result <- subset_results(test_results, "test-failed.R", "mismatches are skipped when NOT_CRAN is unset")[[1]]
-  expect_match(skipped_result$message, "Figures don't match: myplot.svg\n")
+  expect_match(skipped_result$message, "Skipping on CRAN")
   expect_is(skipped_result, "expectation_skip")
 })
 
@@ -27,6 +27,7 @@ test_that("Doppelgangers pass", {
 })
 
 test_that("skip mismatches if vdiffr is stale", {
+  withr::local_envvar(c(NOT_CRAN = "true"))
   mock_dir <- create_mock_pkg("mock-pkg-skip-stale")
 
   mock_test_dir <- file.path(mock_dir, "tests", "testthat")

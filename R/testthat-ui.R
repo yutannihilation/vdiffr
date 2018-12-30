@@ -169,6 +169,12 @@ str_standardise <- function(s, sep = "-") {
 }
 
 case_compare <- function(case) {
+  # Skipping early to avoid running `compare_files()` on machines
+  # performing sanitizer checks
+  if (!is_ci()) {
+    return(new_expectation("Skipping on CRAN", case, "skip", "vdiffr_skip"))
+  }
+
   equal <- compare_files(case$testcase, normalizePath(case$path))
 
   if (equal) {
