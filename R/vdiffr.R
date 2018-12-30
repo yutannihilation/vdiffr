@@ -7,13 +7,13 @@
 "_PACKAGE"
 
 .onLoad <- function(lib, pkg) {
-  if (!requireNamespace("freetypeharfbuzz", quietly = TRUE)) {
+  if (!is_installed("freetypeharfbuzz")) {
     abort("The package `freetypeharfbuzz` is not installed")
   }
   library_load()
 }
 
-SVG_ENGINE_VER <- "0.9000"
+SVG_ENGINE_VER <- "1.0"
 
 svg_engine_ver <- function() {
   as.numeric_version(SVG_ENGINE_VER)

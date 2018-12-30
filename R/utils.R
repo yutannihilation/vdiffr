@@ -155,12 +155,12 @@ is_vdiffr_stale <- function() {
   }
   deps <- readLines(deps_file)
 
-  ver <- purrr::detect(deps, function(dep) grepl("^vdiffr-svg-engine: ", dep))
+  ver <- purrr::detect(deps, function(dep) grepl("^- vdiffr-svg-engine: ", dep))
   if (is_null(ver)) {
     return(TRUE)
   }
 
-  ver <- substr(ver, nchar("vdiffr-svg-engine") + 3, nchar(ver))
+  ver <- substr(ver, nchar("- vdiffr-svg-engine: ") + 1, nchar(ver))
   ver <- base::package_version(ver)
   current <- base::package_version(SVG_ENGINE_VER)
 
