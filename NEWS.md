@@ -78,6 +78,11 @@ package.
 * `write_svg()` is now an exported function. It provides a template
   (function arguments and return value) for SVG writer functions.
 
+* `manage_cases()` no longer checks for orphaned cases when a filter
+  is supplied. (Orphaned cases are figures dangling in the `figs`
+  folder even though their original `expect_doppelganger()` has been
+  removed from the tests.)
+
 
 ## Life cycle
 

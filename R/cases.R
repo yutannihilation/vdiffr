@@ -29,7 +29,15 @@ collect_cases <- function(package = ".", filter = NULL) {
       paste(cases_names[is_duplicated], collapse = ", "))
   }
 
-  c(cases, orphaned_cases(cases))
+  # Only check for orphaned cases if we have collected all figures in
+  # all test files. Ideally we'd check for orphaned cases in the
+  # filter set, but there's currently no way of figuring out the
+  # files where saved figures were generated from.
+  if (is_null(filter)) {
+    cases <- c(cases, orphaned_cases(cases))
+  }
+
+  cases
 }
 
 orphaned_cases <- function(cases) {
