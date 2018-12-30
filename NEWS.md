@@ -64,6 +64,8 @@ package.
 * `manage_cases()` gains an `options` argument that is passed to
   `shiny::shinyApp()` (@KZARCA).
 
+* The Shiny app now has a quit button (@ilarischeinin).
+
 * New `VDIFFR_LOG_PATH` environment variable. When set, vdiffr pushes
   diffs of failed SVG comparisons to that file.
 
