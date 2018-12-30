@@ -22,6 +22,7 @@ sidebarPanel <- function() {
     shiny::actionButton("case_validation_button", "Validate this"),
     shiny::uiOutput("status"),
     shiny::uiOutput("diff_text_controls"),
+    shiny::br(),
     shiny::actionButton("quit_button", "Quit")
   )
 }
