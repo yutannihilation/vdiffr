@@ -1,4 +1,7 @@
 
+# vdiffr 0.3.0.9000
+
+
 # vdiffr 0.3.0
 
 This release of vdiffr features a major overhaul of the internals to
