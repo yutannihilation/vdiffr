@@ -52,6 +52,11 @@ check how the appearance of your figures changes over time, and to
 manually assess whether changes reflect actual problems in your
 package.
 
+If you need to override the default vdiffr behaviour on CRAN (not
+recommended) or Travis (for example to run the tests in a particular
+builds but not others), set the `VDIFFR_RUN_TESTS` environment
+variable to "true" or "false".
+
 
 ## Features
 

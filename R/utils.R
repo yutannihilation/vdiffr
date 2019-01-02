@@ -172,5 +172,18 @@ hash_encode_url <- function(url){
 }
 
 is_ci <- function() {
+  override <- Sys.getenv("VDIFFR_RUN_TESTS")
+  if (nzchar(override)) {
+    override <- parse_expr(toupper(override))
+    if (!is_bool(override)) {
+      abort("`VDIFFR_RUN_TESTS` must be \"true\" or \"false\"")
+    }
+    return(override)
+  }
+
   nzchar(Sys.getenv("CI")) || nzchar(Sys.getenv("NOT_CRAN"))
+}
+
+is_bool <- function(x) {
+  is_logical(x, n = 1) && !is.na(x)
 }
