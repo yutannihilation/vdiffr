@@ -10,6 +10,14 @@ An extension to the 'testthat' package that makes it easy
     to add graphical unit tests. It provides a Shiny application to
     manage the test cases.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/r-lib/vdiffr}
+  \item Report bugs at \url{https://github.com/r-lib/vdiffr/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Lionel Henry \email{lionel@rstudio.com}
 

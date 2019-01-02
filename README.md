@@ -1,8 +1,8 @@
 
 # vdiffr
 
-[![Travis Build Status](https://travis-ci.org/lionel-/vdiffr.svg?branch=master)](https://travis-ci.org/lionel-/vdiffr)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/github/lionel-/vdiffr?branch=master&svg=true)](https://ci.appveyor.com/project/lionel-/vdiffr)
+[![Travis Build Status](https://travis-ci.org/r-lib/vdiffr.svg?branch=master)](https://travis-ci.org/r-lib/vdiffr)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/github/r-lib/vdiffr?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/vdiffr)
 
 vdiffr is an extension to the package testthat that makes it easy to
 test for visual regressions. It provides a Shiny app to manage failed
@@ -19,7 +19,7 @@ Get the development version from github with:
 
 ```{r}
 # install.packages("remotes")
-remotes::install_github("lionel-/vdiffr")
+remotes::install_github("r-lib/vdiffr")
 ```
 
 or the last CRAN release with:
@@ -147,7 +147,7 @@ If you want vdiffr to fail on CRAN machines as well, just set the environment va
 An addin to launch `manage_cases()` is provided with vdiffr. Use the
 addin menu to launch the Shiny app in an RStudio dialog.
 
-![RStudio addin](https://raw.githubusercontent.com/lionel-/vdiffr/readme/rstudio-vdiffr.png)
+![RStudio addin](https://raw.githubusercontent.com/r-lib/vdiffr/readme/rstudio-vdiffr.png)
 
 
 ### ESS integration
@@ -190,7 +190,7 @@ reporters are usually meant to provide output for the end user, you
 can also use them in functions to interact with testthat.
 
 vdiffr has a
-[special reporter](https://github.com/lionel-/vdiffr/blob/master/R/testthat-reporter.R)
+[special reporter](https://github.com/r-lib/vdiffr/blob/master/R/testthat-reporter.R)
 that does nothing but activate a collecter for the visual test
 cases. `collect_cases()` calls `devtools::test()` with this
 reporter. When `expect_doppelganger()` is called, it first checks
@@ -209,6 +209,6 @@ about the tests of interest and wrap them in a data structure.
 Comparing SVG files is convenient and should work correctly in most
 situations. However, SVG is not suitable for tracking really subtle
 changes and regressions. See
-[vdiffr's issue #1](https://github.com/lionel-/vdiffr/issues/1) for a
+[vdiffr's issue #1](https://github.com/r-lib/vdiffr/issues/1) for a
 discussion on this. vdiffr may gain additional comparison backends in
 the future to make the tests more stringent.
