@@ -1,6 +1,9 @@
 
 # vdiffr 0.3.0.9000
 
+- The testthat context is now shown on the Shiny app (#14,
+  @paleolimbot).
+
 - Fix warnings in non-UTF-8 MBCS locale (#59, @yutannihilation).
 
 

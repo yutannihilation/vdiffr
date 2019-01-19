@@ -182,7 +182,7 @@ validateGroupCases <- function(input, reactive_cases) {
 
 renderCaseContext <- function(input, reactive_cases) {
   shiny::renderUI({
-    if(length(reactive_cases$active()) > 0 && !is.null(input$case)) {
+    if (length(reactive_cases$active()) > 0 && !is.null(input$case)) {
       active_case <- reactive_cases$active()[[input$case]]
       shiny::p(
         shiny::strong("Context: "),
