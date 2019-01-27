@@ -1,6 +1,6 @@
 
 vdiffrServer <- function(cases) {
-  shiny::shinyServer(function(input, output) {
+  shiny::shinyServer(function(input, output, session) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
       type <- input$type %||% "new_case"
@@ -28,6 +28,8 @@ vdiffrServer <- function(cases) {
 
     output$status <- renderStatus(input, cases)
     output$case_context <- renderCaseContext(input, cases)
+    
+    toggleValidateBtns(input, session)
 
     quitApp(input)
   })
@@ -39,7 +41,8 @@ diff_text_watcher <- function(input) {
 
 prettify_types <- function(x) {
   ifelse(x == "mismatch_case", "Mismatched",
-  ifelse(x == "new_case", "New", "Orphaned"
+  ifelse(x == "new_case", "New",
+  ifelse(x == "success_case", "Validated", "Orphaned")
   ))
 }
 
@@ -51,6 +54,7 @@ renderTypeInput <- function(input, reactive_cases) {
     if (length(types) == 0) {
       return(NULL)
     }
+
     types <- set_names(types, prettify_types(types))
 
     shiny::selectInput(
@@ -215,6 +219,14 @@ renderStatus <- function(input, reactive_cases) {
     }
 
     list(shiny::br(), paragraph)
+  })
+}
+
+toggleValidateBtns <- function(input, session) {
+  shiny::observeEvent(input$type, {
+    req(input$type)
+    message <- input$type == "success_case"
+    session$sendCustomMessage("toggle-validate-btns-handler", message)
   })
 }
 
