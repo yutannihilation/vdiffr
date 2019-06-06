@@ -156,8 +156,8 @@ validateSingleCase <- function(input, reactive_cases) {
       case <- shiny::isolate(input$case)
 
       withdraw_cases(cases[case])
-      cases <- cases[-match(case, names(cases))]
-
+      cases[[case]] <- success_case(cases[[case]])
+      
       shiny::isolate(reactive_cases$all <- cases)
     }
   })
@@ -173,10 +173,8 @@ validateGroupCases <- function(input, reactive_cases) {
         type <- shiny::isolate(input$type)
 
         withdraw_cases(active_cases)
-
-        case_types <- c("new_case", "mismatch_case", "orphaned_case")
-        types <- case_types[!case_types == type]
-        cases <- filter_cases(cases, types)
+        idx <- sapply(cases, inherits, type)
+        cases[idx] <- lapply(cases[idx], success_case)
 
         shiny::isolate(reactive_cases$all <- cases)
       }
