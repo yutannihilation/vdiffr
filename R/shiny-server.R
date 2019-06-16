@@ -55,13 +55,15 @@ renderTypeInput <- function(input, reactive_cases) {
       return(NULL)
     }
 
-    types <- set_names(types, prettify_types(types))
+    types <- sort(set_names(types, prettify_types(types)))
+    
+    selected <- input$type %||% types[[1]]
 
     shiny::selectInput(
       inputId = "type",
       label = "Type:",
       choices = types,
-      selected = types[[1]]
+      selected = selected
     )
   })
 }
