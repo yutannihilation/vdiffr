@@ -28,7 +28,7 @@ vdiffrServer <- function(cases) {
 
     output$status <- renderStatus(input, cases)
     output$case_context <- renderCaseContext(input, cases)
-    
+
     toggleValidateBtns(input, session)
 
     quitApp(input)
@@ -56,7 +56,7 @@ renderTypeInput <- function(input, reactive_cases) {
     }
 
     types <- sort(set_names(types, prettify_types(types)))
-    
+
     selected <- input$type %||% types[[1]]
 
     shiny::selectInput(
@@ -159,7 +159,7 @@ validateSingleCase <- function(input, reactive_cases) {
 
       withdraw_cases(cases[case])
       cases[[case]] <- success_case(cases[[case]])
-      
+
       shiny::isolate(reactive_cases$all <- cases)
     }
   })
