@@ -1,5 +1,8 @@
 
-# vdiffr 0.3.0.9000
+# vdiffr 0.3.1
+
+This release makes vdiffr compatible with ggplot2 3.2.0. It also
+features two contributions from the Tidyverse developer day in Austin:
 
 - You can now select the validated cases in the Shiny app (#38,
   @nathancday).
@@ -7,7 +10,8 @@
 - The testthat context is now shown on the Shiny app (#14,
   @paleolimbot).
 
-- Fix warnings in non-UTF-8 MBCS locale (#59, @yutannihilation).
+Finally, it fixes warnings in non-UTF-8 MBCS locale (#59,
+@yutannihilation).
 
 
 # vdiffr 0.3.0
