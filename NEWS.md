@@ -1,6 +1,9 @@
 
 # vdiffr 0.3.0.9000
 
+- You can now select the validated cases in the Shiny app (#38,
+  @clauswilke).
+
 - The testthat context is now shown on the Shiny app (#14,
   @paleolimbot).
 
