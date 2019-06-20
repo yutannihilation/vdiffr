@@ -174,6 +174,12 @@ print.cases <- function(x, ...) {
     print_cases_names(new)
   }
 
+  success <- filter_cases(x, "success_case")
+  if (length(success) > 0) {
+    cat("\nValidated:\n")
+    print_cases_names(success)
+  }
+
   orphaned <- filter_cases(x, "orphaned_case")
   if (length(orphaned) > 0) {
     figs_path <- file.path(attr(x, "pkg_path"), "tests")

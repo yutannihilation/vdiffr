@@ -1,6 +1,6 @@
 
 vdiffrServer <- function(cases) {
-  shiny::shinyServer(function(input, output) {
+  shiny::shinyServer(function(input, output, session) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
       type <- input$type %||% "new_case"
@@ -29,6 +29,8 @@ vdiffrServer <- function(cases) {
     output$status <- renderStatus(input, cases)
     output$case_context <- renderCaseContext(input, cases)
 
+    toggleValidateBtns(input, session)
+
     quitApp(input)
   })
 }
@@ -39,7 +41,8 @@ diff_text_watcher <- function(input) {
 
 prettify_types <- function(x) {
   ifelse(x == "mismatch_case", "Mismatched",
-  ifelse(x == "new_case", "New", "Orphaned"
+  ifelse(x == "new_case", "New",
+  ifelse(x == "success_case", "Validated", "Orphaned")
   ))
 }
 
@@ -51,13 +54,16 @@ renderTypeInput <- function(input, reactive_cases) {
     if (length(types) == 0) {
       return(NULL)
     }
-    types <- set_names(types, prettify_types(types))
+
+    types <- sort(set_names(types, prettify_types(types)))
+
+    selected <- input$type %||% types[[1]]
 
     shiny::selectInput(
       inputId = "type",
       label = "Type:",
       choices = types,
-      selected = types[[1]]
+      selected = selected
     )
   })
 }
@@ -152,7 +158,7 @@ validateSingleCase <- function(input, reactive_cases) {
       case <- shiny::isolate(input$case)
 
       withdraw_cases(cases[case])
-      cases <- cases[-match(case, names(cases))]
+      cases[[case]] <- success_case(cases[[case]])
 
       shiny::isolate(reactive_cases$all <- cases)
     }
@@ -169,10 +175,8 @@ validateGroupCases <- function(input, reactive_cases) {
         type <- shiny::isolate(input$type)
 
         withdraw_cases(active_cases)
-
-        case_types <- c("new_case", "mismatch_case", "orphaned_case")
-        types <- case_types[!case_types == type]
-        cases <- filter_cases(cases, types)
+        idx <- sapply(cases, inherits, type)
+        cases[idx] <- lapply(cases[idx], success_case)
 
         shiny::isolate(reactive_cases$all <- cases)
       }
@@ -215,6 +219,14 @@ renderStatus <- function(input, reactive_cases) {
     }
 
     list(shiny::br(), paragraph)
+  })
+}
+
+toggleValidateBtns <- function(input, session) {
+  shiny::observeEvent(input$type, {
+    req(input$type)
+    message <- input$type == "success_case"
+    session$sendCustomMessage("toggle-validate-btns-handler", message)
   })
 }
 
