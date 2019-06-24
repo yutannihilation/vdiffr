@@ -16,9 +16,9 @@ Should fix the CRAN failures.
 
 ## Reverse dependencies
 
-I ran R CMD check on all 42 reverse dependencies (summary at
+I ran R CMD check on all 61 reverse dependencies (summary at
 https://github.com/r-lib/vdiffr/tree/master/revdep).
 
-I could not check 5 packages (cicero, fingertipscharts, ggcyto, ggformula, ggstatsplot).
+I could not check 1 package (cicero).
 
 No problems were found for the other packages.
