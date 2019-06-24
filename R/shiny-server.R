@@ -224,7 +224,7 @@ renderStatus <- function(input, reactive_cases) {
 
 toggleValidateBtns <- function(input, session) {
   shiny::observeEvent(input$type, {
-    req(input$type)
+    shiny::req(input$type)
     message <- input$type == "success_case"
     session$sendCustomMessage("toggle-validate-btns-handler", message)
   })
