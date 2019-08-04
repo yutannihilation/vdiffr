@@ -187,3 +187,17 @@ is_ci <- function() {
 is_bool <- function(x) {
   is_logical(x, n = 1) && !is.na(x)
 }
+
+next_element <- function(element, group, direction = 1) {
+  if (element == "") {
+    return(NULL) # if a type is empty
+  } else {
+    next_position <- match(element, group) + direction
+    if (next_position > length(group)) {
+      next_position <- next_position - length(group)
+    } else if (next_position < 1) {
+      next_position <- length(group)
+    }
+    return(group[next_position])
+  }
+}
