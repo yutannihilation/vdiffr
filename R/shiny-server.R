@@ -176,8 +176,8 @@ validateGroupCases <- function(input, reactive_cases, session) {
       type <- shiny::isolate(input$type)
 
       withdraw_cases(active_cases)
-      idx <- map_lgl(cases, inherits, type)
-      cases <- map_if(cases, idx, success_case)
+      idx <- purrr::map_lgl(cases, inherits, type)
+      cases <- purrr::map_if(cases, idx, success_case)
 
       shiny::isolate(reactive_cases$all <- cases)
     }
