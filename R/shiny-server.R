@@ -3,6 +3,7 @@ vdiffrServer <- function(cases) {
   shiny::shinyServer(function(input, output, session) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
+      stopifnot(is_string(attr(cases$all, "pkg_path")))
       type <- input$type %||% "new_case"
       filter_cases(cases$all, type)
     })
@@ -177,7 +178,7 @@ validateGroupCases <- function(input, reactive_cases, session) {
 
       withdraw_cases(active_cases)
       idx <- purrr::map_lgl(cases, inherits, type)
-      cases <- purrr::map_if(cases, idx, success_case)
+      cases <- purrr::modify_if(cases, idx, success_case)
 
       shiny::isolate(reactive_cases$all <- cases)
     }
