@@ -140,6 +140,8 @@ delete_orphaned_cases <- function(cases = collect_orphaned_cases()) {
   walk(paths, file.remove)
 }
 
+# It is brittle to keep `pkg_path` in attributes. Maybe change to an
+# R6 object?
 cases <- function(x, pkg_path, deps = NULL) {
   structure(x,
     class = "cases",

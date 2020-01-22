@@ -1,6 +1,13 @@
 
 # vdiffr 0.3.1.9000
 
+- Keyboard short cuts for common interactions:
+    Right/Left arrows = Next/Previous case
+    Down/Up arrows = Next/Previous type
+    ENTER = Validate active case
+    shift + ENTER = Validate active group
+    ESC = Quit app
+
 # vdiffr 0.3.1
 
 This release makes vdiffr compatible with ggplot2 3.2.0. It also

@@ -3,6 +3,7 @@ vdiffrServer <- function(cases) {
   shiny::shinyServer(function(input, output, session) {
     cases <- shiny::reactiveValues(all = cases)
     cases$active <- shiny::reactive({
+      stopifnot(is_string(attr(cases$all, "pkg_path")))
       type <- input$type %||% "new_case"
       filter_cases(cases$all, type)
     })
@@ -30,6 +31,7 @@ vdiffrServer <- function(cases) {
     output$case_context <- renderCaseContext(input, cases)
 
     toggleValidateBtns(input, session)
+    listenToKeys(input, session, cases)
 
     quitApp(input)
   })
@@ -152,34 +154,33 @@ withdraw_cases <- function(cases) {
 }
 
 validateSingleCase <- function(input, reactive_cases) {
-  shiny::observe({
-    if (input$case_validation_button > 0) {
-      cases <- shiny::isolate(reactive_cases$all)
-      case <- shiny::isolate(input$case)
+  shiny::observeEvent(c(input$case_validation_button, input[["validateCase"]]), {
 
-      withdraw_cases(cases[case])
-      cases[[case]] <- success_case(cases[[case]])
+    cases <- shiny::isolate(reactive_cases$all)
+    case <- shiny::isolate(input$case)
+    shiny::req(input$case)
 
-      shiny::isolate(reactive_cases$all <- cases)
-    }
+    withdraw_cases(cases[case])
+    cases[[case]] <- success_case(cases[[case]])
+
+    shiny::isolate(reactive_cases$all <- cases)
   })
 }
 
-validateGroupCases <- function(input, reactive_cases) {
-  shiny::observe({
-    if (input$group_validation_button > 0) {
-      active_cases <- shiny::isolate(reactive_cases$active())
-      cases <- shiny::isolate(reactive_cases$all)
+validateGroupCases <- function(input, reactive_cases, session) {
+  shiny::observeEvent(c(input$group_validation_button, input[["validateGroup"]]), {
+    active_cases <- shiny::isolate(reactive_cases$active())
+    cases <- shiny::isolate(reactive_cases$all)
 
-      if (length(cases) > 0) {
-        type <- shiny::isolate(input$type)
+    if (length(cases) > 0) {
+      shiny::req(input$type)
+      type <- shiny::isolate(input$type)
 
-        withdraw_cases(active_cases)
-        idx <- sapply(cases, inherits, type)
-        cases[idx] <- lapply(cases[idx], success_case)
+      withdraw_cases(active_cases)
+      idx <- purrr::map_lgl(cases, inherits, type)
+      cases <- purrr::modify_if(cases, idx, success_case)
 
-        shiny::isolate(reactive_cases$all <- cases)
-      }
+      shiny::isolate(reactive_cases$all <- cases)
     }
   })
 }
@@ -227,6 +228,33 @@ toggleValidateBtns <- function(input, session) {
     shiny::req(input$type)
     message <- input$type == "success_case"
     session$sendCustomMessage("toggle-validate-btns-handler", message)
+  })
+}
+
+listenToKeys <- function(input, session, reactive_cases) {
+  shiny::observeEvent(input[["nextCase"]], {
+    names <- unique(names(reactive_cases$active()))
+    shiny::updateSelectInput(session, "case",
+      selected = next_element(input$case, names)
+    )
+  })
+  shiny::observeEvent(input[["prevCase"]], {
+    names <- unique(names(reactive_cases$active()))
+    shiny::updateSelectInput(session, "case",
+      selected = next_element(input$case, names, direction = -1)
+    )
+  })
+  shiny::observeEvent(input[["nextType"]], {
+    types <- unique(map_chr(reactive_cases$all, function(case) class(case)[[1]]))
+    shiny::updateSelectInput(session, "type",
+      selected = next_element(input$type, types)
+    )
+  })
+  shiny::observeEvent(input[["prevType"]], {
+    types <- unique(map_chr(reactive_cases$all, function(case) class(case)[[1]]))
+    shiny::updateSelectInput(session, "type",
+      selected = next_element(input$type, types, direction = -1)
+    )
   })
 }
 
